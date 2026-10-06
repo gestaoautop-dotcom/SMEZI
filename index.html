@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0a0b" />
+  <title>SMEZI — Brand Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="topbar">
+    <button class="brand" id="homeBtn" aria-label="Voltar ao início">
+      <span class="brand-mark">S</span>
+      <span>SMEZI</span>
+    </button>
+    <div class="top-actions">
+      <span class="autosave"><i></i> salvo automaticamente</span>
+      <button class="ghost-btn">Minhas marcas</button>
+      <div class="avatar">CW</div>
+    </div>
+  </header>
+
+  <main id="app"></main>
+
+  <template id="homeTemplate">
+    <section class="home-shell">
+      <div class="orb orb-a"></div><div class="orb orb-b"></div>
+      <div class="home-copy reveal">
+        <span class="eyebrow">SMEZI Creative OS</span>
+        <h1>O que vamos<br><span>criar hoje?</span></h1>
+        <p>Uma inteligência que aprende sua marca uma vez — e usa isso em todo o ecossistema.</p>
+      </div>
+      <div class="studio-grid reveal delay-1">
+        <button class="studio-card featured" data-action="brand">
+          <div class="studio-visual visual-brand"><span class="mini-word">Aa</span><span class="mini-dot"></span><span class="mini-line"></span></div>
+          <div><small>01</small><h3>Criar uma marca</h3><p>Estratégia, identidade e Brand Brain.</p></div><b>↗</b>
+        </button>
+        <button class="studio-card"><div class="studio-visual visual-content">✦</div><div><small>02</small><h3>Criar conteúdo</h3><p>Já com a voz da sua marca.</p></div><b>↗</b></button>
+        <button class="studio-card"><div class="studio-visual visual-campaign">◎</div><div><small>03</small><h3>Criar campanha</h3><p>Ideia, narrativa e peças.</p></div><b>↗</b></button>
+        <button class="studio-card"><div class="studio-visual visual-site">▱</div><div><small>04</small><h3>Criar site</h3><p>Design e estrutura conectados.</p></div><b>↗</b></button>
+        <button class="studio-card"><div class="studio-visual visual-deck">▰</div><div><small>05</small><h3>Criar apresentação</h3><p>Visual + narrativa + contexto.</p></div><b>↗</b></button>
+      </div>
+
+      <section class="brands-panel reveal delay-2">
+        <div class="section-head"><div><span class="eyebrow">Brand Brain</span><h2>Suas marcas</h2></div><button class="text-btn" data-action="brand">+ nova marca</button></div>
+        <div class="brand-row">
+          <article class="brand-chip active"><div class="chip-logo smezi-chip">S</div><div><strong>SMEZI</strong><span>Brain 92% completo</span></div><div class="brain-ring"><span>92</span></div></article>
+          <article class="brand-chip"><div class="chip-logo asi-chip">A</div><div><strong>ASI Capital</strong><span>Brain 76% completo</span></div><div class="brain-ring r76"><span>76</span></div></article>
+          <button class="brand-chip add" data-action="brand"><span>＋</span><div><strong>Criar nova marca</strong><small>A SMEZI aprende com você.</small></div></button>
+        </div>
+      </section>
+    </section>
+  </template>
+
+  <template id="studioTemplate">
+    <section class="studio-shell">
+      <aside class="rail">
+        <button class="rail-brand" id="railHome"><span>S</span></button>
+        <div class="rail-track">
+          <span class="rail-progress" id="railProgress"></span>
+          <button class="rail-step active" data-step="0"><b>1</b><em>Negócio</em></button>
+          <button class="rail-step" data-step="1"><b>2</b><em>Referências</em></button>
+          <button class="rail-step" data-step="2"><b>3</b><em>Personalidade</em></button>
+          <button class="rail-step" data-step="3"><b>4</b><em>Direção visual</em></button>
+          <button class="rail-step" data-step="4"><b>5</b><em>Visual Board</em></button>
+          <button class="rail-step" data-step="5"><b>6</b><em>Entendi assim</em></button>
+        </div>
+        <div class="brain-meter"><span>Brand Brain</span><strong id="brainPercent">14%</strong><div><i id="brainBar"></i></div></div>
+      </aside>
+
+      <section class="stage">
+        <div class="stage-head"><div><span class="eyebrow" id="stepEyebrow">Conhecendo o negócio</span><h2 id="stepTitle">Qual é o nome da sua marca?</h2></div><div class="step-counter"><span id="stepCurrent">01</span><small>/ 06</small></div></div>
+        <div class="stage-body" id="stageBody"></div>
+        <footer class="stage-footer"><button class="back-btn" id="backBtn">← voltar</button><div class="footer-note" id="footerNote">Pode mudar tudo depois.</div><button class="next-btn" id="nextBtn">continuar <span>→</span></button></footer>
+      </section>
+
+      <aside class="live-board" id="liveBoard">
+        <div class="live-head"><div><span class="status-dot"></span><span>Visual Board vivo</span></div><button title="Expandir">⤢</button></div>
+        <div class="brand-preview" id="brandPreview">
+          <div class="preview-glow"></div>
+          <div class="preview-brandline"><span id="previewSymbol">S</span><strong id="previewName">SUA MARCA</strong></div>
+          <div class="preview-hero"><small id="previewMood">inteligente / contemporânea</small><h3 id="previewHeadline">Uma identidade que começa a tomar forma.</h3><p id="previewCopy">Cada escolha muda esta direção em tempo real.</p><button>descobrir mais ↗</button></div>
+          <div class="preview-grid"><div class="preview-card large" id="photoCard"><span>direção de imagem</span></div><div class="preview-card type-card"><small>TIPO</small><strong id="typeSample">Aa</strong></div><div class="preview-card palette-card" id="paletteCard"><i></i><i></i><i></i><i></i></div></div>
+        </div>
+        <div class="insight"><span>✦</span><p id="insightText">Comece pelo nome. Eu vou conectando os pontos enquanto você escolhe.</p></div>
+      </aside>
+    </section>
+  </template>
+
+  <script src="./app.js"></script>
+</body>
+</html>
