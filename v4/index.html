@@ -1,1 +1,143 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0; url=./cases/"><title>SMEZI V4</title><script>location.replace('./cases/')</script></head><body><a href="./cases/">Abrir SMEZI V4</a></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SMEZI — Smart + Easy</title>
+<style>
+:root{
+  --ink:#0b0f1a;--muted:#6f737c;--off:#f8f7f4;--line:#e8eaee;
+  --blue:#3b82f6;--violet:#7c3aed;--pink:#ec4899;--coral:#ff7a59;
+  --grad:linear-gradient(90deg,var(--blue),var(--violet),var(--pink),var(--coral));
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{text-decoration:none;color:inherit}
+.header{height:88px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,5vw,64px);position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);z-index:20}
+.logo{font-size:34px;font-weight:850;letter-spacing:-2.2px}
+.logo .z{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.actions{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 22px;border-radius:999px;background:var(--ink);color:#fff;font-weight:750}
+.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.hero{padding:82px clamp(24px,6vw,78px) 74px}
+.eyebrow{font-size:14px;letter-spacing:.11em;font-weight:850;margin-bottom:44px}
+.hero h1{font-size:clamp(64px,8.2vw,124px);line-height:.95;letter-spacing:-.06em;font-weight:540;max-width:1080px;margin:0}
+.hero h1 .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:clamp(22px,2.4vw,34px);line-height:1.5;color:#747984;max-width:900px;margin:52px 0 34px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.poster{margin:0 clamp(24px,6vw,78px) 110px;border-radius:34px;min-height:360px;padding:56px;background:
+radial-gradient(circle at 65% 50%,rgba(236,72,153,.34),transparent 28%),
+radial-gradient(circle at 75% 30%,rgba(59,130,246,.33),transparent 30%),
+linear-gradient(135deg,#08111f,#18223d 58%,#42214f);
+color:#fff;position:relative;overflow:hidden}
+.poster h2{font-size:clamp(54px,6.5vw,98px);line-height:.92;letter-spacing:-.06em;font-weight:450;margin:0;max-width:800px}
+.poster h2 em{font-family:Georgia,serif;font-weight:400}
+.poster p{font-weight:800;letter-spacing:.03em;font-size:clamp(18px,2vw,28px);margin-top:58px}
+.poster .symbol{position:absolute;right:44px;top:44px;width:98px;height:98px;border-radius:24px;background:#080d18;display:grid;place-items:center;font-size:48px;font-weight:900}
+.poster .symbol span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.light-section{padding:90px clamp(24px,6vw,78px) 80px}
+.section-label{font-size:16px;font-weight:850;letter-spacing:.16em;margin-bottom:44px}
+.light-section h2{font-size:clamp(56px,6.7vw,102px);line-height:.98;letter-spacing:-.055em;margin:0 0 70px;font-weight:520;max-width:1100px}
+.services{border-top:1px solid var(--line)}
+.service{padding:58px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:110px 1fr auto;gap:28px;align-items:start}
+.service .n{color:#7d8490;font-size:20px}
+.service h3{font-size:clamp(34px,4vw,58px);margin:0 0 18px}
+.service p{font-size:clamp(19px,2.1vw,30px);line-height:1.5;color:#747984;max-width:850px;margin:0}
+.service .plus{font-size:36px}
+
+.dark{background:#0b0f1a;color:#fff;padding:105px clamp(24px,6vw,78px)}
+.dark .section-label{color:#fff}
+.dark h2{font-size:clamp(58px,7vw,106px);line-height:.96;letter-spacing:-.055em;margin:0 0 60px;font-weight:500}
+.dark h2 em{font-family:Georgia,serif;color:#c4b5fd;font-weight:400}
+.dark p{font-size:clamp(21px,2.3vw,31px);line-height:1.75;color:#aeb5c2;max-width:1000px}
+.steps{margin-top:85px;border-top:1px solid #343a49;display:grid;grid-template-columns:repeat(4,1fr)}
+.step{padding:38px 24px 30px 0}
+.step small{color:#9ba2ae;font-size:18px}
+.step b{display:block;font-size:clamp(30px,3.7vw,58px);margin-top:28px}
+
+.cta-section{padding:110px clamp(24px,6vw,78px)}
+.cta-section .kicker{letter-spacing:.12em;font-size:15px;margin-bottom:40px}
+.cta-section h2{font-size:clamp(64px,8vw,126px);line-height:.92;letter-spacing:-.06em;margin:0}
+.cta-section h2 em{display:block;font-family:Georgia,serif;font-weight:400;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cta-section .btn{margin-top:46px;padding:16px 26px}
+.footer{border-top:1px solid var(--line);padding:62px clamp(24px,6vw,78px);display:grid;grid-template-columns:1fr auto;align-items:end;color:#70757f}
+.footer .logo{font-size:42px}
+.footer p{margin:14px 0 0}
+.footer a{color:#70757f}
+
+@media(max-width:760px){
+ .header{height:76px;padding:0 18px}.logo{font-size:30px}.actions .secondary{display:none}.btn{padding:12px 18px}
+ .hero{padding:72px 22px 54px}.eyebrow{font-size:12px;line-height:1.45;margin-bottom:34px}
+ .hero h1{font-size:59px}.hero p{font-size:24px;margin-top:44px}
+ .poster{margin:0 22px 74px;padding:34px 28px;min-height:430px;border-radius:28px}.poster h2{font-size:58px}.poster .symbol{width:78px;height:78px;right:24px;top:24px}
+ .light-section{padding:72px 22px 66px}.light-section h2{font-size:57px;margin-bottom:55px}
+ .service{grid-template-columns:1fr;gap:20px;padding:42px 0}.service .plus{display:none}.service h3{font-size:44px}.service p{font-size:23px}
+ .dark{padding:82px 22px}.dark h2{font-size:59px}.dark p{font-size:23px;line-height:1.7}
+ .steps{grid-template-columns:1fr 1fr}.step{padding:30px 10px 48px 0}.step b{font-size:34px}
+ .cta-section{padding:88px 22px}.cta-section h2{font-size:66px}
+ .footer{grid-template-columns:1fr;gap:28px;padding:50px 22px}
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <a class="logo" href="./">sme<span class="z">z</span>i</a>
+  <div class="actions">
+    <a class="btn secondary" href="./cases/">Cases</a>
+    <a class="btn" href="#contato">Vamos conversar&nbsp; +</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="eyebrow">SMART + EASY · TECNOLOGIA, DESIGN E OPERAÇÃO</div>
+  <h1>Seu negócio<br>funciona<br>de um jeito.<br><span class="accent">Seu sistema<br>também deveria.</span></h1>
+  <p>Transformamos operações complexas em sistemas inteligentes, personalizados e simples de usar.</p>
+  <div class="hero-cta">
+    <a class="btn" href="#contato">Conte seu projeto&nbsp; +</a>
+    <a class="btn secondary" href="./cases/">Ver cases</a>
+  </div>
+</section>
+
+<section class="poster">
+  <div class="symbol"><span>S</span></div>
+  <h2>O complexo,<br><em>simples.</em></h2>
+  <p>Sistemas inteligentes.<br>Feitos para facilitar.</p>
+</section>
+
+<section class="light-section">
+  <div class="section-label">01 / O QUE FAZEMOS</div>
+  <h2>Design que aproxima.<br>Tecnologia que faz avançar.</h2>
+  <div class="services">
+    <div class="service"><div class="n">01</div><div><h3>Identidade visual</h3><p>Conceito, linguagem visual e aplicações que traduzem a essência do seu negócio.</p></div><div class="plus">+</div></div>
+    <div class="service"><div class="n">02</div><div><h3>Site</h3><p>Uma presença digital com personalidade, clareza e uma experiência pensada para o seu público.</p></div><div class="plus">+</div></div>
+    <div class="service"><div class="n">03</div><div><h3>Sistema</h3><p>Sua operação em um só lugar. Processos, dados e automações conectados em um sistema feito para o seu negócio.</p></div><div class="plus">+</div></div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="section-label">02 / INTELIGÊNCIA SEM COMPLICAÇÃO</div>
+  <h2>Complexo por trás.<br><em>Simples para você.</em></h2>
+  <p>O nome SMEZI nasce de Smart + Easy. Começamos entendendo como sua empresa realmente funciona: os atritos, as tarefas repetitivas e as informações espalhadas. Depois, construímos a tecnologia ao redor dessa operação. Seu negócio dá a direção; o sistema se adapta a ele.</p>
+  <div class="steps">
+    <div class="step"><small>01</small><b>Entender</b></div>
+    <div class="step"><small>02</small><b>Conectar</b></div>
+    <div class="step"><small>03</small><b>Simplificar</b></div>
+    <div class="step"><small>04</small><b>Evoluir</b></div>
+  </div>
+</section>
+
+<section id="contato" class="cta-section">
+  <div class="kicker">DO SEU JEITO. SÓ QUE MAIS INTELIGENTE.</div>
+  <h2>Menos<br>processo.<em>Mais progresso.</em></h2>
+  <a class="btn" href="mailto:contato@smezi.com.br">Pedir orçamento&nbsp; +</a>
+</section>
+</main>
+
+<footer class="footer">
+  <div><div class="logo">sme<span class="z">z</span>i</div><p>Smart systems. Made easy.</p></div>
+  <div><a href="./cases/">Cases</a>&nbsp;&nbsp;&nbsp; © 2026 SMEZI</div>
+</footer>
+</body></html>
