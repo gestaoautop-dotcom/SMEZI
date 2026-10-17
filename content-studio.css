@@ -1,0 +1,439 @@
+@font-face {
+  font-family: Manrope;
+  src: url("./assets/fonts/manrope.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("./assets/fonts/playfair.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("./assets/fonts/dm.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Sora;
+  src: url("./assets/fonts/sora.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+.cs-shell {
+  max-width: 1440px;
+  margin: auto;
+  padding: 28px 5vw 60px;
+  min-height: calc(100vh - 74px);
+}
+.cs-top {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.cs-save-note {
+  margin-left: auto;
+  font-size: 11px;
+  color: #5d606a;
+}
+.cs-progress {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin: 26px 0 35px;
+}
+.cs-progress button {
+  border: 1px solid #d7d8df;
+  border-radius: 30px;
+  background: transparent;
+  padding: 10px 16px;
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  color: #5d606a;
+  font-size: 12px;
+}
+.cs-progress button b {
+  font-size: 10px;
+}
+.cs-progress [aria-current="step"] {
+  color: #fff;
+  background: #0b0f1a;
+  border-color: #0b0f1a;
+}
+.cs-progress button:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+.cs-heading {
+  margin-bottom: 30px;
+}
+.cs-heading h1 {
+  font-size: clamp(30px, 4.5vw, 66px);
+  line-height: 1.1;
+  letter-spacing: -0.055em;
+  font-weight: 600;
+  margin: 14px 0 16px;
+  max-width: 950px;
+}
+.cs-heading p {
+  max-width: 760px;
+  color: #59616c;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.cs-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.cs-box {
+  background: #fff;
+  border: 1px solid #dddfe5;
+  border-radius: 20px;
+  padding: 25px;
+  min-width: 0;
+}
+.cs-box h2 {
+  font-size: 22px;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+.cs-box p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #59616c;
+}
+.cs-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #4b5260;
+  margin-bottom: 18px;
+}
+.cs-field input:not([type="color"]),
+.cs-field textarea,
+.cs-field select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #cbd0d9;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fff;
+  color: #0b0f1a;
+  outline-offset: 4px;
+  font-size: 14px;
+}
+.cs-field textarea {
+  min-height: 105px;
+  resize: vertical;
+}
+.cs-field input[type="color"] {
+  width: 100%;
+  height: 45px;
+  background: #fff;
+  border: 1px solid #cbd0d9;
+  border-radius: 12px;
+  padding: 4px;
+}
+.cs-field input[type="file"] {
+  font-size: 12px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.cs-field-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.cs-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #4b5260;
+  margin: 12px 0 22px;
+}
+.cs-check input {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+.cs-swatches {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin: 26px 0;
+}
+.cs-swatches span {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+}
+.cs-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 20px;
+}
+.cs-actions .next-btn {
+  justify-self: auto;
+  line-height: 1.5;
+  font-size: 12px;
+  padding: 12px 19px;
+}
+.cs-actions .ghost-btn {
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 11px 17px;
+}
+.cs-empty {
+  font-size: 13px;
+  color: #59616c;
+  padding: 20px 0;
+}
+.cs-projects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 18px;
+}
+.cs-formats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.cs-format {
+  padding: 23px;
+  border: 1px solid #d6d8df;
+  border-radius: 18px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 13px;
+  align-items: flex-start;
+}
+.cs-format.selected {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 2px #7c3aed22;
+}
+.cs-format strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+.cs-format small {
+  font-size: 11px;
+  color: #59616c;
+}
+.cs-ratio {
+  display: block;
+  width: 75px;
+  max-height: 120px;
+  background: linear-gradient(135deg, #e1ecff, #eaddff 55%, #ffe6ef);
+  border-radius: 8px;
+}
+.cs-outline {
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #4b5260;
+}
+.cs-outline li {
+  padding-bottom: 12px;
+}
+.cs-hint,
+.cs-footnote {
+  font-size: 12px !important;
+  color: #59616c !important;
+  line-height: 1.7;
+}
+.cs-footnote {
+  margin-top: 30px;
+  border-top: 1px solid #d9dce2;
+  padding-top: 20px;
+}
+#cs-status {
+  font-size: 13px;
+  line-height: 1.7;
+  margin-top: 18px;
+  color: #54369a;
+  overflow-wrap: anywhere;
+}
+.cs-samples {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+.cs-sample {
+  border: 1px solid #d7d9df;
+  padding: 0;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  display: block;
+  color: #0b0f1a;
+  text-align: left;
+  min-width: 0;
+  transition: transform 0.2s;
+}
+.cs-sample:hover {
+  transform: translateY(-3px);
+}
+.cs-sample svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+}
+.cs-sample > span {
+  display: block;
+  padding: 15px;
+  font-size: 12px;
+}
+.cs-editor {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) minmax(320px, 0.85fr);
+  gap: 28px;
+  align-items: start;
+}
+.cs-canvas {
+  padding: 20px;
+  background: #e9e8e5;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+}
+.cs-canvas svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 520px;
+  max-height: 740px;
+  filter: drop-shadow(0 12px 25px #0b0f1a18);
+}
+.cs-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 23px 0;
+}
+.cs-shell button:focus-visible,
+.cs-shell input:focus-visible,
+.cs-shell textarea:focus-visible,
+.cs-shell select:focus-visible {
+  outline: 3px solid #7c3aed;
+  outline-offset: 4px;
+}
+.cs-shell button {
+  min-height: 42px;
+}
+.cs-save-note,
+.cs-footnote {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 950px) {
+  .cs-formats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cs-editor {
+    grid-template-columns: 1fr 1fr;
+  }
+  .cs-projects {
+    grid-template-columns: 1fr 1fr;
+  }
+  .cs-box {
+    padding: 20px;
+  }
+  .cs-samples {
+    gap: 12px;
+  }
+  .cs-shell {
+    padding-left: 4vw;
+    padding-right: 4vw;
+  }
+}
+@media (max-width: 700px) {
+  .cs-columns,
+  .cs-editor {
+    grid-template-columns: 1fr;
+  }
+  .cs-samples {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .cs-progress {
+    gap: 6px;
+  }
+  .cs-progress button {
+    padding: 8px 11px;
+    font-size: 11px;
+  }
+  .cs-save-note {
+    margin-left: 0;
+  }
+  .cs-shell .cs-top {
+    gap: 12px;
+  }
+  .cs-projects {
+    grid-template-columns: 1fr;
+  }
+  .cs-heading h1 {
+    font-size: 38px;
+  }
+  .cs-canvas {
+    padding: 12px;
+  }
+  .cs-format {
+    padding: 17px;
+  }
+  .cs-actions > * {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+  .cs-shell .cs-box {
+    min-width: 0;
+  }
+  .cs-field input:not([type="color"]),
+  .cs-field textarea,
+  .cs-field select {
+    font-size: 16px;
+  }
+  .cs-sample > span {
+    font-size: 11px;
+    padding: 10px;
+  }
+  .cs-field-pair {
+    gap: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-sample {
+    transition: none;
+  }
+  .cs-sample:hover {
+    transform: none;
+  }
+  .reveal {
+    animation: none;
+  }
+  .brand-preview {
+    animation: none;
+  }
+}
