@@ -1,7 +1,1 @@
-{
-  "functions": {
-    "api/brand-brain.js": {
-      "maxDuration": 30
-    }
-  }
-}
+{}

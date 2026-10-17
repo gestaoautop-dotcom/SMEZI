@@ -1,0 +1,126 @@
+{
+  "id": "_geral",
+  "name": "Ofício em aberto",
+  "mood": "sober",
+  "aliases": [],
+  "audiences": [
+    "Quem chega com uma necessidade concreta e ainda não encontrou o ofício na base."
+  ],
+  "positioning": [
+    "O texto fica com o que foi escrito. A base não completa o ofício no escuro.",
+    "Quando o segmento não encontra par, a peça usa só o que a pessoa contou."
+  ],
+  "tones": [
+    {
+      "id": "aberta",
+      "when": [],
+      "summary": "Frase curta, com o que foi dito. Sem completar buraco.",
+      "do": [
+        "Uma ideia por vez.",
+        "O próximo passo, claro."
+      ],
+      "dont": [
+        "Promessa que a marca não fez.",
+        "Jargão para parecer ofício."
+      ]
+    }
+  ],
+  "messages": [
+    "O que foi escrito permanece.",
+    "Sem ofício inventado.",
+    "Uma ideia por peça."
+  ],
+  "headlines": {
+    "short": [
+      "O que foi dito",
+      "Uma ideia",
+      "Com clareza"
+    ],
+    "medium": [
+      "Só o que a marca contou"
+    ]
+  },
+  "ctas": [
+    "Falar com a gente",
+    "Conhecer",
+    "Chamar a marca"
+  ],
+  "pillars": [
+    {
+      "name": "Ofício",
+      "ideas": {
+        "lançamento": "Novidade só se a marca tiver escrito qual.",
+        "educativo": "Explica o que já está na descrição.",
+        "institucional": "Nome, ofício e o que a pessoa contou.",
+        "oferta": "Sem preço e sem desconto inventados.",
+        "depoimento": "A frase é da marca, não de um cliente.",
+        "bastidores": "O lugar, quando houver foto.",
+        "evento": "Data e local entram quando você confirmar.",
+        "citação": "O ofício cabe na frase que já existe.",
+        "sazonal": "Data só se fizer sentido para esta marca."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Papel",
+      "colors": [
+        {
+          "hex": "#1c1e22",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8d7355",
+          "role": "Destaque",
+          "usage": "Neutro. A paleta da marca continua a escolhida."
+        },
+        {
+          "hex": "#e6e1d8",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f5f1",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "manrope",
+      "display": "Manrope",
+      "text": "Manrope",
+      "why": "Neutra, até o ofício entrar na base."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "O lugar, a matéria ou a pessoa, quando a marca tiver foto. Sem imagem de outro ofício."
+    ],
+    "do": [
+      "Contexto verdadeiro."
+    ],
+    "dont": [
+      "Banco de imagem genérico.",
+      "Foto de um ofício que não é o desta marca."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Muito espaço e uma frase."
+    ],
+    "dont": [
+      "Não preencher com clichê de categoria errada."
+    ]
+  },
+  "avoid": [
+    "Ofício inventado",
+    "Concorrente chutado",
+    "Frase de outra categoria"
+  ],
+  "competitors": [],
+  "competitorNote": "Não há um conjunto confiável para este ofício. Escreva quem disputa o mesmo cliente. A base não inventa empresa."
+}

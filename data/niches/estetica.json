@@ -1,0 +1,212 @@
+{
+  "id": "estetica",
+  "name": "Estética e beleza clínica",
+  "mood": "sober",
+  "aliases": [
+    "estetica",
+    "harmonizacao",
+    "dermatologia",
+    "pele",
+    "clinica de estetica"
+  ],
+  "audiences": [
+    "Quem quer cuidar da pele e desconfia de promessa.",
+    "Quem já fez procedimento e busca critério, não moda."
+  ],
+  "positioning": [
+    "Beleza com limite. O que não cabe, a casa não oferece.",
+    "A pele se explica com luz verdadeira, não com filtro."
+  ],
+  "tones": [
+    {
+      "id": "contida",
+      "when": [
+        "premium",
+        "sofisticada",
+        "minimalista"
+      ],
+      "summary": "Poucas palavras. Nenhum milagre.",
+      "do": [
+        "A avaliação vem antes do procedimento.",
+        "Se não for o caso, a gente diz."
+      ],
+      "dont": [
+        "Rejuvenescimento instantâneo.",
+        "Autoestima em dez sessões."
+      ]
+    },
+    {
+      "id": "clara",
+      "when": [
+        "humana",
+        "acessível",
+        "técnica"
+      ],
+      "summary": "Explica o que muda e o que não muda.",
+      "do": [
+        "O procedimento tem nome e tempo de recuperação.",
+        "Dúvida cabe na avaliação."
+      ],
+      "dont": [
+        "Antes e depois como vitrine.",
+        "Pele de porcelana."
+      ]
+    }
+  ],
+  "messages": [
+    "Avaliar antes de fazer.",
+    "Sem filtro na foto da pele.",
+    "O não também é conduta.",
+    "Recuperação faz parte do plano."
+  ],
+  "headlines": {
+    "short": [
+      "Antes de fazer",
+      "Pele sem filtro",
+      "Avaliação",
+      "O que cabe"
+    ],
+    "medium": [
+      "O procedimento começa na conversa",
+      "Sem promessa de pele nova"
+    ]
+  },
+  "ctas": [
+    "Marcar avaliação",
+    "Falar com a casa",
+    "Entender o cuidado"
+  ],
+  "pillars": [
+    {
+      "name": "Critério",
+      "ideas": {
+        "lançamento": "Técnica nova só quando a equipe domina.",
+        "educativo": "O que este procedimento faz e o que não faz.",
+        "institucional": "Quem avalia e onde.",
+        "oferta": "Sessão com escopo claro. Sem pacote milagre.",
+        "depoimento": "Sem rosto de paciente.",
+        "bastidores": "A sala e o material, não o corpo.",
+        "evento": "Aula para a equipe, não palco.",
+        "citação": "Beleza também sabe recusar.",
+        "sazonal": "Proteção solar no verão, como orientação."
+      }
+    },
+    {
+      "name": "Pele",
+      "ideas": {
+        "lançamento": "Protocolo de casa, com nome verdadeiro.",
+        "educativo": "Rotina mínima, sem doze passos.",
+        "institucional": "Como a casa recebe.",
+        "oferta": "Manutenção dita com franqueza.",
+        "depoimento": "A voz é da profissional.",
+        "bastidores": "Luz do dia na sala.",
+        "evento": "Data só se estiver marcada.",
+        "citação": "Filtro não é tratamento.",
+        "sazonal": "Pele no inverno também precisa de critério."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Pétala",
+      "colors": [
+        {
+          "hex": "#2a2426",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#a38484",
+          "role": "Destaque",
+          "usage": "Rosa empoeirado, nunca chiclete."
+        },
+        {
+          "hex": "#eadfd8",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f8f4f1",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Pedra",
+      "colors": [
+        {
+          "hex": "#242428",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#9a8f86",
+          "role": "Destaque",
+          "usage": "Cinza quente, quase sem cor."
+        },
+        {
+          "hex": "#e3ddd6",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f6f4f1",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "manrope",
+      "display": "Manrope",
+      "text": "Manrope",
+      "why": "Limpa. A pele não pede letra decorada."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Sala, luz lateral e textura de pele sem retoque pesado.",
+      "Mãos e instrumento, sem rosto de paciente."
+    ],
+    "do": [
+      "Cor de pele fiel.",
+      "Ambiente reconhecível."
+    ],
+    "dont": [
+      "Antes e depois.",
+      "Filtro de porcelana.",
+      "Corpo como vitrine."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Margem larga. Uma frase sobre critério.",
+      "Nenhum selo de transformação."
+    ],
+    "dont": [
+      "Não usar porcentagem de rejuvenescimento.",
+      "Não mostrar rosto sem autorização, e mesmo assim com cuidado."
+    ]
+  },
+  "avoid": [
+    "Antes e depois",
+    "Autoestima em X sessões",
+    "Filtro na foto",
+    "Harmonização como obrigação"
+  ],
+  "competitors": [
+    {
+      "name": "Espaçolaser",
+      "url": "https://www.espacolaser.com.br",
+      "why": "Rede de depilação e estética. Confirme o serviço."
+    },
+    {
+      "name": "Onodera",
+      "url": "https://www.onodera.com.br",
+      "why": "Rede de estética. Veja se disputa o mesmo cuidado."
+    }
+  ]
+}

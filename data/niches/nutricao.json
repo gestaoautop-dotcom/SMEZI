@@ -1,0 +1,199 @@
+{
+  "id": "nutricao",
+  "name": "Nutrição",
+  "mood": "sober",
+  "aliases": [
+    "nutricao",
+    "nutricionista",
+    "alimentacao"
+  ],
+  "audiences": [
+    "Quem quer comer melhor sem dieta de revista.",
+    "Quem já tentou de tudo e precisa de um plano que caiba na semana."
+  ],
+  "positioning": [
+    "Comida de verdade, com horário de consulta e sem milagre.",
+    "O plano cabe na feira e na rotina, não num aplicativo de culpa."
+  ],
+  "tones": [
+    {
+      "id": "mesa",
+      "when": [
+        "humana",
+        "acessível"
+      ],
+      "summary": "Fala de comida, não de culpa.",
+      "do": [
+        "A consulta começa pelo que você já come.",
+        "Restrição só quando faz sentido."
+      ],
+      "dont": [
+        "Detox milagroso.",
+        "Emagreça 5 quilos."
+      ]
+    },
+    {
+      "id": "precisa",
+      "when": [
+        "técnica",
+        "premium",
+        "sofisticada"
+      ],
+      "summary": "Critério clínico, linguagem simples.",
+      "do": [
+        "O plano tem comida, não produto obrigatório.",
+        "Exame entra se for preciso, sem teatro."
+      ],
+      "dont": [
+        "Protocolo de alta performance.",
+        "Alimento proibido como moral."
+      ]
+    }
+  ],
+  "messages": [
+    "Comer cabe na vida.",
+    "Sem lista de proibidos como identidade.",
+    "A consulta escuta o dia real.",
+    "Não há número mágico de quilos."
+  ],
+  "headlines": {
+    "short": [
+      "Comida de verdade",
+      "A consulta",
+      "Sem milagre",
+      "Cabe na semana"
+    ],
+    "medium": [
+      "O plano começa pelo que você já come",
+      "Nutrição sem culpa"
+    ]
+  },
+  "ctas": [
+    "Marcar consulta",
+    "Falar com a nutri",
+    "Entender o cuidado"
+  ],
+  "pillars": [
+    {
+      "name": "Consulta",
+      "ideas": {
+        "lançamento": "Atendimento novo, horário dito.",
+        "educativo": "O que anotar antes da primeira consulta.",
+        "institucional": "Quem atende e se é online ou na sala.",
+        "oferta": "Valor da consulta, se a profissional quiser dizer. Sem pacote de chá.",
+        "depoimento": "Sem peso de paciente.",
+        "bastidores": "A mesa de consulta, não o prato perfeito.",
+        "evento": "Conversa em grupo só com vagas.",
+        "citação": "Comida não é prova de caráter.",
+        "sazonal": "Ceia de fim de ano sem terror."
+      }
+    },
+    {
+      "name": "Dia",
+      "ideas": {
+        "lançamento": "Material da casa, curto.",
+        "educativo": "Como montar um prato sem regra de internet.",
+        "institucional": "Retorno faz parte.",
+        "oferta": "Sem venda casada de suplemento.",
+        "depoimento": "A voz é da profissional.",
+        "bastidores": "Feira e despensa, se forem o tema.",
+        "evento": "Oficina com data marcada.",
+        "citação": "Fome também é informação.",
+        "sazonal": "Verão sem dieta de praia."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Folha",
+      "colors": [
+        {
+          "hex": "#1c2820",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#6d8a62",
+          "role": "Destaque",
+          "usage": "Verde de folha, nunca neon."
+        },
+        {
+          "hex": "#e3ddcf",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f5ef",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Mesa",
+      "colors": [
+        {
+          "hex": "#2a241e",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#c4a574",
+          "role": "Destaque",
+          "usage": "Madeira clara de mesa."
+        },
+        {
+          "hex": "#efe6d6",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#fbf8f2",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "manrope",
+      "display": "Manrope",
+      "text": "Manrope",
+      "why": "Clara e sóbria."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Comida de verdade na mesa, com luz de cozinha.",
+      "Consulta sem mostrar prontuário nem corpo."
+    ],
+    "do": [
+      "Feira, panela, mão.",
+      "Cor fiel do alimento."
+    ],
+    "dont": [
+      "Balança como troféu.",
+      "Antes e depois de corpo.",
+      "Suco verde de anúncio."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Uma frase sobre comida. Sem tabela de calorias inventada.",
+      "Margem larga."
+    ],
+    "dont": [
+      "Não publicar peso.",
+      "Não usar porcentagem de gordura."
+    ]
+  },
+  "avoid": [
+    "Detox",
+    "Emagreça X quilos",
+    "Antes e depois",
+    "Alimento do bem e do mal"
+  ],
+  "competitors": [],
+  "competitorNote": "Consultório de nutrição é local. A base não inventa colega. Marcas de prateleira não são o concorrente."
+}

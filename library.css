@@ -1,0 +1,78 @@
+.lib-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+.lib-filters button {
+  border: 1px solid #d7d9df;
+  background: #fff;
+  color: #1c1917;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: 600 13px/1.2 Manrope, sans-serif;
+  min-height: 42px;
+}
+.lib-filters button[aria-pressed="true"] {
+  background: #1c1917;
+  color: #f6f3ec;
+  border-color: #1c1917;
+}
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.lib-grid.wide {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.lib-card .lib-svg {
+  display: block;
+  background: #ece8e1;
+}
+.lib-card .lib-svg svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 460px;
+}
+.lib-card > span:last-child {
+  display: block;
+  padding: 12px 14px 14px;
+  font-size: 13px;
+  color: #3f3a34;
+}
+.lib-rail {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 0 16px;
+  padding-bottom: 4px;
+}
+.lib-rail button {
+  flex: none;
+  border: 1px solid #d7d9df;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font: 600 12px/1.3 Manrope, sans-serif;
+  min-height: 42px;
+}
+.lib-empty {
+  grid-column: 1 / -1;
+  margin: 12px 0 0;
+  color: #5c564e;
+}
+@media (max-width: 900px) {
+  .lib-grid,
+  .lib-grid.wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .lib-grid,
+  .lib-grid.wide {
+    grid-template-columns: 1fr;
+  }
+}

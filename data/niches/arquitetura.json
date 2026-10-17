@@ -1,0 +1,203 @@
+{
+  "id": "arquitetura",
+  "name": "Arquitetura e interiores",
+  "mood": "sober",
+  "aliases": [
+    "arquitetura",
+    "arquiteto",
+    "arquiteta",
+    "interiores",
+    "design de interiores"
+  ],
+  "audiences": [
+    "Quem vai construir ou reformar e quer ver como o estúdio pensa.",
+    "Quem já tem o imóvel e busca um desenho, não um catálogo."
+  ],
+  "positioning": [
+    "O projeto se mostra em planta, luz e matéria.",
+    "Obra tem prazo e limite. O estúdio diz os dois."
+  ],
+  "tones": [
+    {
+      "id": "materia",
+      "when": [
+        "sofisticada",
+        "minimalista",
+        "premium",
+        "técnica"
+      ],
+      "summary": "Matéria e luz. Pouco adjetivo.",
+      "do": [
+        "A casa muda a partir do uso, não da foto.",
+        "Obra suja também faz parte. A gente avisa."
+      ],
+      "dont": [
+        "Projeto dos sonhos.",
+        "Assinatura de lifestyle."
+      ]
+    },
+    {
+      "id": "proxima",
+      "when": [
+        "humana",
+        "acessível",
+        "criativa"
+      ],
+      "summary": "Explica a escolha sem palestra.",
+      "do": [
+        "Este material é por isso.",
+        "Se a obra não couber no orçamento, o desenho muda."
+      ],
+      "dont": [
+        "Conceito disruptivo de morar.",
+        "O futuro do habitar."
+      ]
+    }
+  ],
+  "messages": [
+    "Luz, matéria, uso.",
+    "Obra tem poeira e prazo.",
+    "O desenho cabe no orçamento ou muda.",
+    "Foto de obra pronta, com crédito."
+  ],
+  "headlines": {
+    "short": [
+      "A luz desta casa",
+      "Matéria",
+      "Antes da obra",
+      "O uso"
+    ],
+    "medium": [
+      "O desenho começa pelo uso",
+      "Obra com prazo dito"
+    ]
+  },
+  "ctas": [
+    "Falar com o estúdio",
+    "Ver projetos",
+    "Marcar uma conversa"
+  ],
+  "pillars": [
+    {
+      "name": "Projeto",
+      "ideas": {
+        "lançamento": "Obra entregue, com o que se pode mostrar.",
+        "educativo": "O que definir antes do primeiro risco.",
+        "institucional": "O que o estúdio faz e o que fica com o engenheiro.",
+        "oferta": "Etapa de projeto com escopo. Sem 'a partir de' vazio.",
+        "depoimento": "Sem cliente nomeado se não houver licença.",
+        "bastidores": "Maquete, amostra, canteiro.",
+        "evento": "Visita a obra aberta, se o cliente deixar.",
+        "citação": "Casa boa se usa.",
+        "sazonal": "Não há data comercial que mude um projeto."
+      }
+    },
+    {
+      "name": "Obra",
+      "ideas": {
+        "lançamento": "Material novo que o estúdio passou a especificar.",
+        "educativo": "Como ler uma planta sem medo.",
+        "institucional": "Cidade em que o estúdio constrói.",
+        "oferta": "Acompanhamento de obra, se for serviço.",
+        "depoimento": "A voz é do estúdio.",
+        "bastidores": "Poeira e decisão de canteiro.",
+        "evento": "Palestra com obra real.",
+        "citação": "Detalhe é o projeto.",
+        "sazonal": "Chuva e prazo: avisar, não esconder."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Cal",
+      "colors": [
+        {
+          "hex": "#1e1e1c",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#a39078",
+          "role": "Destaque",
+          "usage": "Pedra e cal."
+        },
+        {
+          "hex": "#e6e0d6",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f6f4f0",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Sombra",
+      "colors": [
+        {
+          "hex": "#2a3130",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#7e8a84",
+          "role": "Destaque",
+          "usage": "Concreto com verde de jardim."
+        },
+        {
+          "hex": "#e2e6e3",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f5f6f5",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "manrope",
+      "display": "Manrope",
+      "text": "Manrope",
+      "why": "Desenho pede letra que não compete com a foto."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Obra fotografada com a luz do lugar, de preferência por quem a casa credita.",
+      "Amostra de matéria na mesa."
+    ],
+    "do": [
+      "Sombra verdadeira.",
+      "Gente usando a casa, se autorizada."
+    ],
+    "dont": [
+      "Render genérico como se fosse foto.",
+      "Antes e depois sem contexto.",
+      "Móvel de catálogo sem a obra."
+    ]
+  },
+  "composition": {
+    "do": [
+      "A foto respira. A legenda é curta.",
+      "Crédito de foto quando houver."
+    ],
+    "dont": [
+      "Não encher de planta técnica ilegível.",
+      "Não chamar render de fotografia."
+    ]
+  },
+  "avoid": [
+    "Projeto dos sonhos",
+    "Render como obra pronta",
+    "Lifestyle de revista",
+    "Antes e depois sensacionalista"
+  ],
+  "competitors": [],
+  "competitorNote": "Escritório de arquitetura é territorial. A base não inventa colega. Escreva quem disputa a mesma obra."
+}

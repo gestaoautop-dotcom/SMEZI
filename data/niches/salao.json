@@ -1,0 +1,207 @@
+{
+  "id": "salao",
+  "name": "Salão e barbearia",
+  "mood": "warm",
+  "aliases": [
+    "salao",
+    "barbearia",
+    "barbeiro",
+    "cabeleireiro",
+    "cabelo"
+  ],
+  "audiences": [
+    "Quem marca horário e volta para a mesma pessoa.",
+    "Quem entra sem hora e quer saber se cabe."
+  ],
+  "positioning": [
+    "Cabelo e barba com hora marcada e conversa no volume certo.",
+    "A casa tem jeito. O corte não precisa de manifesto."
+  ],
+  "tones": [
+    {
+      "id": "cadeira",
+      "when": [
+        "humana",
+        "ousada",
+        "acessível",
+        "criativa"
+      ],
+      "summary": "Fala de cadeira, não de tendência mundial.",
+      "do": [
+        "Seu horário está guardado.",
+        "Traz uma referência, se quiser. A tesoura decide com você."
+      ],
+      "dont": [
+        "Transformação de visual completa.",
+        "O salão mais hypado."
+      ]
+    },
+    {
+      "id": "limpa",
+      "when": [
+        "minimal",
+        "premium",
+        "sofisticada"
+      ],
+      "summary": "Pouco texto. O corte aparece na foto, se for de quem autorizou.",
+      "do": [
+        "Corte, barba, hora.",
+        "Silêncio também é serviço."
+      ],
+      "dont": [
+        "Experiência de grooming.",
+        "Ritual de autocuidado masculino."
+      ]
+    }
+  ],
+  "messages": [
+    "Hora marcada com quem corta.",
+    "Referência ajuda. A conversa também.",
+    "A casa tem cheiro e som próprios.",
+    "Sem fila de tendência."
+  ],
+  "headlines": {
+    "short": [
+      "Hora marcada",
+      "A cadeira",
+      "Corte de hoje",
+      "Barba no ponto"
+    ],
+    "medium": [
+      "Com quem você já conhece",
+      "Entra, senta, combina"
+    ]
+  },
+  "ctas": [
+    "Marcar horário",
+    "Ver a agenda",
+    "Chamar o salão"
+  ],
+  "pillars": [
+    {
+      "name": "Cadeira",
+      "ideas": {
+        "lançamento": "Serviço novo quando a equipe sabe fazer.",
+        "educativo": "Como explicar o corte que você quer.",
+        "institucional": "Quem corta e em qual cadeira.",
+        "oferta": "Tabela clara. Sem 'a partir de' escondido.",
+        "depoimento": "A frase é da casa.",
+        "bastidores": "A tesoura, a navalha, a luz do espelho.",
+        "evento": "Noite de barba ou de cor, com vagas.",
+        "citação": "Cabelo bom se vê andando.",
+        "sazonal": "Festa pede hora marcada com antecedência."
+      }
+    },
+    {
+      "name": "Casa",
+      "ideas": {
+        "lançamento": "Produto da casa, se existir, sem vitrine infinita.",
+        "educativo": "Como o corte dura até a próxima.",
+        "institucional": "Endereço e como chegar.",
+        "oferta": "Combo só se os dois serviços existirem de verdade.",
+        "depoimento": "Cliente habitual sem nome exposto.",
+        "bastidores": "O café e a música da sala.",
+        "evento": "Data cheia: avise a agenda.",
+        "citação": "Volta quando o cabelo pedir.",
+        "sazonal": "Formatura e casamento: reserve antes."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Navalha",
+      "colors": [
+        {
+          "hex": "#1a1a1a",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#b08a62",
+          "role": "Destaque",
+          "usage": "Latão num detalhe, não no fundo."
+        },
+        {
+          "hex": "#d9d3cc",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f4f1ec",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Tinta",
+      "colors": [
+        {
+          "hex": "#241816",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#7a3030",
+          "role": "Destaque",
+          "usage": "Vermelho de cadeira clássica, contido."
+        },
+        {
+          "hex": "#e6d5cc",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f3ef",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "sora",
+      "display": "Sora",
+      "text": "Manrope",
+      "why": "Contemporânea e firme, sem letra de barbearia caricata."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Espelho, cadeira e a luz do salão. Corte só com autorização.",
+      "Mãos trabalhando, nunca o antes e depois forçado."
+    ],
+    "do": [
+      "Ferramenta e lugar.",
+      "Pessoa de costas ou em perfil, se combinado."
+    ],
+    "dont": [
+      "Modelo de estoque com barba perfeita.",
+      "Transformação milagrosa."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Uma cadeira ou uma frase.",
+      "Horário em tipo pequeno e legível."
+    ],
+    "dont": [
+      "Não usar bigode de ilustra como logo genérico.",
+      "Não lotar de ícone de tesoura."
+    ]
+  },
+  "avoid": [
+    "Transformação radical",
+    "Barbearia de desenho animado",
+    "Antes e depois sem contexto"
+  ],
+  "competitors": [
+    {
+      "name": "Jacques Janine",
+      "url": "https://www.jacquesjanine.com.br",
+      "why": "Rede de salão. Confirme se disputa o mesmo cliente."
+    }
+  ],
+  "competitorNote": "Barbearia de bairro quase nunca tem rede nacional confiável na base. Escreva quem fica na mesma rua."
+}

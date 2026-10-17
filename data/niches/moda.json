@@ -1,0 +1,218 @@
+{
+  "id": "moda",
+  "name": "Moda",
+  "mood": "warm",
+  "aliases": [
+    "moda",
+    "roupa",
+    "vestuario",
+    "alfaiataria",
+    "marca de roupa"
+  ],
+  "audiences": [
+    "Quem veste a marca no dia e quer ver o tecido, não o conceito.",
+    "Quem compra pouco e escolhe com calma."
+  ],
+  "positioning": [
+    "A roupa se explica no corpo em movimento e na matéria.",
+    "Coleção curta. Frase mais curta ainda."
+  ],
+  "tones": [
+    {
+      "id": "corpo",
+      "when": [
+        "criativa",
+        "ousada",
+        "contemporânea",
+        "humana"
+      ],
+      "summary": "Fala de tecido, corte e ocasião.",
+      "do": [
+        "Este tecido pede este clima.",
+        "Veste assim. O resto é gosto."
+      ],
+      "dont": [
+        "Empodere o seu guarda-roupa.",
+        "A coleção que redefine o vestir."
+      ]
+    },
+    {
+      "id": "calma",
+      "when": [
+        "premium",
+        "sofisticada",
+        "minimalista"
+      ],
+      "summary": "Pouca palavra. A foto trabalha.",
+      "do": [
+        "Uma peça. Uma luz.",
+        "Se acabou, acabou."
+      ],
+      "dont": [
+        "Lifestyle aspiracional.",
+        "Exclusividade absoluta."
+      ]
+    }
+  ],
+  "messages": [
+    "Tecido, corte, ocasião.",
+    "A peça no corpo, em movimento.",
+    "Coleção que acaba.",
+    "Sem discurso de empoderar o armário."
+  ],
+  "headlines": {
+    "short": [
+      "A peça",
+      "No corpo",
+      "Este tecido",
+      "Acabou o tamanho"
+    ],
+    "medium": [
+      "Como esta peça veste",
+      "Coleção curta"
+    ]
+  },
+  "ctas": [
+    "Ver a peça",
+    "Passar na loja",
+    "Chamar a marca"
+  ],
+  "pillars": [
+    {
+      "name": "Peça",
+      "ideas": {
+        "lançamento": "Peça nova quando está na arara.",
+        "educativo": "Como combinar sem regra de revista.",
+        "institucional": "Quem desenha e onde provar.",
+        "oferta": "Preço na peça, se a marca quiser mostrar. Sem liquidação falsa.",
+        "depoimento": "A frase é da marca sobre o corte.",
+        "bastidores": "A prova, a costura, o tecido na mesa.",
+        "evento": "Lançamento com hora, se houver.",
+        "citação": "Roupa boa se vê andando.",
+        "sazonal": "A estação com o que a coleção realmente tem."
+      }
+    },
+    {
+      "name": "Loja",
+      "ideas": {
+        "lançamento": "Cor nova, poucas unidades.",
+        "educativo": "Como cuidar do tecido.",
+        "institucional": "Horário e prova.",
+        "oferta": "Tamanho disponível, dito com honestidade.",
+        "depoimento": "Sem cliente de campanha inventado.",
+        "bastidores": "A arara e a luz da loja.",
+        "evento": "Brechó ou encontro, com data.",
+        "citação": "Menos peça, melhor corte.",
+        "sazonal": "Festa pede prova antes. A agenda avisa."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Linho",
+      "colors": [
+        {
+          "hex": "#221e1a",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#a67c52",
+          "role": "Destaque",
+          "usage": "Caramelo de linho, num detalhe."
+        },
+        {
+          "hex": "#e7dccb",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f8f4ee",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Noite",
+      "colors": [
+        {
+          "hex": "#161616",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8e2f38",
+          "role": "Destaque",
+          "usage": "Vinho baixo, quase um fio."
+        },
+        {
+          "hex": "#ddd6d0",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f6f3f0",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "playfair",
+      "display": "Playfair Display",
+      "text": "Manrope",
+      "why": "Nome com presença, legenda limpa."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Corpo em movimento, tecido reconhecível, luz de rua ou de estúdio simples.",
+      "Detalhe de costura e de mão. Sem pose de catálogo rígido."
+    ],
+    "do": [
+      "Gente diversa de verdade, se for a marca.",
+      "Cor fiel ao tecido."
+    ],
+    "dont": [
+      "Editorial copiado de outra casa.",
+      "Filtro que muda a cor da roupa.",
+      "Slogan escrito em cima do rosto."
+    ]
+  },
+  "composition": {
+    "do": [
+      "A foto manda. O texto é uma linha.",
+      "Muito ar em volta da peça."
+    ],
+    "dont": [
+      "Não carimbar coleção cápsula em tudo.",
+      "Não usar grade de doze looks."
+    ]
+  },
+  "avoid": [
+    "Empodere seu estilo",
+    "Look do dia genérico",
+    "Exclusividade absoluta",
+    "Filtro que muda o tecido"
+  ],
+  "competitors": [
+    {
+      "name": "Reserva",
+      "url": "https://www.usereserva.com",
+      "why": "Marca de roupa com loja. Confirme se disputa o mesmo guarda-roupa."
+    },
+    {
+      "name": "Farm Rio",
+      "url": "https://www.farmrio.com.br",
+      "why": "Marca de moda. Veja o público."
+    },
+    {
+      "name": "Animale",
+      "url": "https://www.animale.com.br",
+      "why": "Outra faixa. Só entra se o cliente for o mesmo."
+    }
+  ]
+}

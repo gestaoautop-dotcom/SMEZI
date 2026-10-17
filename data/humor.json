@@ -1,0 +1,11 @@
+{
+  "allowedTraits": ["criativa", "ousada", "humana"],
+  "blockedTraits": ["premium", "técnica", "sofisticada", "minimalista"],
+  "blockedAvoid": ["infantil"],
+  "blockedNiches": ["clinica", "odontologia", "psicologia", "advocacia", "farmacia", "nutricao"],
+  "do": ["Sério no que importa. Leve só no que pode."],
+  "dont": [
+    "Não fazer piada com dor, corpo, dinheiro, medo ou luto.",
+    "Não usar humor para parecer jovem."
+  ]
+}

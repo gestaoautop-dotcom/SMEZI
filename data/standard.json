@@ -1,0 +1,33 @@
+{
+  "name": "Padrão SMEZI",
+  "voice": [
+    "Frase curta e concreta.",
+    "Uma ideia por peça.",
+    "Sem jargão e sem promessa que a marca não possa cumprir.",
+    "A chamada é discreta e aparece uma vez."
+  ],
+  "composition": {
+    "do": [
+      "Grade limpa e espaço em branco de verdade.",
+      "Hierarquia tipográfica resolvida: um título, um apoio, um convite.",
+      "Fotografia com lugar, gente ou matéria. A cor da marca fica no layout.",
+      "Minimalismo como disciplina: o que não precisa, sai."
+    ],
+    "dont": [
+      "Não encher a peça de selo, ícone e gradiente.",
+      "Não repetir a mesma frase no título e no apoio.",
+      "Não usar a paleta da interface da SMEZI no lugar da paleta da marca.",
+      "Não gritar com caixa alta para parecer urgência."
+    ]
+  },
+  "copy": {
+    "dont": [
+      "Saiba mais",
+      "solução completa",
+      "ecossistema",
+      "disruptivo",
+      "jornada",
+      "experiência única"
+    ]
+  }
+}

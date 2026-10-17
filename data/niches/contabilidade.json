@@ -1,0 +1,211 @@
+{
+  "id": "contabilidade",
+  "name": "Contabilidade",
+  "mood": "sober",
+  "aliases": [
+    "contabilidade",
+    "contador",
+    "contabil",
+    "fiscal"
+  ],
+  "audiences": [
+    "Quem abre empresa e precisa entender a obrigação sem pânico.",
+    "Quem já tem contador e compara clareza, não promessa de imposto zero."
+  ],
+  "positioning": [
+    "Número explicado em frase. Prazo dito antes de estourar.",
+    "Contabilidade é tradução, não mágica fiscal."
+  ],
+  "tones": [
+    {
+      "id": "clara",
+      "when": [
+        "técnica",
+        "acessível",
+        "humana"
+      ],
+      "summary": "Traduz a obrigação. Não assusta e não esconde.",
+      "do": [
+        "Este prazo é dia X. O documento é este.",
+        "Se não soubermos, a gente diz e busca."
+      ],
+      "dont": [
+        "Imposto zero.",
+        "A gente resolve a Receita."
+      ]
+    },
+    {
+      "id": "sobria",
+      "when": [
+        "premium",
+        "sofisticada",
+        "minimalista"
+      ],
+      "summary": "Pouca palavra, número certo.",
+      "do": [
+        "O fechamento cabe num resumo.",
+        "Pergunta fora da hora também tem resposta, no dia seguinte."
+      ],
+      "dont": [
+        "Ecossistema contábil.",
+        "Contabilidade 4.0."
+      ]
+    }
+  ],
+  "messages": [
+    "Prazo antes do susto.",
+    "Número com frase ao lado.",
+    "Sem promessa de imposto zero.",
+    "A empresa do cliente não vira caso de anúncio."
+  ],
+  "headlines": {
+    "short": [
+      "Prazo em dia",
+      "Número com frase",
+      "Fechamento",
+      "Sem susto"
+    ],
+    "medium": [
+      "A obrigação explicada antes",
+      "Contabilidade que traduz"
+    ]
+  },
+  "ctas": [
+    "Falar com o escritório",
+    "Ver como funciona",
+    "Pedir uma conversa"
+  ],
+  "pillars": [
+    {
+      "name": "Prazo",
+      "ideas": {
+        "lançamento": "Serviço novo, com o que inclui.",
+        "educativo": "O que separar no primeiro mês.",
+        "institucional": "Quem assina e como fala com o escritório.",
+        "oferta": "Mensalidade com o escopo escrito.",
+        "depoimento": "Sem faturamento de cliente.",
+        "bastidores": "A mesa de fechamento, sem tela de alguém.",
+        "evento": "Plantão de dúvida com data, se existir.",
+        "citação": "Número sem frase não orienta.",
+        "sazonal": "Imposto de renda e obrigações do mês, como calendário, não como terror."
+      }
+    },
+    {
+      "name": "Tradução",
+      "ideas": {
+        "lançamento": "Canal de documentos mais simples.",
+        "educativo": "A diferença entre uma guia e um planejamento.",
+        "institucional": "Horário de resposta.",
+        "oferta": "Sem taxa de 'regularização milagrosa'.",
+        "depoimento": "A voz é do escritório.",
+        "bastidores": "Conferência, não pose com calculadora.",
+        "evento": "Encontro com clientes, fechado.",
+        "citação": "Perguntar cedo evita multa.",
+        "sazonal": "Dezembro: o que fechar antes do ano virar."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Papel",
+      "colors": [
+        {
+          "hex": "#1c2430",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#3e6b8a",
+          "role": "Destaque",
+          "usage": "Azul de caneta, num fio."
+        },
+        {
+          "hex": "#e4e8ee",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f6f7f8",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Grafite",
+      "colors": [
+        {
+          "hex": "#222426",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8a8478",
+          "role": "Destaque",
+          "usage": "Grafite e papel."
+        },
+        {
+          "hex": "#e6e2da",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f6f3",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "manrope",
+      "display": "Manrope",
+      "text": "Manrope",
+      "why": "Tabular e clara."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Mesa, papel e luz de escritório de verdade.",
+      "Pessoa da equipe, se quiser, sem tela de cliente."
+    ],
+    "do": [
+      "Documento genérico, sem dado.",
+      "Cidade do escritório."
+    ],
+    "dont": [
+      "Calculadora gigante.",
+      "Cofre e dinheiro.",
+      "Tela com CPF."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Um prazo ou uma frase.",
+      "Muito espaço, como uma folha."
+    ],
+    "dont": [
+      "Não publicar número de cliente.",
+      "Não usar porcentagem de economia de imposto."
+    ]
+  },
+  "avoid": [
+    "Imposto zero",
+    "Contabilidade 4.0",
+    "Dado de cliente",
+    "Medo como gancho"
+  ],
+  "competitors": [
+    {
+      "name": "Contabilizei",
+      "url": "https://www.contabilizei.com.br",
+      "why": "Contabilidade online. Confirme se disputa o mesmo porte de empresa."
+    },
+    {
+      "name": "Agilize",
+      "url": "https://www.agilize.com.br",
+      "why": "Outro serviço de contabilidade para empresa pequena."
+    }
+  ]
+}

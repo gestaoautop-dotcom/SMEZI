@@ -1,0 +1,215 @@
+{
+  "id": "odontologia",
+  "name": "Odontologia",
+  "mood": "sober",
+  "aliases": [
+    "odontolog",
+    "dentista",
+    "ortodont",
+    "odonto"
+  ],
+  "audiences": [
+    "Quem adia o dentista por medo e precisa de uma frase calma.",
+    "Quem busca tratamento e quer entender a etapa, não o milagre."
+  ],
+  "positioning": [
+    "A cadeira fica menos estranha quando alguém explica antes.",
+    "Sorriso não é promessa. É cuidado, com tempo."
+  ],
+  "tones": [
+    {
+      "id": "calma",
+      "when": [
+        "humana",
+        "acessível"
+      ],
+      "summary": "Explica o que vai doer, o que não vai, e o que vem depois.",
+      "do": [
+        "A gente explica antes de começar.",
+        "Medo cabe na consulta. A pressa, não."
+      ],
+      "dont": [
+        "Sorriso dos sonhos em 30 dias.",
+        "A melhor clínica da região."
+      ]
+    },
+    {
+      "id": "precisa",
+      "when": [
+        "técnica",
+        "premium",
+        "sofisticada"
+      ],
+      "summary": "Etapa, material, retorno. Sem foto de dente perfeito como isca.",
+      "do": [
+        "Primeira consulta para entender, não para vender.",
+        "O plano cabe numa página."
+      ],
+      "dont": [
+        "Transformação radical.",
+        "Protocolo de excelência."
+      ]
+    }
+  ],
+  "messages": [
+    "Explicar antes de tratar.",
+    "Medo não desqualifica o paciente.",
+    "Retorno faz parte.",
+    "Sem antes e depois de boca alheia."
+  ],
+  "headlines": {
+    "short": [
+      "Antes de tratar",
+      "Consulta calma",
+      "Sem pressa",
+      "A primeira visita"
+    ],
+    "medium": [
+      "Explicar o tratamento antes",
+      "A cadeira pode esperar a dúvida"
+    ]
+  },
+  "ctas": [
+    "Marcar avaliação",
+    "Falar com a clínica",
+    "Entender o caminho"
+  ],
+  "pillars": [
+    {
+      "name": "Consulta",
+      "ideas": {
+        "lançamento": "Nova cadeira ou novo horário, dito com clareza.",
+        "educativo": "O que acontece na primeira avaliação.",
+        "institucional": "Quem atende e em qual endereço.",
+        "oferta": "Forma de pagamento clara. Sem sorriso parcelado como slogan.",
+        "depoimento": "A frase é da clínica. Sem paciente famoso.",
+        "bastidores": "Esterilização, não a boca de alguém.",
+        "evento": "Orientação em escola ou praça, se for real.",
+        "citação": "Medo também senta na cadeira.",
+        "sazonal": "Campanha de escovação sem brinde constrangedor."
+      }
+    },
+    {
+      "name": "Cuidado",
+      "ideas": {
+        "lançamento": "Especialidade nova quando a equipe existe.",
+        "educativo": "Quando o clareamento não é o assunto.",
+        "institucional": "Como remarcar sem culpa.",
+        "oferta": "Manutenção com preço dito, se a clínica quiser dizer.",
+        "depoimento": "Sem nome de paciente.",
+        "bastidores": "O laboratório, se for da casa.",
+        "evento": "Data só quando estiver marcada.",
+        "citação": "Dente não é vitrine.",
+        "sazonal": "Volta às aulas: orientação, não medo."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Porcelana",
+      "colors": [
+        {
+          "hex": "#1a2330",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#b7a48a",
+          "role": "Destaque",
+          "usage": "Areia clara, quase nenhum ouro."
+        },
+        {
+          "hex": "#e7e1d8",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f8f6f3",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Menta",
+      "colors": [
+        {
+          "hex": "#1c2b2a",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#6e9088",
+          "role": "Destaque",
+          "usage": "Verde muito baixo, de consultório."
+        },
+        {
+          "hex": "#d7e3df",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f5f7f6",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "manrope",
+      "display": "Manrope",
+      "text": "Manrope",
+      "why": "Legível e sóbria. Sem letra de luxo."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Consultório com luz de janela e a cadeira vazia, à espera.",
+      "Equipe no corredor, se autorizada. Nunca a boca do paciente."
+    ],
+    "do": [
+      "Materiais e o lugar.",
+      "Rosto da equipe fora do atendimento."
+    ],
+    "dont": [
+      "Antes e depois.",
+      "Sorriso de banco com dente branco demais.",
+      "Criança assustada como gancho."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Frase curta, margem larga, nome pequeno.",
+      "Nenhum número de pacientes atendidos."
+    ],
+    "dont": [
+      "Não mostrar boca.",
+      "Não prometer prazo de sorriso."
+    ]
+  },
+  "avoid": [
+    "Antes e depois",
+    "Sorriso em 30 dias",
+    "Depoimento de paciente",
+    "A melhor clínica"
+  ],
+  "competitors": [
+    {
+      "name": "Sorridents",
+      "url": "https://www.sorridents.com.br",
+      "why": "Rede odontológica. Confirme se disputa o mesmo paciente."
+    },
+    {
+      "name": "Odontocompany",
+      "url": "https://www.odontocompany.com",
+      "why": "Outra rede de clínicas odontológicas."
+    },
+    {
+      "name": "Dr. Consulta",
+      "url": "https://drconsulta.com",
+      "why": "Também oferece odontologia em parte das unidades."
+    }
+  ]
+}

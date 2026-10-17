@@ -21,7 +21,13 @@
     saveError = "",
     undo = [],
     redo = [],
-    requestedFormat = "post";
+    requestedFormat = "post",
+    flowKind = "content",
+    flowLabel = "Conteúdo",
+    libraryMode = false,
+    swapIndex = null,
+    copyToken = 0,
+    picking = false;
   const uid = () =>
     globalThis.crypto?.randomUUID?.() ||
     "id-" + Date.now() + "-" + Math.random().toString(36).slice(2);
@@ -200,7 +206,7 @@
         db.projects
           .map(
             (q) =>
-              `<button class="brand-chip" data-project="${esc(q.id)}"><div><strong>${esc(q.brief.theme || q.name)}</strong><span>${esc(q.name)} · ${q.posts.length} peças · ${esc(formats[q.format]?.name || "Post")}</span></div></button>`,
+              `<button class="brand-chip" data-project="${esc(q.id)}"><div><strong>${esc(q.brief.theme || q.name)}</strong><span>${esc(q.name)} · ${q.posts.length} peças · ${esc(q.kind === "campaign" ? "Campanha" : q.kind === "deck" ? "Apresentação" : formats[q.format]?.name || "Post")}</span></div></button>`,
           )
           .join("") +
         "</div>";
@@ -211,7 +217,11 @@
             project = db.projects.find((q) => q.id === b.dataset.project);
             const brand = db.brands.find((q) => q.id === project.brandId);
             if (brand) setBrand(brand);
-            view = project.posts.length ? 3 : 1;
+            flowKind = project.kind === "campaign" || project.kind === "deck" ? project.kind : "content";
+            flowLabel = flowKind === "campaign" ? "Campanha" : flowKind === "deck" ? "Apresentação" : "Conteúdo";
+            libraryMode = false;
+            swapIndex = null;
+            view = project.posts && project.posts.length ? (flowKind === "content" ? 3 : 2) : 1;
             renderContent();
           }),
       );
@@ -237,8 +247,12 @@
     project = null;
     undo = [];
     redo = [];
-    requestedFormat = category === "Apresentação" ? "deck" : "post";
-    renderContent(category);
+    libraryMode = false;
+    swapIndex = null;
+    flowKind = category === "Campanha" ? "campaign" : category === "Apresentação" ? "deck" : "content";
+    flowLabel = category === "Campanha" || category === "Apresentação" ? category : "Conteúdo";
+    requestedFormat = flowKind === "deck" ? "deck" : "post";
+    renderContent();
   }
   function button(label, action, primary = false) {
     return `<button type="button" class="${primary ? "next-btn" : "ghost-btn"}" data-cs="${action}">${label}</button>`;
@@ -284,14 +298,106 @@
       },
       approved: null,
       styleApproved: false,
+      kind: flowKind,
       posts: [],
       createdAt: new Date().toISOString(),
     };
     saveProject();
   }
-  function renderContent(category = "Conteúdo") {
-    const steps = ["Sua marca", "Formato", "Conteúdo", "Amostra", "Editor"];
-    app.innerHTML = `<section class="cs-shell"><div class="cs-top"><button type="button" class="back-btn" data-cs="home">← início</button><span class="eyebrow">Brand Studio / ${esc(category)}</span><span class="cs-save-note">Salvamento local</span></div><nav class="cs-progress" aria-label="Etapas de criação">${steps.map((s, i) => `<button type="button" data-view="${i}" ${i > view ? "disabled" : ""} ${i === view ? 'aria-current="step"' : ""}><b>${i + 1}</b>${s}</button>`).join("")}</nav><div id="cs-body"></div><p id="cs-status" role="status" aria-live="polite">${esc(saveError)}</p><p class="cs-footnote">Projetos salvos neste navegador. Os textos partem do Brand Brain e continuam editáveis. As fotos são suas — sem geração de imagem.</p></section>`;
+  function flowSteps() {
+    if (flowKind === "campaign") return ["Sua marca", "Pauta", "Peças", "Editor"];
+    if (flowKind === "deck") return ["Sua marca", "Pauta", "Slides", "Editor"];
+    const steps = ["Sua marca", "Formato", "Pauta", "Biblioteca", "Editor"];
+    if (project && Array.isArray(project.posts) && project.posts.length && project.posts.every((item) => !item.layout) && !libraryMode) steps[3] = "Amostras";
+    return steps;
+  }
+  function editorView() {
+    return flowKind === "content" ? 4 : 3;
+  }
+  function boardView() {
+    return flowKind === "content" ? 3 : 2;
+  }
+  function briefView() {
+    return flowKind === "content" ? 2 : 1;
+  }
+  function brandContext() {
+    return {
+      name: state.name,
+      segment: state.segment,
+      description: state.description,
+      traits: state.traits || [],
+      styles: state.styles || [],
+      avoid: state.avoid || [],
+      brain: state.brain,
+      brief: (project && project.brief) || {},
+      knowledgeVariant: Number(state.knowledgeVariant) || 0,
+    };
+  }
+  function pieceLabel(q) {
+    if (q.layout && window.SmeziTemplates) {
+      const template = SmeziTemplates.get(q.template);
+      return [template ? template.name : q.layout, q.purpose, formats[q.format || project.format]?.name].filter(Boolean).join(" · ");
+    }
+    return models.find((item) => item[0] === q.model)?.[1] || q.model || "Peça";
+  }
+  function copyNote() {
+    return "Texto da base da SMEZI, na voz desta marca. Revise antes de exportar.";
+  }
+  function openEditor(index) {
+    editing = index;
+    undo = [];
+    redo = [];
+    libraryMode = false;
+    view = editorView();
+    renderContent();
+  }
+  function chooseTemplate(templateId, format) {
+    if (picking || !window.SmeziTemplates) return;
+    picking = true;
+    ensureProject();
+    const current = swapIndex != null ? project.posts[swapIndex] : null;
+    const ctx = brandContext();
+    if (current && current.variant) ctx.variant = current.variant;
+    let post = SmeziTemplates.previewPost(templateId, ctx, format);
+    post.id = current ? current.id : uid();
+    post.image = current ? current.image : null;
+    post.variant = current ? current.variant || 0 : 0;
+    if (current) project.posts[swapIndex] = post;
+    else project.posts.push(post);
+    editing = current ? swapIndex : project.posts.length - 1;
+    swapIndex = null;
+    libraryMode = false;
+    picking = false;
+    project.kind = flowKind;
+    view = editorView();
+    saveProject();
+    renderContent();
+    notice(copyNote());
+  }
+  function startSet(plan) {
+    if (!window.SmeziTemplates) {
+      notice("A biblioteca não carregou. Recarregue a página.");
+      return;
+    }
+    const ctx = brandContext();
+    project.posts = plan.map((spec, index) => {
+      const post = SmeziTemplates.previewPost(spec.template, Object.assign({}, ctx, { variant: index }), spec.format, { kicker: spec.kicker });
+      post.id = uid();
+      post.variant = index;
+      return post;
+    });
+    project.kind = flowKind;
+    project.approved = fingerprint();
+    project.styleApproved = false;
+    libraryMode = false;
+    view = boardView();
+    saveProject();
+    renderContent();
+    notice(copyNote());
+  }
+  function renderContent() {
+    const steps = flowSteps();
+    app.innerHTML = `<section class="cs-shell"><div class="cs-top"><button type="button" class="back-btn" data-cs="home">← início</button><span class="eyebrow">Brand Studio / ${esc(flowLabel)}</span><span class="cs-save-note">Salvamento local</span></div><nav class="cs-progress" aria-label="Etapas de criação">${steps.map((s, i) => `<button type="button" data-view="${i}" ${i > view ? "disabled" : ""} ${i === view ? 'aria-current="step"' : ""}><b>${i + 1}</b>${s}</button>`).join("")}</nav><div id="cs-body"></div><p id="cs-status" role="status" aria-live="polite">${esc(saveError)}</p><p class="cs-footnote">Projetos salvos neste navegador. Os textos partem do Brand Brain e continuam editáveis. As fotos são suas.</p></section>`;
     const body = document.getElementById("cs-body");
     if (view === 0) {
       body.innerHTML = `<header class="cs-heading"><span class="eyebrow">O que já sabemos sobre sua marca</span><h1>Uma base para todas as criações.</h1><p>Use uma marca salva ou confirme suas diretrizes antes de continuar.</p></header>${db.brands.length ? `<label class="cs-field">Selecionar marca<select id="cs-brands">${db.brands.map((b) => `<option value="${esc(b.id)}" ${activeId === b.id ? "selected" : ""}>${esc(b.data.name)}</option>`).join("")}</select></label>` : ""}<div class="cs-columns"><div class="cs-box"><h2>${esc(state.name || "Comece pela sua marca")}</h2><p>${esc((state.brain && state.brain.positioning) || state.description || "Cadastre o nome e conte o que sua marca oferece.")}</p><div class="cs-swatches">${SmeziBrain.colorsOf(state).map((c, i) => `<span style="background:${c}" aria-label="${esc((state.brain && state.brain.palette && state.brain.palette[i] && state.brain.palette[i].role) || c)}"></span>`).join("")}</div><p>Fonte: ${esc(fonts[state.font] || "Manrope")}<br>Voz: ${esc((state.brain && state.brain.tone && state.brain.tone.summary) || (state.traits || []).join(", ") || "a definir")}${state.brain && state.brain.keyMessages ? `<br>Mensagens: ${esc(state.brain.keyMessages.join(" · "))}` : ""}</p><p>${SmeziBrain.colorsOf(state).map((c, i) => esc(((state.brain && state.brain.palette && state.brain.palette[i] && state.brain.palette[i].role) || "Cor " + (i + 1)) + " " + c)).join(" · ")}</p><div class="cs-actions">${button("Ver o guia da marca", "guide")}${button("Editar no assistente", "brandwizard")}${button("Criar outra marca", "newbrand")}</div></div><div class="cs-box"><h2>Já tem uma identidade?</h2><p>Confirme nome, fonte e a cor de destaque. As outras cores da paleta permanecem.</p>${field("Nome da marca", "cs-name", state.name)}${field("O que faz e para quem", "cs-description", state.description)}<div class="cs-field-pair"><label class="cs-field">Cor de destaque<input type="color" id="cs-brandcolor" value="${validColor(SmeziBrain.colorsOf(state)[1]).toLowerCase()}"></label><label class="cs-field">Fonte<select id="cs-brandfont">${Object.entries(
@@ -303,15 +409,16 @@
         )
         .join(
           "",
-        )}</select></label></div><label class="cs-check"><input type="checkbox" id="cs-confirmcolor"> Confirmo esta cor e estas diretrizes para criar.</label>${button("Confirmar e escolher formato", "confirmbrand", true)}</div></div>`;
+        )}</select></label></div><label class="cs-check"><input type="checkbox" id="cs-confirmcolor"> Confirmo esta cor e estas diretrizes para criar.</label>${button(flowKind === "content" ? "Confirmar e escolher formato" : "Confirmar e escrever a pauta", "confirmbrand", true)}</div></div>`;
       const select = document.getElementById("cs-brands");
       if (select)
         select.onchange = () => {
           setBrand(db.brands.find((b) => b.id === select.value));
+          project = null;
           renderContent();
         };
     }
-    if (view === 1) {
+    if (view === 1 && flowKind === "content") {
       ensureProject();
       body.innerHTML = `<header class="cs-heading"><span class="eyebrow">${esc(project.name)}</span><h1>O que vamos criar?</h1><p>Escolha a proporção. O conteúdo e o layout serão ajustados para ela.</p></header><div class="cs-formats">${Object.entries(
         formats,
@@ -334,31 +441,58 @@
           }),
       );
     }
-    if (view === 2) {
+    if (view === briefView()) {
       ensureProject();
       const b = project.brief;
-      body.innerHTML = `<header class="cs-heading"><span class="eyebrow">Direção antes da produção</span><h1>O que precisa ser comunicado?</h1><p>Edite a pauta-base e aprove o tom antes das seis primeiras amostras.</p></header><div class="cs-columns"><div class="cs-box">${field("Tema ou assunto principal", "cs-theme", b.theme)}${field("Para quem estamos falando?", "cs-audience", b.audience)}<label class="cs-field">Objetivo<select id="cs-goal">${["Explicar", "Apresentar serviços", "Apresentar produto", "Convidar"].map((g) => `<option ${b.goal === g ? "selected" : ""}>${g}</option>`).join("")}</select></label><label class="cs-field">Mensagem principal<textarea id="cs-message">${esc(b.message)}</textarea></label>${field("Tom de voz", "cs-tone", b.tone)}</div><div class="cs-box"><h2>Escopo desta amostra</h2><ol class="cs-outline"><li>Apresentar o tema e sua relevância.</li><li>Organizar critérios e dúvidas do público.</li><li>Convidar para um próximo passo claro.</li></ol><p>Sem estatísticas, depoimentos, resultados ou promessas inventadas. Textos são pontos de partida para revisão.</p><label class="cs-field">Feedback e observações<textarea id="cs-feedback">${esc(b.feedback || "")}</textarea></label><p class="cs-hint">Registre o feedback e ajuste os campos ao lado antes de aprovar.</p><div class="cs-actions">${button("Salvar rascunho", "savebrief")}${button("Aprovar e criar amostras", "approvebrief", true)}</div></div></div>`;
+      const briefTitle = flowKind === "campaign" ? "Qual é a ideia da campanha?" : flowKind === "deck" ? "Qual é o assunto da apresentação?" : "O que precisa ser comunicado?";
+      const briefLead = flowKind === "campaign" ? "Uma pauta só. As peças saem em post, quadrado e story, cada uma com um modelo." : flowKind === "deck" ? "Uma pauta só. Os slides seguem capa, seção, conteúdo, dados e fecho." : "A pauta vale para os modelos que você escolher na biblioteca.";
+      const outline = flowKind === "deck" ? "<li>Abrir com o assunto.</li><li>Desenvolver uma ideia.</li><li>Listar o que a marca sustenta, sem número inventado.</li><li>Fechar com um convite discreto.</li>" : flowKind === "campaign" ? "<li>Anunciar o assunto.</li><li>Explicar em pontos curtos.</li><li>Mostrar o bastidor, com a sua foto.</li><li>Convidar sem pressa.</li>" : "<li>Escolher um modelo na biblioteca.</li><li>Ajustar a frase no editor.</li><li>Colocar a sua fotografia, se o modelo tiver espaço.</li>";
+      const approveLabel = flowKind === "campaign" ? "Aprovar e montar a campanha" : flowKind === "deck" ? "Aprovar e montar a apresentação" : "Aprovar e abrir a biblioteca";
+      body.innerHTML = `<header class="cs-heading"><span class="eyebrow">Direção antes da produção</span><h1>${briefTitle}</h1><p>${briefLead}</p></header><div class="cs-columns"><div class="cs-box">${field("Tema ou assunto principal", "cs-theme", b.theme)}${field("Para quem estamos falando?", "cs-audience", b.audience)}<label class="cs-field">Objetivo<select id="cs-goal">${["Explicar", "Apresentar serviços", "Apresentar produto", "Convidar"].map((g) => `<option ${b.goal === g ? "selected" : ""}>${g}</option>`).join("")}</select></label><label class="cs-field">Mensagem principal<textarea id="cs-message">${esc(b.message)}</textarea></label>${field("Tom de voz", "cs-tone", b.tone)}</div><div class="cs-box"><h2>Escopo</h2><ol class="cs-outline">${outline}</ol><p>Sem estatísticas, depoimentos de cliente, resultados ou promessas inventadas. Textos são pontos de partida para revisão.</p><label class="cs-field">Feedback e observações<textarea id="cs-feedback">${esc(b.feedback || "")}</textarea></label><p class="cs-hint">Registre o feedback e ajuste os campos ao lado antes de aprovar.</p><div class="cs-actions">${button("Salvar rascunho", "savebrief")}${button(approveLabel, "approvebrief", true)}</div></div></div>`;
     }
-    if (view === 3) {
-      body.innerHTML = `<header class="cs-heading"><span class="eyebrow">${esc(project.name)} / seis amostras</span><h1>Coerência sem repetir tudo.</h1><p>Selecione uma peça para editar. O texto usa o tom e as mensagens do Brand Brain. Cores: ${esc((state.brain && state.brain.palette ? state.brain.palette : SmeziBrain.colorsOf(state).map((hex) => ({ role: "Cor", hex }))).map((c) => (c.role ? c.role + " " : "") + c.hex).join(" · "))}.</p></header><div class="cs-samples">${project.posts.map((q, i) => `<button type="button" class="cs-sample" data-post="${i}" aria-label="Editar peça ${i + 1}: ${esc(q.title)}">${renderSVG(q)}<span>${i + 1}. ${esc(models.find((m) => m[0] === q.model)?.[1] || q.model)}</span></button>`).join("")}</div><div class="cs-actions">${button("Revisar escopo", "backbrief")}${button(project.styleApproved ? "Estilo aprovado ✓" : "Aprovar direção visual", "approvestyle", true)}${button("Baixar projeto editável", "projectjson")}</div><p class="cs-hint">A aprovação visual não publica nada. Confira cada texto antes de exportar.</p>`;
-      body.querySelectorAll("[data-post]").forEach(
-        (b) =>
-          (b.onclick = () => {
-            editing = +b.dataset.post;
-            undo = [];
-            redo = [];
-            view = 4;
-            renderContent();
-          }),
-      );
-    }
-    if (view === 4) {
-      const q = project.posts[editing];
-      body.innerHTML = `<header class="cs-heading"><span class="eyebrow">${esc(project.name)} / peça ${editing + 1}</span><h1>Ajuste sem começar de novo.</h1></header><div class="cs-editor"><div class="cs-canvas" id="cs-canvas">${renderSVG(q)}</div><div class="cs-box"><label class="cs-field">Composição<select id="cs-model">${models.map(([k, n]) => `<option value="${k}" ${k === q.model ? "selected" : ""}>${n}</option>`).join("")}</select></label>${field("Título", "cs-title", q.title)}<label class="cs-field">Texto de apoio<textarea id="cs-copy">${esc(q.copy)}</textarea></label>${field("Próximo passo", "cs-cta", q.cta)}<label class="cs-check"><input id="cs-showbrand" type="checkbox" ${q.showBrand ? "checked" : ""}> Mostrar nome da marca</label><label class="cs-field">Sua imagem (até 2 MB)<input type="file" id="cs-upload" accept="image/png,image/jpeg,image/webp"></label><p class="cs-hint">A imagem fica somente neste navegador. PNG, JPEG ou WebP.</p><div class="cs-actions">${button("Aplicar alterações", "apply", true)}${button("Desfazer", "undo")}${button("Refazer", "redo")}${q.image ? button("Remover imagem", "removeimage") : ""}</div><div class="cs-divider"></div><div class="cs-actions">${button("Baixar PNG", "png")}${button("Baixar SVG", "svg")}${button("Projeto editável", "projectjson")}</div><div class="cs-actions">${button("Voltar às amostras", "samples")}</div></div></div>`;
-      document.getElementById("cs-upload").onchange = onImage;
-    }
+    if (view === boardView()) renderBoard(body);
+    if (view === editorView()) renderEditor(body);
     wireActions();
     if (saveError) notice(saveError);
+  }
+  function renderBoard(body) {
+    ensureProject();
+    const legacyOnly = flowKind === "content" && project.posts.length > 0 && project.posts.every((item) => !item.layout) && !libraryMode;
+    if (flowKind !== "content" && !libraryMode) {
+      body.innerHTML = `<header class="cs-heading"><span class="eyebrow">${esc(project.name)}</span><h1>${flowKind === "deck" ? "Cinco slides, uma narrativa." : "Uma campanha, formatos diferentes."}</h1><p>${flowKind === "deck" ? "Capa, seção, conteúdo, dados e fecho. A contagem é só das mensagens da marca." : "Cada peça usa um modelo diferente. O texto vem do Brand Brain e da pauta."}</p></header><div class="cs-samples">${project.posts.map((q, i) => `<button type="button" class="cs-sample" data-post="${i}" aria-label="Editar ${esc(pieceLabel(q))}">${renderSVG(q)}<span>${esc(pieceLabel(q))}</span></button>`).join("")}</div><div class="cs-actions">${button("Revisar pauta", "backbrief")}${button(project.styleApproved ? "Direção aprovada ✓" : "Aprovar direção visual", "approvestyle", true)}${button("Baixar projeto editável", "projectjson")}</div><p class="cs-hint">A aprovação visual não publica nada. Confira cada texto antes de exportar.</p>`;
+      body.querySelectorAll("[data-post]").forEach((item) => (item.onclick = () => openEditor(+item.dataset.post)));
+      return;
+    }
+    if (legacyOnly) {
+      body.innerHTML = `<header class="cs-heading"><span class="eyebrow">${esc(project.name)}</span><h1>Peças já salvas.</h1><p>Estas composições continuam editáveis. Dá para escolher um modelo novo sem apagar o que já está aqui.</p></header><div class="cs-samples">${project.posts.map((q, i) => `<button type="button" class="cs-sample" data-post="${i}" aria-label="Editar peça ${i + 1}: ${esc(q.title)}">${renderSVG(q)}<span>${i + 1}. ${esc(pieceLabel(q))}</span></button>`).join("")}</div><div class="cs-actions">${button("Revisar pauta", "backbrief")}${button("Escolher um modelo novo", "openlibrary")}${button(project.styleApproved ? "Direção aprovada ✓" : "Aprovar direção visual", "approvestyle", true)}${button("Baixar projeto editável", "projectjson")}</div>`;
+      body.querySelectorAll("[data-post]").forEach((item) => (item.onclick = () => openEditor(+item.dataset.post)));
+      return;
+    }
+    body.innerHTML = `<header class="cs-heading"><span class="eyebrow">${esc(project.name)}</span><h1>Biblioteca de modelos.</h1><p>A régua é da SMEZI: grade limpa, espaço e uma frase. As cores, a fonte e a voz são desta marca.</p></header><div id="lib-root"></div><div class="cs-actions">${button("Revisar pauta", "backbrief")}</div>`;
+    if (window.SmeziLibrary) {
+      const current = swapIndex != null ? project.posts[swapIndex] : null;
+      SmeziLibrary.mount(document.getElementById("lib-root"), {
+        state,
+        project,
+        format: (current && current.format) || project.format,
+        onPick: (templateId, format) => chooseTemplate(templateId, format),
+        onOpen: (index) => openEditor(index),
+      });
+    } else notice("A biblioteca não carregou. Recarregue a página.");
+  }
+  function renderEditor(body) {
+    const q = project && project.posts[editing];
+    if (!q) {
+      view = boardView();
+      renderBoard(body);
+      return;
+    }
+    const backLabel = q.layout ? (flowKind === "deck" ? "Voltar aos slides" : flowKind === "campaign" ? "Voltar às peças" : "Voltar à biblioteca") : "Voltar às amostras";
+    const options = q.layout && window.SmeziTemplates
+      ? SmeziTemplates.forFormat(q.format || project.format).map((item) => `<option value="${item.id}" ${item.id === q.template ? "selected" : ""}>${item.name} · ${item.purposes[0]}</option>`).join("")
+      : models.map(([key, name]) => `<option value="${key}" ${key === q.model ? "selected" : ""}>${name}</option>`).join("");
+    body.innerHTML = `<header class="cs-heading"><span class="eyebrow">${esc(project.name)} / ${esc(pieceLabel(q))}</span><h1>Ajuste sem começar de novo.</h1></header><div class="cs-editor"><div class="cs-canvas" id="cs-canvas">${renderSVG(q)}</div><div class="cs-box"><label class="cs-field">Modelo<select id="cs-model">${options}</select></label>${q.layout ? field("Linha de apoio", "cs-kicker", q.kicker || "") : ""}${field("Título", "cs-title", q.title)}<label class="cs-field">Texto de apoio<textarea id="cs-copy">${esc(q.copy)}</textarea></label>${field("Próximo passo", "cs-cta", q.cta)}<label class="cs-check"><input id="cs-showbrand" type="checkbox" ${q.showBrand ? "checked" : ""}> Mostrar nome da marca</label><label class="cs-field">Sua imagem (até 2 MB)<input type="file" id="cs-upload" accept="image/png,image/jpeg,image/webp"></label><p class="cs-hint">${q.photo ? "A foto entra nesta peça. Sem arquivo, o espaço mostra um lugar de espera." : "Este modelo não reserva área de foto. A imagem fica guardada se você trocar para um modelo com fotografia."} PNG, JPEG ou WebP, só neste navegador.</p><div class="cs-actions">${button("Aplicar alterações", "apply", true)}${button("Desfazer", "undo")}${button("Refazer", "redo")}${q.layout ? button("Outra frase", "rephrase") : ""}${q.layout ? button("Outro modelo", "swap") : ""}${q.image ? button("Remover imagem", "removeimage") : ""}</div><div class="cs-divider"></div><div class="cs-actions">${button("Baixar PNG", "png")}${button("Baixar SVG", "svg")}${button("Projeto editável", "projectjson")}</div><div class="cs-actions">${button(backLabel, "samples")}</div></div></div>`;
+    document.getElementById("cs-upload").onchange = onImage;
   }
   function validColor(c) {
     return /^#[0-9a-f]{6}$/i.test(c) ? c : "#3b82f6";
@@ -447,31 +581,64 @@
     redo = [];
   }
   function applyEdit() {
+    const current = project.posts[editing];
     const t = document.getElementById("cs-title").value.trim();
     const cp = document.getElementById("cs-copy").value.trim();
     const ca = document.getElementById("cs-cta").value.trim();
+    const kickerEl = document.getElementById("cs-kicker");
+    const kicker = kickerEl ? kickerEl.value.trim() : current.kicker;
     if (!t) {
       notice("Escreva um título antes de aplicar.");
       return false;
     }
-    if (t.length > 130 || cp.length > 400 || ca.length > 90) {
-      notice(
-        "Para manter a legibilidade, use até 130 caracteres no título, 400 no apoio e 90 no próximo passo.",
-      );
+    const chosen = document.getElementById("cs-model").value;
+    const template = current.layout && window.SmeziTemplates ? SmeziTemplates.get(chosen) : null;
+    const limits = template ? template.limits : current.limits || { title: 130, body: 400, cta: 90, kicker: 40 };
+    let title = t;
+    let copy = cp;
+    let cta = ca;
+    let line = kicker || "";
+    let fitted = false;
+    if (template) {
+      const nextTitle = SmeziTemplates.fit(title, limits.title);
+      const nextCopy = template.id === "lista" || template.id === "dados" ? copy.split(/\n/).map((item) => SmeziTemplates.fit(item, limits.line || 52)).filter(Boolean).slice(0, 3).join("\n") : SmeziTemplates.fit(copy, limits.body);
+      const nextCta = SmeziTemplates.safeCta(cta, limits.cta) || ( /saiba mais/i.test(cta) ? current.cta : SmeziTemplates.fit(cta, limits.cta) );
+      const nextLine = SmeziTemplates.fit(line, limits.kicker);
+      fitted = nextTitle !== title || nextCopy !== copy || nextCta !== cta || nextLine !== line;
+      title = nextTitle;
+      copy = nextCopy;
+      cta = nextCta;
+      line = nextLine;
+      if (!title) {
+        notice("O título ficou curto demais para este modelo. Escreva uma frase que caiba.");
+        return false;
+      }
+    } else if (t.length > 130 || cp.length > 400 || ca.length > 90) {
+      notice("Para manter a legibilidade, use até 130 caracteres no título, 400 no apoio e 90 no próximo passo.");
       return false;
     }
     remember();
-    Object.assign(project.posts[editing], {
-      title: t,
-      copy: cp,
-      cta: ca,
-      model: document.getElementById("cs-model").value,
+    const next = {
+      title,
+      copy,
+      cta,
       showBrand: document.getElementById("cs-showbrand").checked,
-    });
+      copySource: "user",
+    };
+    if (kickerEl || template) next.kicker = line;
+    if (template) {
+      next.template = template.id;
+      next.layout = template.layout;
+      next.purpose = template.purposes[0];
+      next.photo = !!template.photo;
+      next.limits = template.limits;
+      next.format = current.format || project.format;
+    } else next.model = chosen;
+    Object.assign(current, next);
     project.styleApproved = false;
     saveProject();
     renderContent();
-    notice("Alteração aplicada somente a esta peça.");
+    notice(fitted ? "Texto ajustado para caber neste modelo." : "Alteração aplicada somente a esta peça.");
     return true;
   }
   function wireActions() {
@@ -483,9 +650,9 @@
         (b.onclick = () => {
           const n = +b.dataset.view;
           if (n <= view) {
-            if (view === 2) readBrief();
+            if (document.getElementById("cs-theme")) readBrief();
             view = n;
-            if (n === 4 && !project?.posts.length) view = 2;
+            if ((n === editorView() || (flowKind !== "content" && n === boardView())) && !project?.posts?.length) view = briefView();
             renderContent();
           }
         }),
@@ -493,7 +660,7 @@
   }
   async function action(a) {
     if (a === "home") {
-      if (view === 2) readBrief();
+      if (document.getElementById("cs-theme")) readBrief();
       showHome();
       return;
     }
@@ -565,8 +732,35 @@
         );
         return;
       }
-      makePosts();
-      view = 3;
+      if (!state.brain) {
+        state.brain = SmeziBrain.buildFallbackBrain(state);
+        state.brain.inputStamp = SmeziBrain.stamp(state);
+        save();
+      }
+      if (flowKind === "campaign") {
+        startSet(SmeziTemplates.planCampaign(brandContext()));
+        return;
+      }
+      if (flowKind === "deck") {
+        startSet(SmeziTemplates.planDeck());
+        return;
+      }
+      libraryMode = false;
+      view = boardView();
+      saveProject();
+      renderContent();
+      return;
+    }
+    if (a === "openlibrary") {
+      libraryMode = true;
+      view = boardView();
+      renderContent();
+      return;
+    }
+    if (a === "swap") {
+      swapIndex = editing;
+      libraryMode = true;
+      view = boardView();
       renderContent();
       return;
     }
@@ -582,12 +776,34 @@
       return;
     }
     if (a === "samples") {
-      view = 3;
+      libraryMode = false;
+      swapIndex = null;
+      view = boardView();
       renderContent();
       return;
     }
     if (a === "apply") {
       applyEdit();
+      return;
+    }
+    if (a === "rephrase") {
+      const current = project.posts[editing];
+      if (!current || !current.layout || !window.SmeziTemplates) return;
+      remember();
+      const variant = (Number(current.variant) || 0) + 1;
+      const ctx = brandContext();
+      ctx.variant = variant;
+      const next = SmeziTemplates.previewPost(current.template, ctx, current.format || project.format);
+      project.posts[editing] = Object.assign(next, {
+        id: current.id,
+        image: current.image,
+        format: current.format,
+        showBrand: current.showBrand,
+        variant,
+      });
+      saveProject();
+      renderContent();
+      notice("Outra frase da base, no mesmo modelo.");
       return;
     }
     if (a === "undo" && undo.length) {
@@ -693,7 +909,9 @@
         renderContent();
         notice(
           saveError ||
-            "Imagem aplicada. Use um modelo com área de imagem para exibi-la.",
+            (project.posts[editing].photo
+              ? "Imagem aplicada nesta peça."
+              : "Imagem guardada. Ela aparece nos modelos com área de fotografia."),
         );
       };
       im.onerror = () => notice("Arquivo de imagem inválido.");
@@ -754,7 +972,21 @@
     };
   }
   function renderSVG(q, embedded = "") {
-    const f = formats[project.format] || formats.post,
+    if (q && q.layout && window.SmeziRender) {
+      const frame = formats[q.format || project.format] || formats.post;
+      return SmeziRender.render(q, {
+        w: frame.w,
+        h: frame.h,
+        fontName: fonts[project.font] || "Arial",
+        palette: project.palette,
+        name: project.name,
+        embedded: embedded || "",
+        escapeHTML: esc,
+        photoNote: (state.brain && state.brain.photography && state.brain.photography.direction) || "",
+        clip: q.id,
+      });
+    }
+    const f = formats[q.format || project.format] || formats.post,
       w = f.w,
       h = f.h,
       m = Math.round(w * 0.075),
@@ -997,7 +1229,7 @@
         im.onerror = () => rej(new Error("Falha ao renderizar a imagem."));
         im.src = url;
       });
-      const f = formats[project.format];
+      const f = formats[q.format || project.format] || formats.post;
       const canvas = document.createElement("canvas");
       canvas.width = f.w;
       canvas.height = f.h;
@@ -1020,13 +1252,16 @@
         .filter((n) => n !== "Arial")
         .map((n) => document.fonts.load(`400 36px "${n}"`).catch(() => [])),
     ).then(() => {
-      if (view === 3 && document.querySelector(".cs-samples")) {
+      if (document.querySelector(".cs-samples")) {
         document.querySelectorAll(".cs-sample").forEach((e, i) => {
+          if (e.classList.contains("lib-card")) return;
           const old = e.querySelector("svg");
           if (old && project?.posts[i])
             old.outerHTML = renderSVG(project.posts[i]);
         });
-      } else if (view === 4 && document.getElementById("cs-canvas"))
+      }
+      if (window.SmeziLibrary) SmeziLibrary.refresh();
+      if (view === editorView() && document.getElementById("cs-canvas") && project?.posts[editing])
         document.getElementById("cs-canvas").innerHTML = renderSVG(
           project.posts[editing],
         );
@@ -1035,7 +1270,7 @@
   document.querySelector("#homeBtn").onclick = showHome;
   window.addEventListener("keydown", (e) => {
     if (
-      view !== 4 ||
+      view !== editorView() ||
       !document.getElementById("cs-canvas") ||
       /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)
     )
@@ -1045,5 +1280,6 @@
       action(e.shiftKey ? "redo" : "undo");
     }
   });
-  showHome();
+  const boot = window.SmeziKnowledge && SmeziKnowledge.ready ? SmeziKnowledge.ready : Promise.resolve();
+  boot.then(() => showHome());
 })();

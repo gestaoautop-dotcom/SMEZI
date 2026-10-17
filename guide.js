@@ -7,12 +7,9 @@
 
   function sourceLine(brain) {
     if (!brain) return "";
-    if (brain.source === "llm") {
-      return "Entendimento escrito com " + (brain.model || "o modelo") + ". Qualquer campo pode ser editado.";
-    }
-    if (brain.reason === "llm_error") return "O modelo não respondeu. Organizei um entendimento local com as suas respostas.";
-    if (brain.reason === "offline") return "Sem conexão com o servidor. Organizei um entendimento local com as suas respostas.";
-    return "Entendimento organizado neste navegador, a partir do que você respondeu. Um modelo entra quando a chave de IA está configurada.";
+    if (brain.source === "llm") return "Este texto foi salvo antes. Atualizar o entendimento reescreve a partir da base.";
+    const niche = brain.nicheName ? " · " + brain.nicheName : "";
+    return "Base da SMEZI" + niche + ". Dá para editar qualquer campo.";
   }
 
   function lines(value) {
@@ -52,6 +49,68 @@
       .join("")}<li class="${site ? "ok" : ""}">${site ? "✓" : "○"} Site ${site ? "" : "(se existir)"}</li></ul><p class="guide-quiet">${current.done} de ${current.total} campos. O anel não é uma nota.</p></section>`;
   }
 
+  function suggestBlocks(brain) {
+    const palettes = Array.isArray(brain.paletteSuggestions) ? brain.paletteSuggestions : [];
+    const seasons = Array.isArray(brain.seasonal) ? brain.seasonal : [];
+    const avoid = Array.isArray(brain.avoid) ? brain.avoid : [];
+    const type = brain.typeSuggestion;
+    let html = "";
+    if (palettes.length) {
+      html += `<section class="guide-card guide-wide"><h2>Paletas da base</h2><p class="guide-quiet">Sugestão para este ofício. A paleta da marca só muda se você aplicar.</p><div class="guide-suggest">${palettes
+        .map((palette, index) => {
+          const chips = (palette.colors || []).map((color) => `<i style="background:${esc(color.hex)}" title="${esc(color.role || color.hex)}"></i>`).join("");
+          return `<article><strong>${esc(palette.name || "Paleta")}</strong><span class="guide-chips">${chips}</span><button type="button" class="text-btn" data-apply-palette="${index}">usar esta paleta</button></article>`;
+        })
+        .join("")}</div></section>`;
+    }
+    if (type && type.font) {
+      html += `<section class="guide-card"><h2>Par sugerido</h2><p class="guide-type">${esc(type.display || type.font)}</p><p class="guide-quiet">Texto em ${esc(type.text || "Manrope")}. ${esc(type.why || "")}</p><button type="button" class="text-btn" id="guideFont">usar esta fonte</button></section>`;
+    }
+    if (seasons.length) {
+      html += `<section class="guide-card"><h2>Datas deste ofício</h2><ul class="guide-season">${seasons
+        .map((item) => `<li><strong>${esc(item.name)}</strong> · ${esc(item.when || "")}<span>${esc(item.line || "")}</span></li>`)
+        .join("")}</ul></section>`;
+    }
+    if (avoid.length) {
+      html += `<section class="guide-card"><h2>O que evitar</h2><ul class="guide-checks">${avoid.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></section>`;
+    }
+    return html;
+  }
+
+  function applySuggestedPalette(index) {
+    const suggestion = state.brain && state.brain.paletteSuggestions && state.brain.paletteSuggestions[index];
+    if (!suggestion || !Array.isArray(suggestion.colors) || suggestion.colors.length < 4) return;
+    const colors = suggestion.colors.slice(0, 4).map((color) => String(color.hex || "").toLowerCase());
+    if (!colors.every((hex) => /^#[0-9a-f]{6}$/.test(hex))) return;
+    state.palette = "custom";
+    state.customPalette = colors;
+    palettes.custom = colors;
+    state.touchedPalette = true;
+    state.brain.palette = suggestion.colors.slice(0, 4).map((color, colorIndex) => ({
+      hex: colors[colorIndex],
+      role: color.role || (state.brain.palette[colorIndex] && state.brain.palette[colorIndex].role) || "Cor",
+      usage: color.usage || (state.brain.palette[colorIndex] && state.brain.palette[colorIndex].usage) || "",
+    }));
+    state.brain.editedAt = new Date().toISOString();
+    save();
+    paint();
+  }
+
+  function applySuggestedFont() {
+    const type = state.brain && state.brain.typeSuggestion;
+    const allowed = ["manrope", "playfair", "dm", "sora"];
+    if (!type || !allowed.includes(type.font)) return;
+    state.font = type.font;
+    state.touchedFont = true;
+    const pair = type.font === "playfair" ? { display: "Playfair Display", text: "Manrope" } : { display: SmeziBrain.FONT_LABEL[type.font], text: SmeziBrain.FONT_LABEL[type.font] };
+    if (!state.brain.typography) state.brain.typography = { hierarchy: [] };
+    state.brain.typography.display = pair.display;
+    state.brain.typography.text = pair.text;
+    state.brain.editedAt = new Date().toISOString();
+    save();
+    paint();
+  }
+
   function paintLoading() {
     app.innerHTML = `<section class="guide-shell"><div class="cs-top"><button type="button" class="back-btn" id="guideHome">← início</button><span class="eyebrow">Brand Guide</span></div><header class="guide-hero"><div><span class="eyebrow">Brand Brain</span><h1>Organizando o que você contou.</h1><p class="guide-lead">Posicionamento, voz, cores e regras de composição. Leva só um instante.</p></div></header><p class="guide-status" role="status">Lendo nome, negócio, referências, personalidade e direção visual…</p></section>`;
     document.getElementById("guideHome").onclick = showHome;
@@ -62,12 +121,12 @@
     const current = SmeziBrain.completeness(state);
     const stale = brain.inputStamp && brain.inputStamp !== SmeziBrain.stamp(state);
     const palette = brain.palette || [];
-    app.innerHTML = `<section class="guide-shell"><div class="cs-top"><button type="button" class="back-btn" id="guideHome">← início</button><span class="eyebrow">Brand Guide</span><span class="cs-save-note" id="guideSave">${brain.editedAt ? "edição salva neste navegador" : "salvo neste navegador"}</span></div><header class="guide-hero"><div><span class="eyebrow">Entendimento da marca</span><input class="guide-name" data-state="name" value="${esc(state.name || "")}" aria-label="Nome da marca"><p class="guide-kicker">${esc((brain.logo && brain.logo.label) || "")}</p></div><div class="guide-meter"><div class="brain-ring lg" style="background:conic-gradient(var(--lime) ${current.percent}%, #ddd 0)"><span>${current.percent}</span></div><p>${current.done} de ${current.total} campos respondidos.</p></div></header><p class="guide-status" id="guideSource" role="status">${esc(sourceLine(brain))}${stale ? " As respostas do assistente mudaram desde este texto." : ""}</p><div class="guide-actions"><button type="button" class="next-btn" id="guideContent">criar conteúdo</button><button type="button" class="ghost-btn" id="guideRegen">${replaceArmed ? "substituir minhas edições" : "atualizar entendimento"}</button><button type="button" class="ghost-btn" id="guideWizard">ajustar no assistente</button></div><div class="guide-grid"><section class="guide-card guide-wide">${logoMark(brain)}<h2>Logo e inicial</h2>${field("Como usar", "logo.usage", brain.logo && brain.logo.usage, 3)}${lineField("Não fazer", "logo.dont", brain.logo && brain.logo.dont)}</section><section class="guide-card guide-wide"><h2>Paleta e o papel de cada cor</h2><div class="guide-palette">${palette
+    app.innerHTML = `<section class="guide-shell"><div class="cs-top"><button type="button" class="back-btn" id="guideHome">← início</button><span class="eyebrow">Brand Guide</span><span class="cs-save-note" id="guideSave">${brain.editedAt ? "edição salva neste navegador" : "salvo neste navegador"}</span></div><header class="guide-hero"><div><span class="eyebrow">Entendimento da marca</span><input class="guide-name" data-state="name" value="${esc(state.name || "")}" aria-label="Nome da marca"><p class="guide-kicker">${esc((brain.logo && brain.logo.label) || "")}</p></div><div class="guide-meter"><div class="brain-ring lg" style="background:conic-gradient(var(--lime) ${current.percent}%, #ddd 0)"><span>${current.percent}</span></div><p>${current.done} de ${current.total} campos respondidos.</p></div></header><p class="guide-status" id="guideSource" role="status">${esc(sourceLine(brain))}${stale ? " As respostas mudaram desde este texto." : ""}</p><div class="guide-actions"><button type="button" class="next-btn" id="guideContent">criar conteúdo</button><button type="button" class="ghost-btn" id="guideRegen">${replaceArmed ? "substituir minhas edições" : "atualizar entendimento"}</button><button type="button" class="ghost-btn" id="guideMore">mostrar outras</button><button type="button" class="ghost-btn" id="guideWizard">ajustar no assistente</button></div><div class="guide-grid"><section class="guide-card guide-wide">${logoMark(brain)}<h2>Logo e inicial</h2>${field("Como usar", "logo.usage", brain.logo && brain.logo.usage, 3)}${lineField("Não fazer", "logo.dont", brain.logo && brain.logo.dont)}</section><section class="guide-card guide-wide"><h2>Paleta e o papel de cada cor</h2><div class="guide-palette">${palette
       .map(
         (color, index) =>
           `<article class="guide-swatch"><input type="color" data-color-index="${index}" value="${esc(color.hex)}" aria-label="Cor ${index + 1}"><code>${esc(color.hex)}</code><label class="guide-field"><span>Papel</span><input data-path="palette.${index}.role" value="${esc(color.role || "")}"></label><label class="guide-field"><span>Onde entra</span><textarea data-path="palette.${index}.usage" rows="3">${esc(color.usage || "")}</textarea></label></article>`,
       )
-      .join("")}</div></section><section class="guide-card"><h2>Tipografia</h2><p class="guide-type" style="font-family:${esc(brain.typography.display)}, serif">${esc(brain.typography.display)}</p><p class="guide-quiet">Texto em ${esc(brain.typography.text)}.</p>${lineField("Hierarquia", "typography.hierarchy", brain.typography && brain.typography.hierarchy)}</section><section class="guide-card"><h2>Voz</h2>${field("Como fala", "tone.summary", brain.tone && brain.tone.summary, 3)}<div class="guide-split">${lineField("Fala assim", "tone.do", brain.tone && brain.tone.do)}${lineField("Não fala assim", "tone.dont", brain.tone && brain.tone.dont)}</div><label class="guide-field"><span>Chamada discreta</span><input data-path="cta" maxlength="42" value="${esc(brain.cta || "")}"></label></section><section class="guide-card"><h2>Posicionamento e público</h2>${field("Posicionamento", "positioning", brain.positioning, 4)}${field("Público", "audience", brain.audience, 3)}${lineField("Mensagens-chave", "keyMessages", brain.keyMessages)}</section><section class="guide-card"><h2>Fotografia</h2>${field("Direção", "photography.direction", brain.photography && brain.photography.direction, 4)}<div class="guide-split">${lineField("Buscar", "photography.do", brain.photography && brain.photography.do)}${lineField("Evitar", "photography.dont", brain.photography && brain.photography.dont)}</div></section><section class="guide-card"><h2>Composição</h2><div class="guide-split">${lineField("Fazer", "composition.do", brain.composition && brain.composition.do)}${lineField("Não fazer", "composition.dont", brain.composition && brain.composition.dont)}</div></section>${checklist()}<section class="guide-card guide-wide"><h2>De onde veio este texto</h2><p class="guide-reading">${esc(brain.reading || "")}</p></section></div></section>`;
+      .join("")}</div></section><section class="guide-card"><h2>Tipografia</h2><p class="guide-type" style="font-family:${esc(brain.typography.display)}, serif">${esc(brain.typography.display)}</p><p class="guide-quiet">Texto em ${esc(brain.typography.text)}.</p>${lineField("Hierarquia", "typography.hierarchy", brain.typography && brain.typography.hierarchy)}</section><section class="guide-card"><h2>Voz</h2>${field("Como fala", "tone.summary", brain.tone && brain.tone.summary, 3)}<div class="guide-split">${lineField("Fala assim", "tone.do", brain.tone && brain.tone.do)}${lineField("Não fala assim", "tone.dont", brain.tone && brain.tone.dont)}</div><label class="guide-field"><span>Chamada discreta</span><input data-path="cta" maxlength="42" value="${esc(brain.cta || "")}"></label></section><section class="guide-card"><h2>Posicionamento e público</h2>${field("Posicionamento", "positioning", brain.positioning, 4)}${field("Público", "audience", brain.audience, 3)}${lineField("Mensagens-chave", "keyMessages", brain.keyMessages)}</section><section class="guide-card"><h2>Fotografia</h2>${field("Direção", "photography.direction", brain.photography && brain.photography.direction, 4)}<div class="guide-split">${lineField("Buscar", "photography.do", brain.photography && brain.photography.do)}${lineField("Evitar", "photography.dont", brain.photography && brain.photography.dont)}</div></section><section class="guide-card"><h2>Composição</h2><div class="guide-split">${lineField("Fazer", "composition.do", brain.composition && brain.composition.do)}${lineField("Não fazer", "composition.dont", brain.composition && brain.composition.dont)}</div></section>${suggestBlocks(brain)}${checklist()}<section class="guide-card guide-wide"><h2>De onde veio este texto</h2><p class="guide-reading">${esc(brain.reading || "")}</p></section></div></section>`;
     bind();
   }
 
@@ -140,8 +199,23 @@
         return;
       }
       replaceArmed = false;
-      generate(true);
+      generate();
     };
+    document.getElementById("guideMore").onclick = () => {
+      if (state.brain && state.brain.editedAt && !replaceArmed) {
+        replaceArmed = true;
+        paint();
+        return;
+      }
+      replaceArmed = false;
+      state.knowledgeVariant = (Number(state.knowledgeVariant) || 0) + 1;
+      generate();
+    };
+    document.querySelectorAll("[data-apply-palette]").forEach((button) => {
+      button.onclick = () => applySuggestedPalette(+button.dataset.applyPalette);
+    });
+    const fontButton = document.getElementById("guideFont");
+    if (fontButton) fontButton.onclick = applySuggestedFont;
     document.querySelectorAll("[data-path],[data-state],[data-color-index]").forEach((control) => {
       control.addEventListener("input", () => {
         writeControl(control);
@@ -150,22 +224,8 @@
     });
   }
 
-  async function generate() {
-    paintLoading();
-    let brain = SmeziBrain.buildFallbackBrain(state);
-    let reason = "offline";
-    try {
-      const data = await SmeziBrain.fetchBrain("synthesize", state);
-      if (data && data.source === "llm" && data.result) {
-        brain = SmeziBrain.sanitizeBrain(data.result, state, data.model);
-      } else {
-        reason = (data && data.reason) || "no_key";
-        brain = SmeziBrain.buildFallbackBrain(state);
-        brain.reason = reason;
-      }
-    } catch {
-      brain.reason = "offline";
-    }
+  function generate() {
+    const brain = SmeziBrain.buildFallbackBrain(state);
     brain.inputStamp = SmeziBrain.stamp(state);
     brain.editedAt = null;
     state.brain = brain;

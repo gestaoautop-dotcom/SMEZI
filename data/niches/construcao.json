@@ -1,0 +1,217 @@
+{
+  "id": "construcao",
+  "name": "Construção",
+  "mood": "sober",
+  "aliases": [
+    "construcao",
+    "construtora",
+    "empreiteira",
+    "obra",
+    "engenharia civil"
+  ],
+  "audiences": [
+    "Quem vai construir e quer prazo, não maquete eterna.",
+    "Quem compara construtora pelo canteiro, não pelo anúncio."
+  ],
+  "positioning": [
+    "Obra se mostra no canteiro e no que foi entregue.",
+    "Prazo e escopo na mesma frase."
+  ],
+  "tones": [
+    {
+      "id": "canteiro",
+      "when": [
+        "técnica",
+        "forte",
+        "acessível"
+      ],
+      "summary": "Direta. Canteiro não combina com adjetivo.",
+      "do": [
+        "A etapa desta semana é esta.",
+        "Atraso se comunica. Não se esconde."
+      ],
+      "dont": [
+        "Realize seu sonho.",
+        "Empreendimento único."
+      ]
+    },
+    {
+      "id": "sobria",
+      "when": [
+        "premium",
+        "sofisticada",
+        "minimalista"
+      ],
+      "summary": "Pouca palavra. Foto de obra.",
+      "do": [
+        "Entrega com o que está no memorial.",
+        "Visita ao decorado só se ele existir."
+      ],
+      "dont": [
+        "Lifestyle de lançamento.",
+        "Valorização garantida."
+      ]
+    }
+  ],
+  "messages": [
+    "Canteiro visível.",
+    "Prazo dito, atraso dito.",
+    "Memorial é documento, não poema.",
+    "Maquete não substitui a obra."
+  ],
+  "headlines": {
+    "short": [
+      "No canteiro",
+      "Esta etapa",
+      "Entrega",
+      "O memorial"
+    ],
+    "medium": [
+      "A obra desta semana",
+      "Prazo na mesma frase"
+    ]
+  },
+  "ctas": [
+    "Falar com a obra",
+    "Ver o empreendimento",
+    "Agendar visita"
+  ],
+  "pillars": [
+    {
+      "name": "Canteiro",
+      "ideas": {
+        "lançamento": "Etapa nova com foto do que está de pé.",
+        "educativo": "O que o memorial cobre.",
+        "institucional": "Quem constrói e onde.",
+        "oferta": "Condição escrita. Sem escassez falsa.",
+        "depoimento": "Sem morador inventado.",
+        "bastidores": "Capacete, lama, estrutura.",
+        "evento": "Visita ao decorado com hora.",
+        "citação": "Obra boa se visita.",
+        "sazonal": "Chuva no cronograma, sem desculpa poética."
+      }
+    },
+    {
+      "name": "Entrega",
+      "ideas": {
+        "lançamento": "Chaves, quando forem reais.",
+        "educativo": "Como ler uma planta de apartamento.",
+        "institucional": "Assistência depois da entrega, se existir.",
+        "oferta": "Sem 'últimas unidades' permanente.",
+        "depoimento": "A voz é da construtora.",
+        "bastidores": "Acabamento em detalhe.",
+        "evento": "Entrega de torre, se estiver acontecendo.",
+        "citação": "A maquete acaba quando a parede sobe.",
+        "sazonal": "Não usar data comercial para empurrar contrato."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Concreto",
+      "colors": [
+        {
+          "hex": "#1c1e20",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#c46a2b",
+          "role": "Destaque",
+          "usage": "Laranja de obra, num detalhe."
+        },
+        {
+          "hex": "#d9d5ce",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f4f2ee",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Aço",
+      "colors": [
+        {
+          "hex": "#1a2430",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8aa0b2",
+          "role": "Destaque",
+          "usage": "Azul de aço, baixo."
+        },
+        {
+          "hex": "#e3e7eb",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f5f7f8",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "sora",
+      "display": "Sora",
+      "text": "Manrope",
+      "why": "Firme, sem letra de anúncio de lançamento."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Canteiro de verdade, com luz do dia.",
+      "Detalhe de acabamento quando a obra permitir."
+    ],
+    "do": [
+      "Estrutura, gente de obra com EPI.",
+      "A rua em volta."
+    ],
+    "dont": [
+      "Família feliz na maquete.",
+      "Drone genérico de todas as obras.",
+      "Antes e depois milagroso."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Uma etapa por peça.",
+      "Texto curto ao lado da foto."
+    ],
+    "dont": [
+      "Não esconder o entorno.",
+      "Não usar selo de valorização."
+    ]
+  },
+  "avoid": [
+    "Sonho da casa própria",
+    "Últimas unidades eternas",
+    "Valorização garantida",
+    "Família na maquete"
+  ],
+  "competitors": [
+    {
+      "name": "MRV",
+      "url": "https://www.mrv.com.br",
+      "why": "Construtora de grande porte. Confirme o mesmo mercado."
+    },
+    {
+      "name": "Tenda",
+      "url": "https://www.tenda.com",
+      "why": "Outra construtora nacional."
+    },
+    {
+      "name": "Cyrela",
+      "url": "https://www.cyrela.com.br",
+      "why": "Outra faixa de produto. Veja se disputa o mesmo cliente."
+    }
+  ]
+}
