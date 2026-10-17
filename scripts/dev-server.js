@@ -1,8 +1,7 @@
-/* Local static server plus the Brand Brain route. Vercel serves the same files in production. */
+/* Local static server. Vercel serves the same files in production. */
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
-const handler = require("../api/brand-brain");
 
 const root = path.join(__dirname, "..");
 const types = {
@@ -29,34 +28,6 @@ function sendFile(res, file) {
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, "http://localhost");
-  if (url.pathname === "/api/brand-brain") {
-    const chunks = [];
-    req.on("data", (chunk) => chunks.push(chunk));
-    req.on("end", () => {
-      const raw = Buffer.concat(chunks).toString("utf8");
-      try {
-        req.body = raw ? JSON.parse(raw) : {};
-      } catch {
-        req.body = {};
-      }
-      res.status = (code) => {
-        res.statusCode = code;
-        return res;
-      };
-      res.json = (payload) => {
-        if (!res.getHeader("Content-Type")) res.setHeader("Content-Type", "application/json; charset=utf-8");
-        res.end(JSON.stringify(payload));
-      };
-      Promise.resolve(handler(req, res)).catch((error) => {
-        console.error(error);
-        if (!res.writableEnded) {
-          res.statusCode = 500;
-          res.end('{"error":"falha"}');
-        }
-      });
-    });
-    return;
-  }
   const requested = url.pathname === "/" ? "/index.html" : decodeURIComponent(url.pathname);
   const file = path.normalize(path.join(root, requested));
   if (!file.startsWith(root)) {

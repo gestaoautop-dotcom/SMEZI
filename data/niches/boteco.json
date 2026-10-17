@@ -1,0 +1,215 @@
+{
+  "id": "boteco",
+  "name": "Boteco e bar",
+  "mood": "warm",
+  "aliases": [
+    "boteco",
+    "choperia",
+    "bar",
+    "petiscaria",
+    "botequim"
+  ],
+  "audiences": [
+    "Quem chega depois do trabalho e fica pelo segundo copo.",
+    "Quem marca o bar pelo nome, não pelo conceito."
+  ],
+  "positioning": [
+    "Balcão alto, frase curta, petisco que sai quente.",
+    "O bar não precisa de manifesto. Precisa de chope gelado e gente."
+  ],
+  "tones": [
+    {
+      "id": "balcao",
+      "when": [
+        "ousada",
+        "humana",
+        "criativa",
+        "acessível"
+      ],
+      "summary": "Fala como quem já conhece o cliente de vista.",
+      "do": [
+        "O chope está no ponto.",
+        "Petisco sai quando sai. Vale a pena."
+      ],
+      "dont": [
+        "Experiência etílica premium.",
+        "O point mais descolado da cidade."
+      ]
+    },
+    {
+      "id": "seca",
+      "when": [
+        "minimal",
+        "técnica"
+      ],
+      "summary": "Cardápio curto. Sem gíria forçada.",
+      "do": [
+        "Três petiscos. O resto é conversa.",
+        "Música no volume em que ainda se fala."
+      ],
+      "dont": [
+        "Lifestyle noturno.",
+        "Drinks autorais de outro planeta."
+      ]
+    }
+  ],
+  "messages": [
+    "Chope gelado, petisco quente.",
+    "O balcão é o lugar.",
+    "A casa tem nome e horário.",
+    "Sem fila de conceito."
+  ],
+  "headlines": {
+    "short": [
+      "Chope no ponto",
+      "Balcão livre",
+      "Petisco quente",
+      "Mais uma?"
+    ],
+    "medium": [
+      "O bar de sempre",
+      "Depois do trabalho"
+    ]
+  },
+  "ctas": [
+    "Aparecer hoje",
+    "Ver o petisco",
+    "Chamar o bar"
+  ],
+  "pillars": [
+    {
+      "name": "Balcão",
+      "ideas": {
+        "lançamento": "Petisco novo quando a cozinha acerta.",
+        "educativo": "Por que este chope pede este copo.",
+        "institucional": "Quem está atrás do balcão.",
+        "oferta": "Happy hour só se o preço for o que está escrito.",
+        "depoimento": "A frase é do bar, não de um cliente famoso.",
+        "bastidores": "O gelo, a torneira, a panela.",
+        "evento": "Noite de jogo ou de música, com hora.",
+        "citação": "Bar bom não explica a piada.",
+        "sazonal": "Data festiva com o que a casa já sabe fazer."
+      }
+    },
+    {
+      "name": "Sala",
+      "ideas": {
+        "lançamento": "Copo novo não vira campanha.",
+        "educativo": "Como pedir sem cardápio de doze páginas.",
+        "institucional": "Endereço, porta e horário.",
+        "oferta": "Porção para dividir, tamanho real.",
+        "depoimento": "Quem tem mesa cativa já sabe.",
+        "bastidores": "A luz baixa de propósito.",
+        "evento": "Mesa reservada quando a noite pede.",
+        "citação": "Fica mais um, se quiser.",
+        "sazonal": "Carnaval ou réveillon só se o bar abrir."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Chope",
+      "colors": [
+        {
+          "hex": "#1b1714",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#c45c26",
+          "role": "Destaque",
+          "usage": "Laranja de casca de laranja, num traço."
+        },
+        {
+          "hex": "#e6c98a",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f4efe6",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Noite",
+      "colors": [
+        {
+          "hex": "#14181c",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#d4a24c",
+          "role": "Destaque",
+          "usage": "Dourado de luz baixa."
+        },
+        {
+          "hex": "#8d9aa3",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f3efe8",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "sora",
+      "display": "Sora",
+      "text": "Manrope",
+      "why": "Letra contemporânea, sem cara de cardápio antigo demais."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Balcão, copo e a luz da casa. Gente se houver, de verdade.",
+      "Petisco na tábua, com a mão de quem serviu."
+    ],
+    "do": [
+      "Vidro embaçado, madeira, metal.",
+      "Noite com a cor que o bar tem."
+    ],
+    "dont": [
+      "Balada com fumaça colorida.",
+      "Modelo brindando para a câmera."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Uma frase no tamanho da fala.",
+      "O copo pode ser grande. O texto, não."
+    ],
+    "dont": [
+      "Não lotar a peça de selo de chope premiado.",
+      "Não escrever em caixa alta como tabuleta de liquidação."
+    ]
+  },
+  "avoid": [
+    "O point mais hype",
+    "Drink com nome em inglês sem necessidade",
+    "Foto de estoque com neon"
+  ],
+  "competitors": [
+    {
+      "name": "Bar Brahma",
+      "url": "https://www.barbrahma.com.br",
+      "why": "Bar conhecido em São Paulo. Confirme se disputa a mesma noite."
+    },
+    {
+      "name": "Boteco Belmonte",
+      "url": "",
+      "why": "Rede de boteco. Veja se o cliente é o mesmo bairro ou outro hábito."
+    },
+    {
+      "name": "Bar do Mineiro",
+      "url": "",
+      "why": "Boteco com nome próprio no Rio. Só entra se o território for o mesmo."
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 const assert = require("assert");
 const brain = require("../lib/brain-core");
-const handler = require("../api/brand-brain");
 
 function sample() {
   return {
@@ -38,7 +37,7 @@ assert.strictEqual(partial.done, 2);
 assert.notStrictEqual(partial.percent, 92);
 
 const result = brain.buildFallbackBrain(sample());
-assert.strictEqual(result.source, "fallback");
+assert.strictEqual(result.source, "knowledge");
 assert.ok(result.positioning.includes("Lume"));
 assert.ok(result.positioning.toLowerCase().includes("sorriso"));
 assert.ok(result.reading.includes("Sorridents"));
@@ -126,45 +125,12 @@ const cleaned = brain.sanitizeCompetitors({
 assert.strictEqual(cleaned.competitors.length, 2);
 assert.strictEqual(cleaned.competitors[1].url, "");
 
-async function invoke(method, body) {
-  let statusCode = 0;
-  let payload = null;
-  const headers = {};
-  const req = { method, body };
-  const res = {
-    setHeader(key, value) {
-      headers[key] = value;
-    },
-    status(code) {
-      statusCode = code;
-      return this;
-    },
-    json(data) {
-      payload = data;
-    },
-  };
-  await handler(req, res);
-  return { statusCode, payload, headers };
+const openings = new Set();
+for (let variant = 0; variant < 6; variant++) {
+  const rivals = brain.competitorFallback({ segment: "educação online", name: "Curso Norte", competitorVariant: variant });
+  assert.ok(rivals.competitors.some((item) => item.name === "Alura"), "Alura na variante " + variant);
+  assert.ok(rivals.competitors.every((item) => item.url.startsWith("https://")));
+  openings.add(rivals.competitors[0].name);
 }
-
-(async () => {
-  delete process.env.OPENAI_API_KEY;
-  const denied = await invoke("GET", {});
-  assert.strictEqual(denied.statusCode, 405);
-  const created = await invoke("POST", { action: "synthesize", state: sample() });
-  assert.strictEqual(created.statusCode, 200);
-  assert.strictEqual(created.payload.source, "fallback");
-  assert.strictEqual(created.payload.reason, "no_key");
-  assert.deepStrictEqual(
-    created.payload.result.palette.map((color) => color.hex),
-    ["#201b17", "#c37053", "#e8c79f", "#f7efe6"],
-  );
-  assert.ok(created.payload.result.reading.includes("Aesop"));
-  const rivals = await invoke("POST", { action: "competitors", state: { segment: "educação online" } });
-  assert.strictEqual(rivals.payload.source, "fallback");
-  assert.ok(rivals.payload.result.competitors.some((item) => item.name === "Alura"));
-  console.log("brain-core ok");
-})().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+assert.ok(openings.size > 1, "mostrar outras muda a ordem");
+console.log("brain-core ok");

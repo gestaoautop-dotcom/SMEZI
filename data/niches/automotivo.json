@@ -1,0 +1,214 @@
+{
+  "id": "automotivo",
+  "name": "Automotivo",
+  "mood": "warm",
+  "aliases": [
+    "automotivo",
+    "oficina",
+    "mecanica",
+    "carro",
+    "concessionaria",
+    "funilaria"
+  ],
+  "audiences": [
+    "Quem deixa o carro e quer saber o que foi feito.",
+    "Quem compra ou aluga e desconfia de letra miúda."
+  ],
+  "positioning": [
+    "O carro se explica pelo serviço feito e pelo prazo de busca.",
+    "Oficina com nome. Sem grito de promoção."
+  ],
+  "tones": [
+    {
+      "id": "box",
+      "when": [
+        "técnica",
+        "acessível",
+        "humana"
+      ],
+      "summary": "Diz o serviço e a hora de buscar.",
+      "do": [
+        "A revisão cobre isto.",
+        "Se precisar de peça, a gente avisa antes."
+      ],
+      "dont": [
+        "Seu carro como novo.",
+        "A melhor oficina da região."
+      ]
+    },
+    {
+      "id": "loja",
+      "when": [
+        "ousada",
+        "forte",
+        "contemporânea"
+      ],
+      "summary": "Direta, sem tabuleta de liquidação.",
+      "do": [
+        "O carro está aqui. A ficha também.",
+        "Test-drive com hora."
+      ],
+      "dont": [
+        "Realize o sonho do zero.",
+        "Taxa zero como título."
+      ]
+    }
+  ],
+  "messages": [
+    "O que foi feito, por escrito.",
+    "Hora de buscar dita.",
+    "Peça avisada antes.",
+    "Sem tabuleta de liquidação."
+  ],
+  "headlines": {
+    "short": [
+      "Hora de buscar",
+      "A revisão",
+      "No box",
+      "A ficha"
+    ],
+    "medium": [
+      "O que a revisão cobre",
+      "Avisar antes de trocar a peça"
+    ]
+  },
+  "ctas": [
+    "Agendar a revisão",
+    "Falar com a oficina",
+    "Ver o serviço"
+  ],
+  "pillars": [
+    {
+      "name": "Box",
+      "ideas": {
+        "lançamento": "Serviço novo quando a equipe faz.",
+        "educativo": "Quando trocar e quando ainda não.",
+        "institucional": "Endereço e horário de busca.",
+        "oferta": "Orçamento claro. Sem preço de isca.",
+        "depoimento": "A frase é da oficina.",
+        "bastidores": "O elevador, a ferramenta, a luz.",
+        "evento": "Inspeção marcada, se houver.",
+        "citação": "Carro bom se explica na ficha.",
+        "sazonal": "Viagem: revisar antes, com antecedência."
+      }
+    },
+    {
+      "name": "Chave",
+      "ideas": {
+        "lançamento": "Modelo na loja só se estiver.",
+        "educativo": "O que olhar antes de fechar.",
+        "institucional": "Quem atende.",
+        "oferta": "Sem taxa inventada no título.",
+        "depoimento": "Sem cliente realizado de anúncio.",
+        "bastidores": "A entrega da chave.",
+        "evento": "Feirão só se for real.",
+        "citação": "A ficha vale mais que o brilho.",
+        "sazonal": "Fim de ano: a agenda de revisão enche. Avise."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Chave",
+      "colors": [
+        {
+          "hex": "#1a1c1e",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#c4512c",
+          "role": "Destaque",
+          "usage": "Laranja de detalhe, como uma lanterna, não como a parede."
+        },
+        {
+          "hex": "#d9d5ce",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f4f2ee",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Asfalto",
+      "colors": [
+        {
+          "hex": "#1c2430",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8a939c",
+          "role": "Destaque",
+          "usage": "Cinza de estrada, com respiro."
+        },
+        {
+          "hex": "#e0e2e4",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f5f6f7",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "sora",
+      "display": "Sora",
+      "text": "Manrope",
+      "why": "Firme e legível, sem letra de concessionária antiga."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Carro na oficina ou na rua, com a luz do lugar e a ferramenta por perto.",
+      "Mão na ficha ou no capô. Sem carro voando."
+    ],
+    "do": [
+      "Sujeira de trabalho, se for oficina.",
+      "O modelo verdadeiro."
+    ],
+    "dont": [
+      "Carro em estúdio com reflexo de anúncio.",
+      "Família sorrindo na picape de banco.",
+      "Selo de zero quilômetro sem lastro."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Uma informação: serviço, hora ou modelo.",
+      "Nenhum preço falso."
+    ],
+    "dont": [
+      "Não gritar em vermelho.",
+      "Não usar velocidade como metáfora vazia."
+    ]
+  },
+  "avoid": [
+    "Como novo",
+    "Taxa zero de título",
+    "Carro de banco",
+    "A melhor da região"
+  ],
+  "competitors": [
+    {
+      "name": "Localiza",
+      "url": "https://www.localiza.com",
+      "why": "Aluguel de carros. Confirme se disputa o mesmo serviço."
+    },
+    {
+      "name": "Webmotors",
+      "url": "https://www.webmotors.com.br",
+      "why": "Onde muitos carros são anunciados. É vitrine, e às vezes concorrente."
+    }
+  ],
+  "competitorNote": "Oficina de bairro é local. A base não inventa a da esquina."
+}

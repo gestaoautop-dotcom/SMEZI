@@ -1,0 +1,218 @@
+{
+  "id": "tecnologia",
+  "name": "Tecnologia e SaaS",
+  "mood": "sober",
+  "aliases": [
+    "tecnologia",
+    "software",
+    "saas",
+    "aplicativo",
+    "plataforma",
+    "sistema"
+  ],
+  "audiences": [
+    "Quem já usa uma planilha e quer saber o que muda na segunda-feira.",
+    "Quem decide a ferramenta e cansa de tela cheia de promessa."
+  ],
+  "positioning": [
+    "O produto se explica por uma tarefa que ele tira do caminho.",
+    "Interface calma. A frase também."
+  ],
+  "tones": [
+    {
+      "id": "tarefa",
+      "when": [
+        "técnica",
+        "minimal",
+        "inteligente"
+      ],
+      "summary": "Nomeia a tarefa. Não nomeia o futuro.",
+      "do": [
+        "Isto substitui esta planilha.",
+        "Se não servir, a gente diz na demonstração."
+      ],
+      "dont": [
+        "Plataforma que transforma o seu negócio.",
+        "Tudo em um só lugar, de verdade."
+      ]
+    },
+    {
+      "id": "proxima",
+      "when": [
+        "humana",
+        "acessível",
+        "criativa"
+      ],
+      "summary": "Explica como quem senta do lado e mostra a tela.",
+      "do": [
+        "Olha este passo. É o único que importa agora.",
+        "Dúvida cabe no chamado."
+      ],
+      "dont": [
+        "Revolucione sua operação.",
+        "Inteligência que aprende por você."
+      ]
+    }
+  ],
+  "messages": [
+    "Uma tarefa a menos na segunda.",
+    "A tela mostra o que o texto promete.",
+    "Demonstração curta, com o caso real.",
+    "Sem frase de futuro."
+  ],
+  "headlines": {
+    "short": [
+      "Uma tarefa a menos",
+      "A tela",
+      "Na segunda",
+      "Sem planilha"
+    ],
+    "medium": [
+      "O que sai da sua segunda-feira",
+      "Mostre o caso, não o futuro"
+    ]
+  },
+  "ctas": [
+    "Pedir uma demonstração",
+    "Ver o produto",
+    "Falar com a gente"
+  ],
+  "pillars": [
+    {
+      "name": "Produto",
+      "ideas": {
+        "lançamento": "Função nova quando ela já está na tela.",
+        "educativo": "Como fazer esta tarefa em três passos.",
+        "institucional": "Para quem o produto serve, e para quem não.",
+        "oferta": "Plano com o que está incluso. Sem preço inventado.",
+        "depoimento": "A frase é da casa sobre o próprio produto.",
+        "bastidores": "Quem escreve, quem atende, a tela de verdade.",
+        "evento": "Demonstração com hora marcada.",
+        "citação": "Software bom cabe numa tarefa.",
+        "sazonal": "Fechamento de mês: o que o produto organiza de fato."
+      }
+    },
+    {
+      "name": "Uso",
+      "ideas": {
+        "lançamento": "Integração nova, nome do sistema verdadeiro.",
+        "educativo": "O que muda no primeiro dia.",
+        "institucional": "Quem atende quando trava.",
+        "oferta": "Teste com prazo dito, se existir.",
+        "depoimento": "Sem logo de cliente que não autorizou.",
+        "bastidores": "Suporte em horário real.",
+        "evento": "Encontro de usuários, com pauta.",
+        "citação": "A tela precisa cumprir a frase.",
+        "sazonal": "Virada de ano: o que exportar, com calma."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Tela",
+      "colors": [
+        {
+          "hex": "#16181d",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#3d5a80",
+          "role": "Destaque",
+          "usage": "Azul de interface, baixo, nunca neon."
+        },
+        {
+          "hex": "#d5dbe3",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f5f6f8",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Papel",
+      "colors": [
+        {
+          "hex": "#1c1a17",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8d7355",
+          "role": "Destaque",
+          "usage": "Quente o bastante para não parecer painel."
+        },
+        {
+          "hex": "#e6e0d6",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f5f1",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "sora",
+      "display": "Sora",
+      "text": "Manrope",
+      "why": "Contemporânea no nome, texto limpo na explicação."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Tela real, na mesa de quem usa, com a luz do escritório.",
+      "Mão no teclado e o problema visível. Sem mockup flutuando."
+    ],
+    "do": [
+      "Interface de verdade, mesmo que simples.",
+      "Gente trabalhando, se autorizada."
+    ],
+    "dont": [
+      "Dashboard neon.",
+      "Foguete, cérebro e circuito.",
+      "Mãos de banco apontando para um holograma."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Uma frase e uma tela. Muito respiro.",
+      "Nenhum selo de líder de mercado."
+    ],
+    "dont": [
+      "Não usar gradiente da interface da SMEZI.",
+      "Não listar doze funções numa peça."
+    ]
+  },
+  "avoid": [
+    "Tudo em um só lugar",
+    "Revolucione",
+    "Dashboard neon",
+    "Foguete de startup"
+  ],
+  "competitors": [
+    {
+      "name": "RD Station",
+      "url": "https://www.rdstation.com",
+      "why": "Software de marketing e CRM. Confirme se disputa a mesma tarefa."
+    },
+    {
+      "name": "Omie",
+      "url": "https://www.omie.com.br",
+      "why": "Sistema de gestão. Veja se o cliente é o mesmo."
+    },
+    {
+      "name": "Bling",
+      "url": "https://www.bling.com.br",
+      "why": "Gestão para comércio. Só entra se o uso for comparável."
+    }
+  ]
+}

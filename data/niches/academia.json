@@ -1,0 +1,218 @@
+{
+  "id": "academia",
+  "name": "Academia e fitness",
+  "mood": "warm",
+  "aliases": [
+    "academia",
+    "fitness",
+    "treino",
+    "crossfit",
+    "pilates",
+    "musculacao"
+  ],
+  "audiences": [
+    "Quem treina cedo e quer a casa aberta de verdade.",
+    "Quem volta depois de um tempo parado e não quer discurso de guerra."
+  ],
+  "positioning": [
+    "Treino com horário, gente e um plano que cabe na semana.",
+    "A academia não precisa gritar motivação."
+  ],
+  "tones": [
+    {
+      "id": "piso",
+      "when": [
+        "humana",
+        "acessível",
+        "ousada"
+      ],
+      "summary": "Fala de treino, não de superação genérica.",
+      "do": [
+        "A aula das 7 está aberta.",
+        "Começar de novo também é treino."
+      ],
+      "dont": [
+        "Sem dor, sem ganho.",
+        "O shape dos seus sonhos."
+      ]
+    },
+    {
+      "id": "limpa",
+      "when": [
+        "técnica",
+        "minimal",
+        "premium"
+      ],
+      "summary": "Método e horário. Sem slogan de guerra.",
+      "do": [
+        "O plano cabe em três dias.",
+        "Ajuste de carga com quem está no salão."
+      ],
+      "dont": [
+        "Lifestyle fitness.",
+        "Resultado em 30 dias."
+      ]
+    }
+  ],
+  "messages": [
+    "Horário que a casa abre de verdade.",
+    "Começar não precisa de discurso.",
+    "Treino cabe na semana.",
+    "Sem foto de abdômen como isca."
+  ],
+  "headlines": {
+    "short": [
+      "Aula das 7",
+      "Treino cabe",
+      "Porta aberta",
+      "Começar de novo"
+    ],
+    "medium": [
+      "Três dias já mudam a semana",
+      "Sem grito de motivação"
+    ]
+  },
+  "ctas": [
+    "Ver horários",
+    "Fazer uma aula",
+    "Falar com a casa"
+  ],
+  "pillars": [
+    {
+      "name": "Salão",
+      "ideas": {
+        "lançamento": "Turma nova quando há professor.",
+        "educativo": "Como começar sem se machucar.",
+        "institucional": "Horário e o que tem na casa.",
+        "oferta": "Plano com o que está incluso, por extenso.",
+        "depoimento": "A frase é da academia, não de um corpo.",
+        "bastidores": "A sala antes da primeira aula.",
+        "evento": "Aula aberta com vagas contadas.",
+        "citação": "Treino bom cabe na vida.",
+        "sazonal": "Janeiro sem terror de verão."
+      }
+    },
+    {
+      "name": "Gente",
+      "ideas": {
+        "lançamento": "Modalidade nova, nome verdadeiro.",
+        "educativo": "O que levar no primeiro dia.",
+        "institucional": "Quem está na recepção.",
+        "oferta": "Sem taxa escondida no rodapé.",
+        "depoimento": "Sem antes e depois de corpo.",
+        "bastidores": "Manutenção do equipamento.",
+        "evento": "Encontro da turma, se houver.",
+        "citação": "Constância vale mais que slogan.",
+        "sazonal": "Férias: a grade muda e a gente avisa."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Piso",
+      "colors": [
+        {
+          "hex": "#1b1d1c",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#c4512c",
+          "role": "Destaque",
+          "usage": "Laranja de detalhe, não de parede inteira."
+        },
+        {
+          "hex": "#d9d3c8",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f4f1eb",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Claro",
+      "colors": [
+        {
+          "hex": "#20241f",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#5d6b52",
+          "role": "Destaque",
+          "usage": "Verde de quadra, baixo."
+        },
+        {
+          "hex": "#e3e0d6",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f6f2",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "sora",
+      "display": "Sora",
+      "text": "Manrope",
+      "why": "Firme e contemporânea, sem letra de suplemento."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Salão com gente treinando de verdade, se autorizada.",
+      "Equipamento e a luz da manhã, vazio também serve."
+    ],
+    "do": [
+      "Corpo em movimento comum, não pose de campanha.",
+      "Suor verdadeiro, se aparecer."
+    ],
+    "dont": [
+      "Abdômen de banco de imagem.",
+      "Antes e depois.",
+      "Grito com a boca aberta."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Horário grande, frase curta.",
+      "Nenhum número de quilos perdidos."
+    ],
+    "dont": [
+      "Não usar contagem regressiva de verão.",
+      "Não prometer corpo."
+    ]
+  },
+  "avoid": [
+    "Antes e depois",
+    "Sem dor sem ganho",
+    "Resultado em 30 dias",
+    "Foto de suplemento como identidade"
+  ],
+  "competitors": [
+    {
+      "name": "Smart Fit",
+      "url": "https://www.smartfit.com.br",
+      "why": "Rede de academia. Confirme se disputa o mesmo aluno."
+    },
+    {
+      "name": "Bodytech",
+      "url": "https://www.bodytech.com.br",
+      "why": "Academia de outra faixa. Veja o cliente."
+    },
+    {
+      "name": "Bluefit",
+      "url": "https://www.bluefit.com.br",
+      "why": "Outra rede nacional."
+    }
+  ]
+}

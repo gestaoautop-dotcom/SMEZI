@@ -1,0 +1,204 @@
+{
+  "id": "autoral",
+  "name": "Autoral e artista",
+  "mood": "warm",
+  "aliases": [
+    "autoral",
+    "artista",
+    "ilustracao",
+    "ceramista",
+    "atelier de arte",
+    "fotografo autoral"
+  ],
+  "audiences": [
+    "Quem compra uma obra ou encomenda e quer ver o processo.",
+    "Quem segue o artista e espera a próxima peça, não um discurso."
+  ],
+  "positioning": [
+    "O trabalho se explica pela peça e pela mão.",
+    "Ateliê sem ranking. A base não inventa colega."
+  ],
+  "tones": [
+    {
+      "id": "mao",
+      "when": [
+        "criativa",
+        "humana",
+        "ousada",
+        "contemporânea"
+      ],
+      "summary": "Fala da peça, não do gênio.",
+      "do": [
+        "Esta série tem estas unidades.",
+        "Encomenda com prazo, se houver prazo."
+      ],
+      "dont": [
+        "Arte que transforma almas.",
+        "O artista do momento."
+      ]
+    },
+    {
+      "id": "quieta",
+      "when": [
+        "sofisticada",
+        "minimalista",
+        "premium"
+      ],
+      "summary": "Quase só a imagem.",
+      "do": [
+        "Título da obra, matéria, ano se for verdade.",
+        "O resto é silêncio."
+      ],
+      "dont": [
+        "Universo autoral único.",
+        "Narrativa imersiva da obra."
+      ]
+    }
+  ],
+  "messages": [
+    "A peça e a mão.",
+    "Série com unidades contadas.",
+    "Encomenda com prazo verdadeiro.",
+    "Sem discurso de gênio."
+  ],
+  "headlines": {
+    "short": [
+      "A peça",
+      "Na mesa",
+      "Esta série",
+      "A mão"
+    ],
+    "medium": [
+      "O que está pronto agora",
+      "Encomenda com prazo"
+    ]
+  },
+  "ctas": [
+    "Ver a peça",
+    "Falar com o ateliê",
+    "Perguntar a série"
+  ],
+  "pillars": [
+    {
+      "name": "Obra",
+      "ideas": {
+        "lançamento": "Peça nova quando está pronta.",
+        "educativo": "A matéria e por que ela importa aqui.",
+        "institucional": "Quem faz e onde ver.",
+        "oferta": "Valor só se o artista quiser dizer. Sem leilão inventado.",
+        "depoimento": "A frase é de quem faz.",
+        "bastidores": "A mesa, a ferramenta, o intervalo.",
+        "evento": "Abertura com dia e lugar confirmados.",
+        "citação": "A peça se sustenta.",
+        "sazonal": "Feira ou salão só se o artista for."
+      }
+    },
+    {
+      "name": "Ateliê",
+      "ideas": {
+        "lançamento": "Série com começo e fim.",
+        "educativo": "Como a encomenda funciona.",
+        "institucional": "Visita mediante combinação.",
+        "oferta": "Sem edição esgotada falsa.",
+        "depoimento": "Sem colecionador famoso inventado.",
+        "bastidores": "O que não deu certo também ensina, se quiser mostrar.",
+        "evento": "Data e local entram quando você confirmar.",
+        "citação": "Ofício antes de aura.",
+        "sazonal": "Data cultural com presença real, não com oportunismo."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Argila",
+      "colors": [
+        {
+          "hex": "#2a221c",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#a15b45",
+          "role": "Destaque",
+          "usage": "Terracota de matéria, num detalhe."
+        },
+        {
+          "hex": "#e6d3c4",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f8f4ef",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Papel",
+      "colors": [
+        {
+          "hex": "#1c1c1c",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8a847c",
+          "role": "Destaque",
+          "usage": "Grafite e papel."
+        },
+        {
+          "hex": "#e4e0da",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f6f3",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "playfair",
+      "display": "Playfair Display",
+      "text": "Manrope",
+      "why": "O nome da obra em serifa. A ficha, limpa."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "A peça na mesa, com a luz do ateliê e a mão por perto.",
+      "Detalhe de matéria. Sem museu genérico."
+    ],
+    "do": [
+      "Ferramenta e sujeira de ofício.",
+      "Escala."
+    ],
+    "dont": [
+      "Artista de banco olhando pela janela.",
+      "Aura e partícula.",
+      "Obra de outra pessoa."
+    ]
+  },
+  "composition": {
+    "do": [
+      "A obra ocupa. O texto é ficha.",
+      "Muito espaço."
+    ],
+    "dont": [
+      "Não inventar colega famoso.",
+      "Não escrever universo único."
+    ]
+  },
+  "avoid": [
+    "Artista do momento",
+    "Transformar almas",
+    "Ateliê de banco",
+    "Edição esgotada falsa"
+  ],
+  "competitors": [],
+  "competitorNote": "Trabalho autoral não tem um ranking honesto. A base não inventa colega. Escreva quem disputa a mesma atenção, se quiser."
+}

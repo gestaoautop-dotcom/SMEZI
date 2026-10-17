@@ -1,0 +1,213 @@
+{
+  "id": "turismo",
+  "name": "Turismo e hotelaria",
+  "mood": "warm",
+  "aliases": [
+    "turismo",
+    "hotel",
+    "pousada",
+    "viagem",
+    "hospedagem",
+    "resort"
+  ],
+  "audiences": [
+    "Quem reserva e quer saber o quarto, o silêncio e como chegar.",
+    "Quem viaja pouco e desconfia de foto larga demais."
+  ],
+  "positioning": [
+    "O lugar se explica pela cama, pela luz e pelo que há em volta.",
+    "Sem paraíso. Com endereço."
+  ],
+  "tones": [
+    {
+      "id": "lugar",
+      "when": [
+        "humana",
+        "acessível",
+        "criativa"
+      ],
+      "summary": "Convida sem exagerar a vista.",
+      "do": [
+        "O quarto olha para isto.",
+        "O café é neste horário."
+      ],
+      "dont": [
+        "Paraíso escondido.",
+        "A viagem dos seus sonhos."
+      ]
+    },
+    {
+      "id": "sobria",
+      "when": [
+        "premium",
+        "sofisticada",
+        "minimalista"
+      ],
+      "summary": "Pouca palavra. A foto do lugar, verdadeira.",
+      "do": [
+        "O que o quarto tem.",
+        "O que a diária não inclui, se for o caso."
+      ],
+      "dont": [
+        "Experiência exclusiva de hospedagem.",
+        "Refúgio dos sonhos."
+      ]
+    }
+  ],
+  "messages": [
+    "Quarto, luz, como chegar.",
+    "A vista é a que a foto mostra.",
+    "Horário de café dito.",
+    "Sem paraíso no texto."
+  ],
+  "headlines": {
+    "short": [
+      "O quarto",
+      "A luz da manhã",
+      "Como chegar",
+      "Uma noite"
+    ],
+    "medium": [
+      "O que a janela mostra",
+      "Reservar com o que está incluso"
+    ]
+  },
+  "ctas": [
+    "Pedir uma data",
+    "Ver o quarto",
+    "Falar com a casa"
+  ],
+  "pillars": [
+    {
+      "name": "Estadia",
+      "ideas": {
+        "lançamento": "Quarto ou rota nova quando existe.",
+        "educativo": "O que levar e como chegar.",
+        "institucional": "Endereço, check-in, o que a casa é.",
+        "oferta": "Diária com o que inclui. Sem tarifa inventada.",
+        "depoimento": "A frase é da casa sobre o lugar.",
+        "bastidores": "A arrumação, a cozinha, a recepção.",
+        "evento": "Temporada com datas reais.",
+        "citação": "Lugar bom não precisa de paraíso.",
+        "sazonal": "Férias e réveillon: vaga só se houver."
+      }
+    },
+    {
+      "name": "Volta",
+      "ideas": {
+        "lançamento": "Passeio da casa, com duração verdadeira.",
+        "educativo": "O que fazer se chover.",
+        "institucional": "Quem recebe.",
+        "oferta": "Pacote só se os itens existirem.",
+        "depoimento": "Sem hóspede famoso.",
+        "bastidores": "O café antes dos outros acordarem.",
+        "evento": "Data cheia: avise.",
+        "citação": "A volta também faz parte.",
+        "sazonal": "Baixa temporada dita com franqueza."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Areia",
+      "colors": [
+        {
+          "hex": "#243038",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#c4a574",
+          "role": "Destaque",
+          "usage": "Areia e mar baixo, sem ciano de anúncio."
+        },
+        {
+          "hex": "#e7dcc8",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f4ee",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Serra",
+      "colors": [
+        {
+          "hex": "#1c241c",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#6d7d62",
+          "role": "Destaque",
+          "usage": "Verde de mata, contido."
+        },
+        {
+          "hex": "#e3ddd0",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f6f4ef",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "playfair",
+      "display": "Playfair Display",
+      "text": "Manrope",
+      "why": "Nome com calma, informação nítida."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Quarto e janela com a luz da hora, sem céu trocado.",
+      "O caminho até a casa. Gente só se for hóspede ou equipe com licença."
+    ],
+    "do": [
+      "Lugar reconhecível.",
+      "Cor verdadeira."
+    ],
+    "dont": [
+      "Praia de banco com coqueiro perfeito.",
+      "Drone genérico.",
+      "Filtro de pôr do sol falso."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Uma foto, uma linha, o nome pequeno.",
+      "Data só quando a vaga existir."
+    ],
+    "dont": [
+      "Não escrever paraíso.",
+      "Não usar estrela de classificação sem fonte."
+    ]
+  },
+  "avoid": [
+    "Paraíso escondido",
+    "Viagem dos sonhos",
+    "Céu de banco",
+    "Experiência exclusiva"
+  ],
+  "competitors": [
+    {
+      "name": "Decolar",
+      "url": "https://www.decolar.com",
+      "why": "Onde muita reserva acontece. É canal, e às vezes disputa a atenção."
+    },
+    {
+      "name": "CVC",
+      "url": "https://www.cvc.com.br",
+      "why": "Operadora de viagem. Confirme se disputa o mesmo hóspede."
+    }
+  ]
+}

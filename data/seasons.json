@@ -1,0 +1,19 @@
+[
+  {"id": "carnaval", "name": "Carnaval", "when": "fevereiro, data móvel", "niches": ["boteco", "eventos", "moda", "turismo", "salao"], "line": "A festa pede frase curta. Sem confete em todo post."},
+  {"id": "mulher", "name": "Dia Internacional da Mulher", "when": "8 de março", "niches": ["moda", "estetica", "salao", "joalheria", "clinica"], "line": "Reconhecimento sem flor genérica e sem desconto cor-de-rosa."},
+  {"id": "consumidor", "name": "Dia do Consumidor", "when": "15 de março", "niches": ["varejo", "moda", "tecnologia", "farmacia"], "line": "Clareza de oferta. Sem letra miúda."},
+  {"id": "pascoa", "name": "Páscoa", "when": "data móvel, em março ou abril", "niches": ["padaria", "restaurante", "cafe", "varejo"], "line": "O que a casa faz de verdade nesta data. Sem ovo de banco de imagem."},
+  {"id": "maes", "name": "Dia das Mães", "when": "segundo domingo de maio", "niches": ["restaurante", "joalheria", "moda", "floricultura", "estetica", "varejo"], "line": "Um presente com nome. Sem texto de cartão pronto."},
+  {"id": "junina", "name": "Festas juninas", "when": "junho", "niches": ["padaria", "restaurante", "boteco", "eventos", "agro", "varejo"], "line": "Comida e praça. Sem chapéu de palha em marca que não é isso."},
+  {"id": "namorados", "name": "Dia dos Namorados", "when": "12 de junho", "niches": ["restaurante", "boteco", "cafe", "joalheria", "moda", "eventos", "turismo"], "line": "Uma mesa ou uma peça. Sem promessa de romance eterno."},
+  {"id": "ferias-julho", "name": "Férias de julho", "when": "julho", "niches": ["turismo", "educacao", "academia", "eventos", "pet"], "line": "O que fica aberto, e para quem."},
+  {"id": "pais", "name": "Dia dos Pais", "when": "segundo domingo de agosto", "niches": ["restaurante", "varejo", "automotivo", "moda"], "line": "Presente concreto. Sem clichê de gravata."},
+  {"id": "independencia", "name": "Independência", "when": "7 de setembro", "niches": ["varejo", "moda", "turismo", "eventos"], "line": "Verde e amarelo só se a marca já vive nessa cor."},
+  {"id": "cliente", "name": "Dia do Cliente", "when": "15 de setembro", "niches": ["varejo", "servicos", "tecnologia", "imobiliaria"], "line": "Um agradecimento curto. Sem cupom em todas as peças."},
+  {"id": "criancas", "name": "Dia das Crianças", "when": "12 de outubro", "niches": ["educacao", "varejo", "padaria", "eventos"], "line": "Se a casa recebe criança, mostre como. Sem vozinha falsa."},
+  {"id": "professor", "name": "Dia do Professor", "when": "15 de outubro", "niches": ["educacao"], "line": "A aula, não o brinde."},
+  {"id": "consciencia", "name": "Consciência Negra", "when": "20 de novembro", "niches": ["educacao", "moda", "cultura", "autoral"], "line": "Presença o ano inteiro. A data não é campanha de ocasião."},
+  {"id": "black", "name": "Black Friday", "when": "última sexta de novembro", "niches": ["varejo", "moda", "tecnologia", "educacao", "automotivo"], "line": "Se houver preço, ele é real. Sem contagem regressiva falsa."},
+  {"id": "natal", "name": "Natal", "when": "dezembro", "niches": ["padaria", "restaurante", "varejo", "moda", "joalheria", "eventos"], "line": "A mesa ou a vitrine de dezembro. Sem neve de mentira."},
+  {"id": "reveillon", "name": "Réveillon", "when": "31 de dezembro", "niches": ["turismo", "eventos", "boteco", "restaurante", "moda"], "line": "A noite, com hora e lugar quando existirem."}
+]

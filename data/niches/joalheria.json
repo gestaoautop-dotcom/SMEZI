@@ -1,0 +1,211 @@
+{
+  "id": "joalheria",
+  "name": "Joalheria",
+  "mood": "sober",
+  "aliases": [
+    "joalheria",
+    "joia",
+    "ourives",
+    "relogio",
+    "alianca"
+  ],
+  "audiences": [
+    "Quem compra uma peça para ficar, e quer ver o metal de perto.",
+    "Quem presenteia e precisa de critério, não de pressa."
+  ],
+  "positioning": [
+    "A joia se explica no metal, na luz e no tempo de feitura.",
+    "Pouca peça. Nenhuma frase de luxo vazio."
+  ],
+  "tones": [
+    {
+      "id": "metal",
+      "when": [
+        "premium",
+        "sofisticada",
+        "minimalista"
+      ],
+      "summary": "Quase silêncio. O metal fala.",
+      "do": [
+        "Ouro, prata ou o que for, com nome certo.",
+        "A peça é para ficar."
+      ],
+      "dont": [
+        "Brilhe como você merece.",
+        "Luxo acessível a todos."
+      ]
+    },
+    {
+      "id": "presente",
+      "when": [
+        "humana",
+        "acessível"
+      ],
+      "summary": "Ajuda a escolher sem teatro.",
+      "do": [
+        "Se for presente, a gente pergunta para quem.",
+        "Ajuste e garantia, ditos com calma."
+      ],
+      "dont": [
+        "Eternize este momento.",
+        "A joia dos sonhos."
+      ]
+    }
+  ],
+  "messages": [
+    "Metal, luz, tempo de feitura.",
+    "Peça para ficar.",
+    "Presente com pergunta, não com pressa.",
+    "Sem frase de brilho merecido."
+  ],
+  "headlines": {
+    "short": [
+      "O metal",
+      "Para ficar",
+      "Na luz",
+      "Uma peça"
+    ],
+    "medium": [
+      "Feita para durar no pulso",
+      "Escolher sem pressa"
+    ]
+  },
+  "ctas": [
+    "Ver a peça",
+    "Marcar uma visita",
+    "Falar com a casa"
+  ],
+  "pillars": [
+    {
+      "name": "Peça",
+      "ideas": {
+        "lançamento": "Peça nova quando está na vitrine.",
+        "educativo": "Como ler um quilate sem jargão de balcão.",
+        "institucional": "Quem faz e quem atende.",
+        "oferta": "Condição dita na loja. Sem parcela como título.",
+        "depoimento": "A frase é da ourivesaria.",
+        "bastidores": "A bancada, a lupa, a mão.",
+        "evento": "Noivado ou coleção, com hora se houver.",
+        "citação": "Joia boa não grita.",
+        "sazonal": "Data de presente: a peça, não o cartão."
+      }
+    },
+    {
+      "name": "Cuidado",
+      "ideas": {
+        "lançamento": "Coleção curta, unidades contadas.",
+        "educativo": "Como guardar e como limpar.",
+        "institucional": "Ajuste e conserto, se a casa faz.",
+        "oferta": "Sem 'a partir de' escondido.",
+        "depoimento": "Sem cliente de campanha.",
+        "bastidores": "O estojo e a luz da vitrine.",
+        "evento": "Visita privada só se for real.",
+        "citação": "O tempo de feitura aparece.",
+        "sazonal": "Festas: encomenda com antecedência verdadeira."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Metal",
+      "colors": [
+        {
+          "hex": "#1a1c1e",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#b7a48a",
+          "role": "Destaque",
+          "usage": "Ouro baixo, quase areia. Nunca dourado chapado."
+        },
+        {
+          "hex": "#e6e1d8",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f6f3",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Noite",
+      "colors": [
+        {
+          "hex": "#14161a",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8d8f93",
+          "role": "Destaque",
+          "usage": "Prata e grafite, com muito branco."
+        },
+        {
+          "hex": "#d9d7d4",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f5f4f2",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "playfair",
+      "display": "Playfair Display",
+      "text": "Manrope",
+      "why": "Serifa quieta no nome. Texto pequeno e nítido."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Peça em luz lateral, metal verdadeiro, fundo calmo.",
+      "Mão usando, sem pose de anúncio de luxo."
+    ],
+    "do": [
+      "Textura do metal.",
+      "Escala humana."
+    ],
+    "dont": [
+      "Diamante com brilho de computação.",
+      "Cofre e champanhe.",
+      "Frase de eternidade sobre a foto."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Uma peça, muito espaço, uma linha.",
+      "Nenhum selo de luxo."
+    ],
+    "dont": [
+      "Não usar brilho falso em volta da joia.",
+      "Não lotar a peça de produto."
+    ]
+  },
+  "avoid": [
+    "Brilhe como merece",
+    "Eternize o momento",
+    "Dourado chapado",
+    "Champanhe de anúncio"
+  ],
+  "competitors": [
+    {
+      "name": "Vivara",
+      "url": "https://www.vivara.com.br",
+      "why": "Rede de joias. Confirme se disputa a mesma compra."
+    },
+    {
+      "name": "H.Stern",
+      "url": "https://www.hstern.com.br",
+      "why": "Joalheria de outra faixa. Veja o cliente."
+    }
+  ]
+}

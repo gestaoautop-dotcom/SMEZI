@@ -1,0 +1,211 @@
+{
+  "id": "padaria",
+  "name": "Padaria e confeitaria",
+  "mood": "warm",
+  "aliases": [
+    "padaria",
+    "confeitaria",
+    "panificacao",
+    "pao",
+    "bolo",
+    "fornada"
+  ],
+  "audiences": [
+    "Quem passa cedo, sabe o nome de quem atende e volta no mesmo dia.",
+    "Quem compra o pão e fica pelo café, sem pressa de fila."
+  ],
+  "positioning": [
+    "O pão sai quando a massa pede, não quando o relógio aperta.",
+    "Balcão de bairro: o cheiro chega antes do discurso."
+  ],
+  "tones": [
+    {
+      "id": "proxima",
+      "when": [
+        "humana",
+        "acessível",
+        "organic"
+      ],
+      "summary": "Fala como quem está do outro lado do balcão.",
+      "do": [
+        "Saiu agora.",
+        "A massa descansou dois dias. Por isso o miolo é assim."
+      ],
+      "dont": [
+        "Experiência gastronômica completa.",
+        "O melhor pão do Brasil."
+      ]
+    },
+    {
+      "id": "precisa",
+      "when": [
+        "técnica",
+        "minimal"
+      ],
+      "summary": "Farinha, tempo e forno. O resto é frase curta.",
+      "do": [
+        "Fermentação longa, sem adjetivo.",
+        "O que está no balcão é o que saiu hoje."
+      ],
+      "dont": [
+        "Superfood de fermentação.",
+        "Arte milenar em cada fatia."
+      ]
+    }
+  ],
+  "messages": [
+    "Tempo de massa é tempo de pão.",
+    "O balcão mostra o que saiu hoje.",
+    "Quem atende tem nome.",
+    "Doce de verdade, não de vitrine."
+  ],
+  "headlines": {
+    "short": [
+      "Pão que espera",
+      "Forno aceso",
+      "Miolo aberto",
+      "Saiu agora"
+    ],
+    "medium": [
+      "Dois dias de massa",
+      "O balcão da manhã"
+    ]
+  },
+  "ctas": [
+    "Passar hoje",
+    "Ver o que saiu",
+    "Chamar no balcão"
+  ],
+  "pillars": [
+    {
+      "name": "Ofício",
+      "ideas": {
+        "lançamento": "Um pão novo entra no balcão quando está pronto.",
+        "educativo": "O que a fermentação longa muda no miolo.",
+        "institucional": "Quem abre a porta antes do sol.",
+        "oferta": "O café com pão da manhã, sem letra miúda.",
+        "depoimento": "A frase é da casa, não de um cliente inventado.",
+        "bastidores": "O forno antes de a rua acordar.",
+        "evento": "Quando a padaria recebe a calçada.",
+        "citação": "Pão bom não tem pressa.",
+        "sazonal": "O que a casa faz de verdade nesta data."
+      }
+    },
+    {
+      "name": "Casa",
+      "ideas": {
+        "lançamento": "Novidade fica uma semana no balcão, não num selo.",
+        "educativo": "Como guardar o pão até amanhã.",
+        "institucional": "O bairro entra pelo cheiro.",
+        "oferta": "Encomenda de bolo com data combinada.",
+        "depoimento": "Quem volta todo dia já conhece o forno.",
+        "bastidores": "A mão na massa, com farinha de verdade.",
+        "evento": "Mesa posta para a rua, quando houver.",
+        "citação": "Aqui o pão tem hora porque a massa tem tempo.",
+        "sazonal": "Festa junina com o milho da casa, se for o caso."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Crosta",
+      "colors": [
+        {
+          "hex": "#2a211c",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#c37053",
+          "role": "Destaque",
+          "usage": "Terracota num detalhe só."
+        },
+        {
+          "hex": "#e8c79f",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7efe6",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Açúcar",
+      "colors": [
+        {
+          "hex": "#241c18",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8c3a32",
+          "role": "Destaque",
+          "usage": "Vermelho de geleia, com parcimônia."
+        },
+        {
+          "hex": "#f0d2b4",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#fbf6ef",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "playfair",
+      "display": "Playfair Display",
+      "text": "Manrope",
+      "why": "Serifa no nome, texto limpo no miolo."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Mão, miolo e a luz da manhã no balcão.",
+      "O forno aceso e quem tira o pão, sem pose."
+    ],
+    "do": [
+      "Farinha na bancada e gente de verdade.",
+      "Cor fiel. O filtro não esquenta o pão."
+    ],
+    "dont": [
+      "Pão perfeito sem mão nem lugar.",
+      "Foto de banco com avental engomado."
+    ]
+  },
+  "composition": {
+    "do": [
+      "O pão ou a frase ocupam o centro. O resto é margem.",
+      "Um preço, se houver, pequeno e verdadeiro."
+    ],
+    "dont": [
+      "Não carimbar artesanal em tudo.",
+      "Não enfileirar dez produtos na mesma peça."
+    ]
+  },
+  "avoid": [
+    "Selo de artesanal sem ofício",
+    "Pão flutuando em fundo branco",
+    "Frase de padaria de comercial de margarina"
+  ],
+  "competitors": [
+    {
+      "name": "Dona Deôla",
+      "url": "",
+      "why": "Padaria com nome próprio em São Paulo. Confirme se disputa o mesmo balcão."
+    },
+    {
+      "name": "Benjamin a Padaria",
+      "url": "",
+      "why": "Casa de bairro com fila de manhã. Veja se o cliente é o mesmo."
+    }
+  ],
+  "competitorNote": "Padaria boa é local. A base não inventa a padaria da esquina."
+}

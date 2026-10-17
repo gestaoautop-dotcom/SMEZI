@@ -1,0 +1,213 @@
+{
+  "id": "agencia",
+  "name": "Agência e consultoria",
+  "mood": "sober",
+  "aliases": [
+    "agencia",
+    "publicidade",
+    "consultoria",
+    "estudio criativo"
+  ],
+  "audiences": [
+    "Quem contrata e quer ver o trabalho, não o manifesto da casa.",
+    "Quem já teve agência e desconfia de promessa de resultado."
+  ],
+  "positioning": [
+    "O trabalho entra na frente. O método, se couber, em uma frase.",
+    "Consultoria explica a decisão. Não vende pressa."
+  ],
+  "tones": [
+    {
+      "id": "peca",
+      "when": [
+        "criativa",
+        "ousada",
+        "contemporânea"
+      ],
+      "summary": "Mostra a peça. Fala pouco em volta.",
+      "do": [
+        "Este foi o problema. Esta foi a peça.",
+        "O resto é conversa de briefing."
+      ],
+      "dont": [
+        "Ideias que mudam o mundo.",
+        "Storytelling de marca 360."
+      ]
+    },
+    {
+      "id": "metodo",
+      "when": [
+        "técnica",
+        "premium",
+        "sofisticada",
+        "minimalista"
+      ],
+      "summary": "Método curto, sem palestra.",
+      "do": [
+        "A primeira reunião serve para ver se cabe.",
+        "Entrega com data, quando a data existir."
+      ],
+      "dont": [
+        "Ecossistema de comunicação.",
+        "Posicionamento disruptivo."
+      ]
+    }
+  ],
+  "messages": [
+    "O trabalho na frente.",
+    "Briefing antes de promessa.",
+    "Uma casa, um jeito, poucas palavras.",
+    "Resultado não se inventa no post."
+  ],
+  "headlines": {
+    "short": [
+      "O trabalho",
+      "Antes do briefing",
+      "Uma peça",
+      "O método"
+    ],
+    "medium": [
+      "Mostrar o que foi feito",
+      "A primeira reunião"
+    ]
+  },
+  "ctas": [
+    "Marcar uma conversa",
+    "Ver o trabalho",
+    "Falar com a casa"
+  ],
+  "pillars": [
+    {
+      "name": "Trabalho",
+      "ideas": {
+        "lançamento": "Projeto novo só com autorização de quem contratou.",
+        "educativo": "O que um briefing precisa ter.",
+        "institucional": "O que a casa faz e o que recusa.",
+        "oferta": "Escopo claro. Sem pacote de presença infinita.",
+        "depoimento": "A frase é da casa. Sem cliente falando o que não disse.",
+        "bastidores": "A mesa, o rascunho, a revisão.",
+        "evento": "Conversa aberta com vagas, se houver.",
+        "citação": "Peça boa se sustenta sozinha.",
+        "sazonal": "Data comercial só se o cliente for esse o assunto."
+      }
+    },
+    {
+      "name": "Critério",
+      "ideas": {
+        "lançamento": "Serviço novo quando a equipe existe.",
+        "educativo": "Como ler uma peça sem gostar só do gosto.",
+        "institucional": "Quem assina e quem atende.",
+        "oferta": "Projeto com começo e fim.",
+        "depoimento": "Sem número de prêmios como personalidade.",
+        "bastidores": "A revisão que ninguém vê.",
+        "evento": "Palestra só com data.",
+        "citação": "Critério também é recusar.",
+        "sazonal": "Planejamento do ano, com o que cabe."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Papel",
+      "colors": [
+        {
+          "hex": "#1a1a1a",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#c4b39a",
+          "role": "Destaque",
+          "usage": "Areia num detalhe, fundo quase branco."
+        },
+        {
+          "hex": "#e7e2da",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f6f3",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Tinta",
+      "colors": [
+        {
+          "hex": "#1b1e24",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#3e4c66",
+          "role": "Destaque",
+          "usage": "Azul de tinta, baixo."
+        },
+        {
+          "hex": "#d7dbe2",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f4f5f7",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "playfair",
+      "display": "Playfair Display",
+      "text": "Manrope",
+      "why": "Serifa no nome da casa, texto limpo no caso."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Mesa de trabalho, impresso e tela, com a luz do estúdio.",
+      "Peça aplicada no lugar, não num mockup genérico."
+    ],
+    "do": [
+      "Mão, papel, ferramenta.",
+      "O trabalho reconhecível."
+    ],
+    "dont": [
+      "Brainstorm com post-it colorido de banco.",
+      "Equipe pulando.",
+      "Prêmio como foto principal."
+    ]
+  },
+  "composition": {
+    "do": [
+      "A peça do cliente ocupa. O nome da agência fica pequeno.",
+      "Muito branco."
+    ],
+    "dont": [
+      "Não listar serviços em ícones.",
+      "Não usar a palavra ecossistema."
+    ]
+  },
+  "avoid": [
+    "Storytelling como personalidade",
+    "Post-it de brainstorm",
+    "Ecossistema de marca",
+    "Prêmio como título"
+  ],
+  "competitors": [
+    {
+      "name": "AlmapBBDO",
+      "url": "https://www.almapbbdo.com.br",
+      "why": "Agência de grande porte. Confirme se disputa o mesmo cliente."
+    },
+    {
+      "name": "África",
+      "url": "",
+      "why": "Agência conhecida. A base não crava o endereço. Confirme você."
+    }
+  ],
+  "competitorNote": "Consultoria local quase nunca tem um par nacional justo. Escreva quem disputa o mesmo briefing."
+}

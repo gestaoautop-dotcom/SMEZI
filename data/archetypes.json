@@ -1,0 +1,48 @@
+{
+  "axes": [
+    {
+      "low": "institucional",
+      "high": "experimental",
+      "lowLine": "A peça fica quieta: margem larga e um foco só.",
+      "highLine": "O título pode ocupar a peça. O resto recua."
+    },
+    {
+      "low": "minimalista",
+      "high": "expressiva",
+      "lowLine": "Quase nada além da frase.",
+      "highLine": "Presença maior no título, sem poluir o resto."
+    },
+    {
+      "low": "humana",
+      "high": "técnica",
+      "lowLine": "Fala com a pessoa, não com um público abstrato.",
+      "highLine": "Nomeia o processo. O termo vazio fica de fora."
+    },
+    {
+      "low": "acessível",
+      "high": "premium",
+      "lowLine": "Palavra que qualquer cliente entende na primeira leitura.",
+      "highLine": "Convite curto, sem selo de luxo e sem pressa."
+    },
+    {
+      "low": "clássica",
+      "high": "contemporânea",
+      "lowLine": "Forma estável. A novidade, se houver, está no conteúdo.",
+      "highLine": "Agora, sem gíria forçada."
+    }
+  ],
+  "traits": {
+    "inteligente": "Mostra o critério, não a esperteza.",
+    "sofisticada": "Menos adjetivo. Mais matéria e silêncio.",
+    "humana": "A frase cabe na boca de quem atende.",
+    "inovadora": "O que mudou de fato, sem anunciar revolução.",
+    "forte": "Frase direta. Sem caixa alta.",
+    "acessível": "Cabe na fala do cliente.",
+    "técnica": "O processo tem nome. O enfeite, não.",
+    "premium": "Pouca coisa, bem colocada.",
+    "minimalista": "Uma ideia. O resto é espaço.",
+    "ousada": "Pode ser firme. Não precisa gritar.",
+    "contemporânea": "Do tempo de agora, sem caricatura.",
+    "criativa": "Uma imagem inesperada, desde que seja verdadeira."
+  }
+}

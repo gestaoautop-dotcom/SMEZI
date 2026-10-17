@@ -1,0 +1,213 @@
+{
+  "id": "advocacia",
+  "name": "Advocacia",
+  "mood": "sober",
+  "aliases": [
+    "advocacia",
+    "advogado",
+    "advogada",
+    "juridico",
+    "escritorio de advocacia"
+  ],
+  "audiences": [
+    "Quem precisa de um escritório e quer entender o que ele faz, sem juridiquês.",
+    "Empresa ou família que busca critério, não propaganda de causa ganha."
+  ],
+  "positioning": [
+    "O escritório diz o que faz e o que não promete.",
+    "Clareza antes do latim."
+  ],
+  "tones": [
+    {
+      "id": "sobria",
+      "when": [
+        "técnica",
+        "premium",
+        "sofisticada",
+        "minimalista"
+      ],
+      "summary": "Sóbria. Uma tese por texto, se houver texto.",
+      "do": [
+        "O primeiro contato serve para ver se o caso cabe aqui.",
+        "Prazo e documento, quando forem o assunto, com precisão."
+      ],
+      "dont": [
+        "Ganhamos a sua causa.",
+        "O maior escritório."
+      ]
+    },
+    {
+      "id": "humana",
+      "when": [
+        "humana",
+        "acessível"
+      ],
+      "summary": "Explica o caminho sem tratar a pessoa como processo.",
+      "do": [
+        "A gente diz o que acontece agora e o que vem depois.",
+        "Dúvida inicial não precisa de procuração."
+      ],
+      "dont": [
+        "Justiça rápida.",
+        "Seus direitos em três cliques."
+      ]
+    }
+  ],
+  "messages": [
+    "O caso cabe ou não cabe. Isso se diz cedo.",
+    "Sem promessa de resultado.",
+    "Documento e prazo, quando forem o tema.",
+    "A pessoa não é o número do processo."
+  ],
+  "headlines": {
+    "short": [
+      "O que o escritório faz",
+      "Antes do processo",
+      "Clareza",
+      "Um assunto"
+    ],
+    "medium": [
+      "O primeiro contato não é uma promessa",
+      "Direito em frase curta"
+    ]
+  },
+  "ctas": [
+    "Falar com o escritório",
+    "Entender a atuação",
+    "Marcar uma conversa"
+  ],
+  "pillars": [
+    {
+      "name": "Atuação",
+      "ideas": {
+        "lançamento": "Área nova só se houver quem assine.",
+        "educativo": "O que separar antes da primeira conversa.",
+        "institucional": "Cidade, área e como chegar.",
+        "oferta": "Honorários, se forem públicos, sem isca.",
+        "depoimento": "Sem causa de cliente.",
+        "bastidores": "A mesa e a pesquisa, sem papel de alguém.",
+        "evento": "Palestra com tema e data reais.",
+        "citação": "Prometer resultado não é advocacia.",
+        "sazonal": "Prazo de data fiscal só se for orientação geral."
+      }
+    },
+    {
+      "name": "Limite",
+      "ideas": {
+        "lançamento": "Canal de contato novo, dito com sobriedade.",
+        "educativo": "O que este escritório não faz.",
+        "institucional": "Quem assina e a OAB, se a casa quiser mostrar.",
+        "oferta": "Sem consulta grátis como anúncio.",
+        "depoimento": "A voz é do escritório sobre o ofício.",
+        "bastidores": "Biblioteca e prazo, sem dossiê.",
+        "evento": "Não há plantão disfarçado de live.",
+        "citação": "Cada caso é um caso. Por isso não cabe aqui.",
+        "sazonal": "Reforma ou lei nova: explicar, não alarmar."
+      }
+    }
+  ],
+  "palettes": [
+    {
+      "name": "Tinta",
+      "colors": [
+        {
+          "hex": "#161a22",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#8a7355",
+          "role": "Destaque",
+          "usage": "Bronze discreto, de papel timbrado."
+        },
+        {
+          "hex": "#e4dfd6",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f7f6f3",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    },
+    {
+      "name": "Lousa",
+      "colors": [
+        {
+          "hex": "#1a2740",
+          "role": "Base",
+          "usage": "Nome e títulos."
+        },
+        {
+          "hex": "#c5ccd6",
+          "role": "Destaque",
+          "usage": "Azul de tinta, quase preto."
+        },
+        {
+          "hex": "#e8edf2",
+          "role": "Apoio",
+          "usage": "Área secundária, menor que o destaque."
+        },
+        {
+          "hex": "#f5f7f9",
+          "role": "Respiro",
+          "usage": "Fundo da peça."
+        }
+      ]
+    }
+  ],
+  "type": [
+    {
+      "font": "playfair",
+      "display": "Playfair Display",
+      "text": "Manrope",
+      "why": "Serifa no nome, corpo em sans para ler."
+    }
+  ],
+  "photography": {
+    "directions": [
+      "Sala, mesa e luz de janela. Sem martelo de juiz.",
+      "Cidade do escritório, se for o território."
+    ],
+    "do": [
+      "Papel, madeira, fachada.",
+      "Pessoa da equipe se autorizada, fora de um caso."
+    ],
+    "dont": [
+      "Toga de fantasia.",
+      "Aperto de mão.",
+      "Cela ou algema como gancho."
+    ]
+  },
+  "composition": {
+    "do": [
+      "Margem de documento. Uma afirmação.",
+      "Nenhum selo de causa ganha."
+    ],
+    "dont": [
+      "Não citar cliente.",
+      "Não usar porcentagem de êxito."
+    ]
+  },
+  "avoid": [
+    "Ganhamos a sua causa",
+    "O maior escritório",
+    "Depoimento de cliente",
+    "Martelo e balança como identidade automática"
+  ],
+  "competitors": [
+    {
+      "name": "Mattos Filho",
+      "url": "https://www.mattosfilho.com.br",
+      "why": "Escritório de grande porte. Só entra se o cliente for comparável."
+    },
+    {
+      "name": "Pinheiro Neto",
+      "url": "https://www.pinheironeto.com.br",
+      "why": "Outro escritório nacional. Confirme o porte e a área."
+    }
+  ],
+  "competitorNote": "Advocacia de bairro não tem ranking honesto nesta base. Escreva quem atua no mesmo foro."
+}

@@ -238,7 +238,7 @@ function renderRefs(el) {
   const note = state.competitorNote
     ? `<p class="suggest-note" role="status">${escapeHTML(state.competitorNote)}</p>`
     : "";
-  el.innerHTML = `<p class="micro-note">Concorrente é quem disputa o mesmo cliente. Referência é quem você admira, mesmo que venda outra coisa.</p><h4 class="subhead">Concorrentes</h4><div class="link-list" id="competitors">${linkRows("competitors")}</div><button type="button" class="find-btn" id="findCompetitors">✦ Não sei meus concorrentes — encontrar para mim</button>${note}${state.competitors.length < 8 ? '<button type="button" class="text-btn add-link" data-add-slot="competitors">+ outro concorrente</button>' : ""}<h4 class="subhead">Marcas que você admira</h4><div class="link-list">${linkRows("references")}</div>${state.references.length < 8 ? '<button type="button" class="text-btn add-link" data-add-slot="references">+ outra referência</button>' : ""}`;
+  el.innerHTML = `<p class="micro-note">Concorrente é quem disputa o mesmo cliente. Referência é quem você admira, mesmo que venda outra coisa.</p><h4 class="subhead">Concorrentes</h4><div class="link-list" id="competitors">${linkRows("competitors")}</div><button type="button" class="find-btn" id="findCompetitors">Ver exemplos da base</button><button type="button" class="text-btn" id="moreCompetitors">Mostrar outras</button>${note}${state.competitors.length < 8 ? '<button type="button" class="text-btn add-link" data-add-slot="competitors">+ outro concorrente</button>' : ""}<h4 class="subhead">Marcas que você admira</h4><div class="link-list">${linkRows("references")}</div>${state.references.length < 8 ? '<button type="button" class="text-btn add-link" data-add-slot="references">+ outra referência</button>' : ""}`;
   bindListInputs(el);
   el.querySelectorAll("[data-open-link]").forEach((button) => {
     button.onclick = () => openLink(state[button.dataset.openLink][+button.dataset.index]);
@@ -253,7 +253,9 @@ function renderRefs(el) {
     };
   });
   const finder = el.querySelector("#findCompetitors");
-  if (finder) finder.onclick = () => findCompetitors(finder);
+  if (finder) finder.onclick = () => suggestCompetitors(false);
+  const more = el.querySelector("#moreCompetitors");
+  if (more) more.onclick = () => suggestCompetitors(true);
   document.querySelector("#footerNote").textContent = "Concorrentes ≠ referências.";
 }
 function openLink(value) {
@@ -273,23 +275,22 @@ function openLink(value) {
     /* ignore malformed links */
   }
 }
-async function findCompetitors(button) {
-  button.disabled = true;
-  button.textContent = "procurando…";
-  let result = null;
-  try {
-    const data = await SmeziBrain.fetchBrain("competitors", state);
-    result = data && data.result ? data.result : null;
-    if (data && data.source !== "llm") result = SmeziBrain.competitorFallback(state);
-  } catch {
-    result = SmeziBrain.competitorFallback(state);
+function suggestCompetitors(rotate) {
+  if (rotate) {
+    const shown = Array.isArray(state.competitorShown) ? state.competitorShown : [];
+    state.competitors = state.competitors.map((value) => (shown.includes(value) ? "" : value));
+    state.competitorVariant = (Number(state.competitorVariant) || 0) + 1;
   }
+  const result = SmeziBrain.competitorFallback(state);
   const suggestions = (result && result.competitors) || [];
-  let placed = 0;
+  const placed = [];
   for (const item of suggestions) {
     const label = item.url || item.name;
     if (!label) continue;
-    if (state.competitors.some((value) => String(value || "").trim().toLowerCase() === String(label).toLowerCase())) continue;
+    if (state.competitors.some((value) => String(value || "").trim().toLowerCase() === String(label).toLowerCase())) {
+      placed.push(label);
+      continue;
+    }
     let index = state.competitors.findIndex((value) => !String(value || "").trim());
     if (index < 0) {
       if (state.competitors.length >= 8) break;
@@ -297,12 +298,13 @@ async function findCompetitors(button) {
       index = state.competitors.length - 1;
     }
     state.competitors[index] = label;
-    placed += 1;
+    placed.push(label);
   }
+  state.competitorShown = placed;
   state.competitorNote =
-    placed > 0
-      ? (result && result.note) || "Sugestões para você confirmar. Apague o que não for concorrente de verdade."
-      : (result && result.note) || "Não encontrei sugestão nova para estes campos.";
+    placed.length > 0
+      ? (result && result.note) || "Sugestões da base para confirmar. Apague o que não disputa o seu cliente."
+      : (result && result.note) || "A base não tem um exemplo novo para este ofício.";
   save();
   const body = document.querySelector("#stageBody");
   if (body && step === 1) renderRefs(body);
@@ -535,4 +537,8 @@ function expandBoard() {
 }
 
 document.querySelector("#homeBtn").onclick = showHome;
-showHome();
+if (window.SmeziKnowledge && SmeziKnowledge.ready && !SmeziKnowledge.loaded) {
+  SmeziKnowledge.ready.then(() => showHome());
+} else {
+  showHome();
+}
