@@ -1,0 +1,11 @@
+name = "smezi-ai-sales-agent"
+main = "src/worker.js"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "smezi-sales"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[vars]
+WHATSAPP_GRAPH_VERSION = "v23.0"
