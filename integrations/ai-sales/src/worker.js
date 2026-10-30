@@ -49,7 +49,7 @@ async function handleMessage(env,m,contact){
  const insert=await env.DB.prepare("INSERT OR IGNORE INTO conversations (id,lead_id,direction,body,external_message_id) VALUES (?,?,?,?,?)").bind(uid(),lead.id,"in",text,m.id).run();
  if(!insert.meta?.changes)return;
  const lower=text.toLocaleLowerCase("pt-BR");
- if(/\\b(humano|pessoa|atendente|consultor|parar|sair|cancelar)\\b/i.test(lower)){
+ if(/\b(humano|pessoa|atendente|consultor|parar|sair|cancelar)\b/i.test(lower)){
   await env.DB.prepare("UPDATE leads SET human_required=1,status='handoff',updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(lead.id).run();
   const reply="Entendido. Vou encaminhar sua conversa à equipe da SMEZI. Não enviarei mais respostas automáticas por aqui.";
   const sent=await sendWhatsApp(env,phone,reply);
