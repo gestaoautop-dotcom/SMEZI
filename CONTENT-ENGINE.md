@@ -61,7 +61,7 @@ Em **Pages → Settings → Variables and Secrets → Production**, cadastrar:
 | `GITHUB_CLIENT_SECRET` | Segredo | Client Secret do OAuth App |
 | `SESSION_SECRET` | Segredo | Valor aleatório próprio, pelo menos 32 caracteres |
 | `TOKEN_ENCRYPTION_KEY` | Segredo | Outra chave aleatória, exatamente 64 caracteres hexadecimais |
-| `AI_MODEL` | Variável | `@cf/meta/llama-3.3-70b-instruct-fp8-fast` ou outro modelo Workers AI compatível com `messages` e saída `response` |
+| `AI_MODEL` | Variável | `@cf/openai/gpt-oss-120b` para testar raciocínio, ou outro modelo Workers AI compatível com `messages`; o servidor aceita texto final em `response`, Chat Completions ou Responses |
 
 Gerar segredos em um terminal confiável, por exemplo `openssl rand -hex 32`, duas vezes com resultados distintos. Inserir diretamente no painel, sem enviar ao chat, ao GitHub ou à interface do aplicativo. O uso de IA está limitado a 30 gerações/dia por conta; os limites não substituem os controles de cobrança do provedor.
 

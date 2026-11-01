@@ -108,3 +108,11 @@ test('social callback encrypts provider tokens and rejects owner/provider state 
   const result=await socialCallback(req,env,'owner','x');assert.equal(result.status,302);const row=await statement(env,'SELECT encrypted_token FROM connections').first();assert.ok(!row.encrypted_token.includes('secret-provider-access'));assert.equal((await unseal(env,row.encrypted_token,'owner:x')).refresh_token,'secret-refresh');
  }finally{globalThis.fetch=original}
 });
+
+test('model adapters extract only final text and exclude reasoning output',async()=>{
+ const {finalText}=await import('../server/ai.mjs');
+ assert.equal(finalText({response:'Rascunho'}),'Rascunho');
+ assert.equal(finalText({choices:[{message:{content:'Texto final',reasoning_content:'interno'}}]}),'Texto final');
+ assert.equal(finalText({output:[{type:'reasoning',summary:[{text:'interno'}]},{type:'message',role:'assistant',content:[{type:'output_text',text:'Publicação autoral'}]}]}),'Publicação autoral');
+ assert.equal(finalText({output:[{type:'reasoning',summary:[{text:'interno'}]}]}),'');
+});
