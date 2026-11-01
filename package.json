@@ -1,0 +1,10 @@
+{
+  "name": "smezi-content-engine",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-content-engine.js",
+    "test": "node test/brain-core.test.js && node test/templates.test.js && node test/knowledge.test.js && node --test test/content-engine.test.js"
+  },
+  "engines": { "node": ">=20" }
+}
