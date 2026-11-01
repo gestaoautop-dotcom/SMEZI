@@ -75,7 +75,7 @@ test('CRM is persistent, records history and validates publication attribution',
 });
 test('AI uses latest non-hypothetical memory, preserves source and never approves',async()=>{
  const {env}=fixture();await sync(env,'owner',{...blank(),memories:[{id:'m1',rootId:'m',title:'Voz',text:'antigo',kind:'decisao'},{id:'m2',rootId:'m',title:'Voz',text:'atual',kind:'decisao'},{id:'h',title:'Hipótese',text:'não confirmado',kind:'hipotese'}]});let input;
- env.AI={run:async(model,values)=>{input=values;return {response:'Minha criação, com minha voz.'}}};const result=await generate(env,'owner',{idea:'Fonte autoral',platform:'LinkedIn',lang:'pt'});
+ env.ai={run:async(model,values)=>{input=values;return {response:'Minha criação, com minha voz.'}}};const result=await generate(env,'owner',{idea:'Fonte autoral',platform:'LinkedIn',lang:'pt'});
  assert.equal(result.post.status,'draft');assert.equal(result.post.sourceIdea,'Fonte autoral');assert.deepEqual(result.sourceIds,['m2']);assert.ok(input.messages[1].content.includes('atual'));assert.ok(!input.messages[1].content.includes('não confirmado'));
 });
 test('daily limits stop expensive operations',async()=>{

@@ -4,7 +4,7 @@ import {database,statement,snapshot,sync,approve,saveClient,createBackup,quota,n
 import {PROVIDERS,providerReady,connect,socialCallback,metrics} from './social.mjs';
 import {schedule,cancel,tick} from './queue.mjs';
 import {generate} from './ai.mjs';
-const features=env=>({authentication:authReady(env),database:!!env.DB,backups:!!env.BACKUPS,ai:!!(env.AI&&env.AI_MODEL),publishing:env.PUBLISHING_ENABLED==='true',scheduler:env.SCHEDULER_ENABLED==='true',providers:Object.fromEntries(PROVIDERS.map(p=>[p,providerReady(env,p)]))});
+const features=env=>({authentication:authReady(env),database:!!env.DB,backups:!!env.BACKUPS,ai:!!((env.AI||env.ai)&&env.AI_MODEL),publishing:env.PUBLISHING_ENABLED==='true',scheduler:env.SCHEDULER_ENABLED==='true',providers:Object.fromEntries(PROVIDERS.map(p=>[p,providerReady(env,p)]))});
 export async function handle(request,env){
  const url=new URL(request.url),path=url.pathname,method=request.method;
  try{
