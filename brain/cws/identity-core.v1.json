@@ -1,0 +1,77 @@
+{
+  "schema": "cws-identity-core/v1",
+  "status": "draft_pending_user_approval",
+  "createdAt": "2026-10-31",
+  "identity": {
+    "primary": "CWS",
+    "relationship": "CWS is the person/creator; SMEZI is a business and commercial implementation",
+    "roles": [
+      "Creator",
+      "Designer",
+      "Developer"
+    ],
+    "positioning": "Multidisciplinary creative professional connecting design, development, AI, branding, and business to build practical digital solutions",
+    "audience": [
+      "business owners",
+      "professionals seeking tailored digital solutions"
+    ],
+    "language": "pt-BR",
+    "style": [
+      "clear",
+      "human",
+      "minimalist",
+      "precise",
+      "educational",
+      "authentic"
+    ],
+    "content_aim": "Educate potential clients daily about real business problems and what can be built before selling services"
+  },
+  "memoryDomains": [
+    "identity",
+    "knowledge",
+    "creative thinking",
+    "visual style",
+    "communication",
+    "projects",
+    "audience",
+    "authenticity",
+    "feedback"
+  ],
+  "editorialPillars": [
+    "I observe",
+    "I explain",
+    "I imagine",
+    "I build",
+    "I share"
+  ],
+  "rules": [
+    "Do not invent personal experiences, client outcomes or testimonials",
+    "Separate facts from hypotheses and opinions",
+    "Evidence and project permissions required before showcasing client cases",
+    "Keep approved original with history; no silent overwrites",
+    "Publish only after explicit review and approval"
+  ],
+  "memoryRecords": [
+    {
+      "id": "CWS-IDENTITY-001",
+      "type": "identity",
+      "claim": "Creator, designer and developer",
+      "source": "user conversation",
+      "confidence": "pending_confirmation"
+    },
+    {
+      "id": "CWS-STYLE-001",
+      "type": "preference",
+      "claim": "Clean, elegant, minimal editorial style",
+      "source": "user conversation",
+      "confidence": "pending_confirmation"
+    },
+    {
+      "id": "CWS-EDITORIAL-001",
+      "type": "strategy",
+      "claim": "CWS personal content educates before referring to SMEZI",
+      "source": "user current conversation",
+      "confidence": "explicit"
+    }
+  ]
+}
