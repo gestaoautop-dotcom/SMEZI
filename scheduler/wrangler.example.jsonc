@@ -1,0 +1,8 @@
+{
+  "name": "smezi-content-scheduler",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-30",
+  "triggers": { "crons": ["* * * * *"] },
+  "vars": { "APP_ORIGIN": "https://smezi-content-engine.pages.dev" },
+  "d1_databases": [{"binding":"DB","database_name":"smezi-content-engine","database_id":"REPLACE_WITH_DEDICATED_D1_ID"}]
+}

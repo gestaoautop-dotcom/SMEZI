@@ -19,3 +19,6 @@ fs.writeFileSync(path.join(dist, '_headers'), `/*
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'
 `);
 console.log('Content Engine built in dist/; Brand Studio preserved in dist/studio/.');
+
+require('esbuild').buildSync({entryPoints:[path.join(root,'server/worker.mjs')],outfile:path.join(dist,'_worker.js'),bundle:true,format:'esm',platform:'browser',target:'es2022'});
+fs.writeFileSync(path.join(dist,'_routes.json'),JSON.stringify({version:1,include:['/api/*','/r/*'],exclude:[]}));
