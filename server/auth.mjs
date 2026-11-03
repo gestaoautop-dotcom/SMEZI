@@ -20,9 +20,9 @@ export async function login(request,env){
 export async function callback(request,env){
  const url=new URL(request.url),state=await verify(env,cookies(request)['__Host-smezi_login']||'','github-login');
  if(!url.searchParams.get('state')||url.searchParams.get('state')!==state.state||!url.searchParams.get('code'))fail(400,'Autorização inválida ou expirada.');
- const token=await externalJSON('https://github.com/login/oauth/access_token',{method:'POST',headers:{Accept:'application/json','Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:env.GITHUB_CLIENT_ID,client_secret:env.GITHUB_CLIENT_SECRET,code:url.searchParams.get('code'),redirect_uri:baseURL(env)+'/api/auth/callback',code_verifier:state.verifier})});
+ let token; try { token=await externalJSON('https://github.com/login/oauth/access_token',{method:'POST',headers:{Accept:'application/json','Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:env.GITHUB_CLIENT_ID,client_secret:env.GITHUB_CLIENT_SECRET,code:url.searchParams.get('code'),redirect_uri:baseURL(env)+'/api/auth/callback',code_verifier:state.verifier})}); } catch { fail(502,'Falha na troca do código OAuth por token com o GitHub. Verifique o callback URL e os logs do Worker.'); }
  if(!token.access_token)fail(401,'GitHub não autorizou o login.');
- const user=await externalJSON('https://api.github.com/user',{headers:{Authorization:'Bearer '+token.access_token,Accept:'application/vnd.github+json','User-Agent':'SMEZI-Content-Engine'}});
+ let user; try { user=await externalJSON('https://api.github.com/user',{headers:{Authorization:'Bearer '+token.access_token,Accept:'application/vnd.github+json','User-Agent':'SMEZI-Content-Engine'}}); } catch { fail(502,'Falha ao consultar o perfil GitHub depois da autorização. Verifique a conectividade e os logs do Worker.'); }
  if(String(user.id)!==String(env.GITHUB_ALLOWED_ID))fail(403,'Esta conta não está autorizada.');
  const session=await sign(env,{sub:String(user.id),login:user.login},'session');
  const headers=new Headers({Location:baseURL(env)+'/#connected','Cache-Control':'no-store','Referrer-Policy':'no-referrer'});
