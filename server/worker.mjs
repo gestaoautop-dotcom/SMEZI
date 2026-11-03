@@ -20,7 +20,7 @@ export async function handle(request,env){
    if(!env.CRON_SECRET||env.CRON_SECRET.length<32||!await secretEqual(request.headers.get('Authorization'), 'Bearer '+env.CRON_SECRET))fail(401,'Não autorizado.');
    database(env);return json(await tick(env));
   }
-  if(path==='/api/auth/login'&&method==='GET')return login(request,env);
+  if(path==='/api/auth/login'&&method==='GET')return await login(request,env);
   if(path==='/api/auth/callback'&&method==='GET')return await callback(request,env);
   const user=await identity(request,env),owner=user.sub;
   if(!['GET','HEAD'].includes(method))sameOrigin(request,env);
