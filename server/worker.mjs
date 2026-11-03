@@ -13,9 +13,14 @@ export async function handle(request,env){
   if(!path.startsWith('/api/'))return env.ASSETS.fetch(request);
   if(path==='/api/status'&&method==='GET'){
    let user=null;try{user=await identity(request,env)}catch{}
-   return json({version:2,user:user?{login:user.login,id:user.sub}:null,features:features(env),productionOrigin:env.APP_ORIGIN||null,authChecks:authConfiguration(env)});
+   return json({version:2,user:user?{login:user.login,id:user.sub}:null,features:features(env),productionOrigin:env.APP_ORIGIN||null,requestOrigin:url.origin,originMatchesProduction:url.origin===env.APP_ORIGIN,authChecks:authConfiguration(env)});
   }
-  if(url.origin!==baseURL(env))fail(403,'Use a origem de produção para acessar os serviços privados.');
+  if(url.origin!==baseURL(env)){
+   if(path==='/api/auth/login'&&method==='GET'){
+    return new Response(null,{status:302,headers:{Location:baseURL(env)+'/api/auth/login','Cache-Control':'no-store','Referrer-Policy':'no-referrer'}});
+   }
+   fail(403,'Use a origem de produção para acessar os serviços privados.');
+  }
   if(path==='/api/internal/tick'&&method==='POST'){
    if(!env.CRON_SECRET||env.CRON_SECRET.length<32||!await secretEqual(request.headers.get('Authorization'), 'Bearer '+env.CRON_SECRET))fail(401,'Não autorizado.');
    database(env);return json(await tick(env));
