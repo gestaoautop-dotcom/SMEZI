@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leonardo | CWS Ads</title><style>
+:root{font-family:Inter,system-ui,sans-serif;color-scheme:dark;background:#0b0e13;color:#edf2f9}*{box-sizing:border-box}body{max-width:1000px;margin:0 auto;padding:34px 20px}a{color:#a8caff}.muted{color:#9daec2}.card{background:#141c28;border:1px solid #2b3b4f;border-radius:15px;padding:20px;margin:14px 0}button{border:1px solid #5a738f;background:#24354a;color:#fff;border-radius:9px;padding:11px 16px;cursor:pointer}button:focus-visible{outline:2px solid #92c1ff}table{border-collapse:collapse;width:100%;text-align:left}th,td{padding:12px;border-bottom:1px solid #344253;font-size:14px}h1{font-size:36px;letter-spacing:-.04em}#message{min-height:22px} .scroll{overflow-x:auto}
+</style></head><body>
+<p><a href="/">← SMEZI Content Engine</a></p><p class="muted">CWS / PRIVATE OPERATIONS</p><h1>Leonardo — Meta Ads</h1>
+<p class="muted">Consulta somente leitura. Publicação, alterações de orçamento e criação de anúncios não estão habilitadas.</p>
+<div class="card"><h2>Conexão Meta</h2><p id="status">Verificando sessão...</p><button id="refresh">Atualizar dados</button> <a href="/api/auth/login">Entrar com GitHub</a></div>
+<div class="card"><h2>Conta de anúncios</h2><div id="account" class="muted">Nenhum dado carregado.</div></div>
+<div class="card"><h2>Campanhas disponíveis</h2><p id="message" role="status" aria-live="polite"></p><div class="scroll"><table><thead><tr><th>Nome</th><th>Objetivo</th><th>Status</th><th>ID</th></tr></thead><tbody id="campaigns"></tbody></table></div><p class="muted">Contas recém-criadas podem retornar zero campanhas. Rascunhos da conta pessoal anterior não são transferidos automaticamente.</p></div>
+<script>
+'use strict';
+const el=id=>document.getElementById(id);
+async function read(path){const response=await fetch(path,{credentials:'same-origin',headers:{Accept:'application/json'},cache:'no-store'});const data=await response.json();if(!response.ok)throw Error(data.error||'Consulta não autorizada');return data;}
+const cell=(row,text)=>{const td=document.createElement('td');td.textContent=String(text??'—');row.append(td);};
+async function load(){el('refresh').disabled=true;el('message').textContent='Consultando...';el('campaigns').replaceChildren();try{
+const status=await read('/api/status');el('status').textContent=status.user?'Sessão privada ativa · '+(status.features?.metaAds?.configured?'Meta configurada':'Configure o token Meta na Cloudflare'):'Entre com GitHub para consultar os dados.';
+if(!status.user||!status.features?.metaAds?.configured){el('message').textContent='Consulta ainda não disponível.';return;}
+const [account,data]=await Promise.all([read('/api/meta/account'),read('/api/meta/campaigns')]);
+el('account').textContent=[account.name,account.id,account.currency,account.timezone_name,'status '+account.account_status].filter(Boolean).join(' · ');
+for(const campaign of data.campaigns){const tr=document.createElement('tr');for(const key of ['name','objective','effective_status','id'])cell(tr,campaign[key]);el('campaigns').append(tr);}
+el('message').textContent=data.campaigns.length+' campanha(s) retornada(s).'+(data.hasMore?' Há mais páginas não carregadas.':'');
+}catch(e){el('message').textContent=e.message;}finally{el('refresh').disabled=false;}}
+el('refresh').addEventListener('click',load);load();
+</script></body></html>
