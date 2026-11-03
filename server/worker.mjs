@@ -1,5 +1,5 @@
 import {AppError,fail,json,identity,sameOrigin,body,baseURL,secretEqual,random} from './security.mjs';
-import {authReady,login,callback,logout} from './auth.mjs';
+import {authReady,authConfiguration,login,callback,logout} from './auth.mjs';
 import {database,statement,snapshot,sync,approve,saveClient,createBackup,quota,now} from './store.mjs';
 import {PROVIDERS,providerReady,connect,socialCallback,metrics} from './social.mjs';
 import {schedule,cancel,tick} from './queue.mjs';
@@ -13,7 +13,7 @@ export async function handle(request,env){
   if(!path.startsWith('/api/'))return env.ASSETS.fetch(request);
   if(path==='/api/status'&&method==='GET'){
    let user=null;try{user=await identity(request,env)}catch{}
-   return json({version:2,user:user?{login:user.login,id:user.sub}:null,features:features(env),productionOrigin:env.APP_ORIGIN||null});
+   return json({version:2,user:user?{login:user.login,id:user.sub}:null,features:features(env),productionOrigin:env.APP_ORIGIN||null,authChecks:authConfiguration(env)});
   }
   if(url.origin!==baseURL(env))fail(403,'Use a origem de produção para acessar os serviços privados.');
   if(path==='/api/internal/tick'&&method==='POST'){
