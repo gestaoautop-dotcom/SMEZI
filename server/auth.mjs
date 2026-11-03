@@ -25,24 +25,38 @@ export async function callback(request, env) {
     fail(400, 'Autorização inválida ou expirada.');
   }
 
-  let token;
+  const payload = new URLSearchParams({
+    client_id: env.GITHUB_CLIENT_ID,
+    client_secret: env.GITHUB_CLIENT_SECRET,
+    code,
+    redirect_uri: baseURL(env) + '/api/auth/callback',
+    code_verifier: state.verifier
+  });
+  let response;
   try {
-    token = await externalJSON('https://github.com/login/oauth/access_token', {
+    response = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        client_id: env.GITHUB_CLIENT_ID,
-        client_secret: env.GITHUB_CLIENT_SECRET,
-        code,
-        redirect_uri: baseURL(env) + '/api/auth/callback',
-        code_verifier: state.verifier
-      })
+      headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: payload,
+      redirect: 'manual',
+      signal: AbortSignal.timeout(15000)
     });
   } catch {
-    fail(502, 'Falha na troca do código OAuth com o GitHub. Consulte os logs privados do Worker.');
+    fail(502, 'Falha de conexão com o endpoint OAuth do GitHub.');
+  }
+  if (!response.ok) {
+    fail(502, 'GitHub respondeu HTTP ' + response.status + ' durante o login.');
+  }
+  let token;
+  try {
+    token = await response.json();
+  } catch {
+    fail(502, 'GitHub retornou resposta OAuth em formato inesperado.');
+  }
+  if (token?.error) {
+    const safeCodes = ['bad_verification_code', 'incorrect_client_credentials', 'redirect_uri_mismatch', 'application_suspended', 'expired_user_code', 'authorization_pending', 'slow_down'];
+    const reason = safeCodes.includes(token.error) ? token.error : 'oauth_rejected';
+    fail(401, 'GitHub recusou a troca OAuth: ' + reason + '.');
   }
   if (!token?.access_token) fail(401, 'GitHub não autorizou o login.');
 
