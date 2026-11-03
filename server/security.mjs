@@ -33,7 +33,7 @@ export async function seal(env,value,aad){const iv=crypto.getRandomValues(new Ui
 export async function unseal(env,value,aad){const v=JSON.parse(value);const data=await crypto.subtle.decrypt({name:'AES-GCM',iv:new Uint8Array(v.iv),additionalData:new TextEncoder().encode(aad)},await vaultKey(env),new Uint8Array(v.data));return JSON.parse(new TextDecoder().decode(data));}
 export async function secretEqual(a,b){if(!a||!b)return false;const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(b),{name:'HMAC',hash:'SHA-256'},false,['sign','verify']);const sig=await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(b));return crypto.subtle.verify('HMAC',key,sig,new TextEncoder().encode(a));}
 export async function external(url,options={}){
-  let response;try{response=await fetch(url,{...options,redirect:'error',signal:AbortSignal.timeout(20000)})}catch{const e=new AppError(502,'Resposta externa não confirmada.');e.uncertain=true;throw e}
+  let response;try{response=await fetch(url,{...options,redirect:'manual',signal:AbortSignal.timeout(20000)})}catch{const e=new AppError(502,'Resposta externa não confirmada.');e.uncertain=true;throw e}
   if(!response.ok){const e=new AppError(502,`Serviço externo retornou HTTP ${response.status}.`);e.externalStatus=response.status;throw e}
   return response;
 }
