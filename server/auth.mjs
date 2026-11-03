@@ -1,5 +1,14 @@
 import {baseURL,sign,verify,cookie,cookies,random,hash,externalJSON,fail,json} from './security.mjs';
-export function authReady(env){return !!(env.APP_ORIGIN&&env.GITHUB_CLIENT_ID&&env.GITHUB_CLIENT_SECRET&&env.GITHUB_ALLOWED_ID&&env.SESSION_SECRET?.length>=32)}
+export function authConfiguration(env){
+ return {
+  origin: Boolean(env.APP_ORIGIN),
+  clientId: Boolean(env.GITHUB_CLIENT_ID),
+  clientSecret: Boolean(env.GITHUB_CLIENT_SECRET),
+  allowedId: Boolean(env.GITHUB_ALLOWED_ID),
+  sessionSecretValid: typeof env.SESSION_SECRET === 'string' && env.SESSION_SECRET.length >= 32
+ };
+}
+export function authReady(env){return Object.values(authConfiguration(env)).every(Boolean)}
 export async function login(request,env){
  if(!authReady(env))fail(503,'O login ainda precisa ser configurado no Cloudflare.');
  const state=random(),verifier=random()+random();
