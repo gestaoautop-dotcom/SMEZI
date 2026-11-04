@@ -167,7 +167,7 @@
    if(button.dataset.cloudAct==='schedule'){if(!date)throw Error('Escolha a data e o horário junto ao conteúdo.');await api('jobs',{recordId:button.dataset.record,scheduledAt:new Date(date).toISOString()});notify('Publicação aprovada incluída na fila automática.')}
    await loadState();
   });
-  if(button.dataset.connect)action(button,async()=>{const result=await api('social/'+button.dataset.connect+'/connect',{});location.assign(result.url)});
+  if(button.dataset.connect)action(button,async()=>{const provider=button.dataset.connect;const result=await api('social/'+provider+'/connect',{});if(provider==='facebook'){await loadState();notify('Página CWS conectada após validação da Meta. Nenhum post foi enviado.')}else location.assign(result.url)});
   if(button.dataset.disconnect)action(button,async()=>{await api('social/'+button.dataset.disconnect+'/disconnect',{});await loadState();notify('Conexão removida e envios pendentes cancelados. Você também pode revogar o aplicativo na rede social.')});
   if(button.dataset.cancelJob)action(button,async()=>{await api('jobs/'+button.dataset.cancelJob+'/cancel',{});await loadState()});
   if(button.dataset.metrics)action(button,async()=>{await api('metrics',{jobId:button.dataset.metrics});await loadState();notify('Métricas oficiais atualizadas.')});
