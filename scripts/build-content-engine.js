@@ -8,6 +8,9 @@ fs.mkdirSync(path.join(dist, 'studio'), { recursive: true });
 fs.copyFileSync(path.join(root, 'content-engine.html'), path.join(dist, 'index.html'));
 fs.copyFileSync(path.join(root, 'content-engine.html'), path.join(dist, 'content-engine.html'));
 fs.copyFileSync(path.join(root, 'leonardo-ads.html'), path.join(dist, 'leonardo-ads.html'));
+fs.mkdirSync(path.join(dist, 'privacy'), { recursive: true });
+fs.copyFileSync(path.join(root, 'privacy.html'), path.join(dist, 'privacy', 'index.html'));
+fs.copyFileSync(path.join(root, 'privacy.html'), path.join(dist, 'privacy.html'));
 fs.cpSync(path.join(root, 'engine'), path.join(dist, 'engine'), { recursive: true });
 for (const name of ['index.html','app.js','style.css','guide.js','guide.css','library.js','library.css','content-studio.js','content-studio.css','templates-render.js','lib','data','assets']) {
   fs.cpSync(path.join(root, name), path.join(dist, 'studio', name), { recursive: true });
