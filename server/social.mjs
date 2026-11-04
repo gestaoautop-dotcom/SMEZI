@@ -11,6 +11,11 @@ const config={
 };
 export function providerConfig(env,provider){
  const c=config[provider];if(!c)fail(400,'Rede inválida.');
+ if(provider==='instagram'){
+  const meta=unifiedInstagramConfig(env);
+  if(!/^[a-f0-9]{64}$/i.test(env.TOKEN_ENCRYPTION_KEY||''))fail(503,'Configure TOKEN_ENCRYPTION_KEY.');
+  return {...c,clientId:meta.clientId,clientSecret:meta.clientSecret,authMode:'unified'};
+ }
  const clientId=env[c.prefix+'_CLIENT_ID'],clientSecret=env[c.prefix+'_CLIENT_SECRET'];
  if(!clientId||!clientSecret||!/^[a-f0-9]{64}$/i.test(env.TOKEN_ENCRYPTION_KEY||''))fail(503,'Configure o aplicativo '+provider+' e a chave de criptografia no servidor.');
  if(provider==='instagram'&&!/^v\d+\.\d+$/.test(env.INSTAGRAM_API_VERSION||''))fail(503,'Configure INSTAGRAM_API_VERSION.');
