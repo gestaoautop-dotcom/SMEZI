@@ -1,5 +1,6 @@
 import {AppError,fail,json,identity,sameOrigin,body,baseURL,secretEqual,random} from './security.mjs';
 import {channelRegistry} from './channels-v3.mjs';
+import {connectCwsPage} from './facebook-pages.mjs';
 import {authReady,authConfiguration,login,callback,logout} from './auth.mjs';
 import {database,statement,snapshot,sync,approve,saveClient,createBackup,quota,now} from './store.mjs';
 import {PROVIDERS,providerReady,connect,socialCallback,metrics} from './social.mjs';
