@@ -40,6 +40,8 @@ export async function identifyUnifiedInstagram(env,token){
  if(d.is_valid!==true||String(d.app_id)!==String(clientId))fail(403,'A Meta não confirmou um token válido para este aplicativo.');
  const scopes=new Set([...(d.scopes||[]),...(d.granular_scopes||[]).map(x=>x.scope)]);
  if(!scopes.has('instagram_basic')||!scopes.has('instagram_content_publish'))fail(403,'A Meta não concedeu as permissões de identificação e publicação do Instagram.');
+ const missingPageScopes=['pages_show_list','pages_read_engagement'].filter(x=>!scopes.has(x));
+ if(missingPageScopes.length)fail(403,'IG_MISSING_PAGE_PERMISSIONS: Adicione à configuração de login da Meta e autorize: '+missingPageScopes.join(', ')+'. A consulta da conta profissional via Página exige essas permissões.');
  const bearer={Authorization:'Bearer '+token.access_token};
  const assets=await externalJSON('https://graph.facebook.com/'+version+'/me/assigned_instagram_accounts?fields=id,username&limit=25',{headers:bearer});
  const candidates=(Array.isArray(assets.data)?assets.data:[]).filter(x=>/^\d+$/.test(String(x.id||'')));
