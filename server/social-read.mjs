@@ -32,7 +32,7 @@ export async function socialRead(env,owner){
   if(provider==='facebook'){
    if(!grants.has('pages_read_engagement')){channel.posts=unavailable('Exige pages_read_engagement.',['pages_read_engagement']);channel.metrics=channel.posts;continue}
    channel.posts=await attempt(async()=>{
-    const result=await graph(env,row.account_id,'posts','id,message,created_time,permalink_url,comments.summary(true),reactions.summary(true)',credential.access_token);
+    const result=await graph(env,row.account_id,'posts','id,message,created_time,permalink_url',credential.access_token);
     return (result.data||[]).map(p=>({id:clean(p.id),text:clean(p.message),date:p.created_time||null,url:p.permalink_url||null,comments:finite(p.comments?.summary?.total_count),reactions:finite(p.reactions?.summary?.total_count)}));
    });
    channel.metrics=channel.posts.status==='available'?available(channel.posts.items.map(p=>({postId:p.id,comments:p.comments,reactions:p.reactions,source:'Graph post counters'}))):unavailable('As contagens não estão disponíveis.');
