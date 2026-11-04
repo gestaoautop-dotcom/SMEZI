@@ -27,6 +27,55 @@
  function renderConnections(){
   el('connectionsList').innerHTML=Object.entries(labels).map(([provider,label])=>{const conn=state?.connections.find(c=>c.provider===provider);return '<div class="entry row"><div><strong>'+label+'</strong><span class="hint">'+(conn?esc(conn.label)+' · validade: '+esc(new Date(conn.expires_at).toLocaleString('pt-BR')):status?.features.providers[provider]?'Aplicativo configurado; autorize sua conta.':'Aplicativo oficial ainda não configurado.')+'</span></div><div class="actions"><button class="btn" data-connect="'+provider+'" '+(!status?.user||!status.features.providers[provider]?'disabled':'')+'>'+(conn?'Reconectar':'Conectar conta')+'</button>'+(conn?'<button class="btn" data-disconnect="'+provider+'">Desconectar</button>':'')+'</div></div>'}).join('');
  }
+
+ const metaFormat=(value,style='decimal',currency='BRL')=>{
+  if(value===null||value===undefined||!Number.isFinite(Number(value)))return '—';
+  return new Intl.NumberFormat('pt-BR',style==='currency'?{style:'currency',currency}:{maximumFractionDigits:0}).format(Number(value));
+ };
+ let metaLoaded=false;
+ async function refreshMeta(){
+  const button=el('metaRefresh'),message=el('metaStatus');
+  if(!status?.user){message.textContent='Entre com GitHub para consultar a Meta Ads.';return}
+  if(!status.features.metaAds?.configured){message.textContent='A conexão Meta Ads ainda não está configurada no servidor.';return}
+  button.disabled=true;message.textContent='Consultando a Meta Ads…';
+  el('metaKpis').replaceChildren();el('metaCampaigns').replaceChildren();el('metaDisclosure').textContent='';
+  try{
+   const [account,campaigns,insights]=await Promise.all([
+    api('meta/account'),api('meta/campaigns'),api('meta/insights?days='+encodeURIComponent(el('metaPeriod').value))
+   ]);
+   const rows=Array.isArray(insights.rows)?insights.rows:[];
+   const currency=account.currency||'BRL';
+   el('metaAccount').textContent=(account.name||'Conta Meta')+' · '+(account.id||'')+' · '+currency+' · '+(account.timezone_name||'Fuso não informado');
+   const total=key=>rows.reduce((sum,row)=>sum+(Number.isFinite(Number(row[key]))&&row[key]!==null?Number(row[key]):0),0);
+   const reach=rows.length===1?metaFormat(rows[0].reach):'—';
+   const metrics=[
+    ['Investimento',metaFormat(total('spend'),'currency',currency)],
+    ['Impressões',metaFormat(total('impressions'))],
+    ['Cliques',metaFormat(total('clicks'))],
+    ['Alcance',reach],
+    ['Leads reportados',rows.some(row=>row.leads!==null)?metaFormat(total('leads')):'—']
+   ];
+   el('metaKpis').innerHTML=metrics.map(([name,value])=>'<div class="card"><div class="muted small">'+esc(name)+'</div><div class="stat">'+esc(value)+'</div></div>').join('');
+   const byId=new Map(rows.map(x=>[String(x.campaign_id),x]));
+   const list=Array.isArray(campaigns.campaigns)?campaigns.campaigns:[];
+   el('metaCampaigns').innerHTML='<h2>Campanhas ('+list.length+')</h2>'+
+    (list.length?list.map(c=>{
+     const m=byId.get(String(c.id));
+     return '<div class="entry"><div class="row"><strong>'+esc(c.name||'Campanha sem nome')+'</strong><span class="tag">'+esc(c.effective_status||c.status||'Não informado')+'</span></div>'+
+      '<p class="hint">Objetivo: '+esc(c.objective||'Não informado')+' · ID '+esc(c.id)+'</p>'+
+      '<p class="small">Investimento: '+esc(m?metaFormat(m.spend,'currency',currency):'Sem dados')+' · Impressões: '+esc(m?metaFormat(m.impressions):'—')+' · Cliques: '+esc(m?metaFormat(m.clicks):'—')+' · Leads: '+esc(m?metaFormat(m.leads):'—')+'</p></div>'
+    }).join(''):'<p class="muted">Nenhuma campanha retornada pela Meta.</p>');
+   el('metaDisclosure').textContent='Período '+insights.range.since+' a '+insights.range.until+'. '+(insights.note||'')+
+     (insights.hasMore||campaigns.hasMore?' Há mais páginas de dados na API; este painel mostra apenas a primeira página.':'');
+   message.textContent='Leitura concluída · '+new Date().toLocaleString('pt-BR')+'. Métricas ausentes permanecem sem valor.';
+   metaLoaded=true;
+  }catch(error){message.textContent='Não foi possível atualizar: '+error.message}
+  finally{button.disabled=false}
+ }
+ el('metaRefresh').onclick=refreshMeta;
+ document.querySelector('[data-view="analytics"]').addEventListener('click',()=>{
+  if(!metaLoaded&&status?.user)refreshMeta();
+ });
  function postOptions(){return '<option value="">Sem atribuição</option>'+engine.snapshot().posts.slice().reverse().map(p=>'<option value="'+esc(p.id)+'">'+esc(p.platform+' · '+p.text.slice(0,70))+'</option>').join('')}
  function renderState(){
   renderConnections();
