@@ -1,7 +1,7 @@
 // Leonardo V3: read-only capability registry. Never treats env vars as consent.
 // Missing adapters remain explicitly blocked until an official OAuth callback is implemented.
 const channels=[
- {id:'facebook',label:'Facebook Pages',mode:'page',required:['FACEBOOK_CLIENT_ID','FACEBOOK_CLIENT_SECRET','META_API_VERSION'],implemented:false,next:'Configurar Facebook Login e permissões de Página: pages_show_list, pages_read_engagement, pages_manage_posts.'},
+ {id:'facebook',label:'Facebook Pages',mode:'page',required:['META_APP_ID','META_APP_SECRET','META_API_VERSION'],implemented:false,next:'Configurar Facebook Login e permissões de Página: pages_show_list, pages_read_engagement, pages_manage_posts.'},
  {id:'instagram',label:'Instagram Professional',mode:'professional',required:['INSTAGRAM_CLIENT_ID','INSTAGRAM_CLIENT_SECRET','INSTAGRAM_API_VERSION'],implemented:true,next:'Configurar Instagram Login, revisar permissões e autorizar conta profissional.'},
  {id:'linkedin',label:'LinkedIn pessoal',mode:'personal',required:['LINKEDIN_CLIENT_ID','LINKEDIN_CLIENT_SECRET','LINKEDIN_VERSION'],implemented:true,next:'Conta pessoal autorizada; a publicação de mídia será implementada separadamente.'},
  {id:'threads',label:'Threads',mode:'account',required:['THREADS_CLIENT_ID','THREADS_CLIENT_SECRET'],implemented:true,next:'Criar aplicativo Threads, adicionar callback e scopes oficiais.'},
