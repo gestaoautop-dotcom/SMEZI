@@ -22,7 +22,18 @@
   el('accountState').textContent=status.user?'Conta autorizada: '+status.user.login+'. Sincronize para transferir suas versões locais.':f.authentication?'Entre com a conta GitHub autorizada. Seus dados locais permanecem neste navegador.':'O código do servidor está publicado. O login aguarda a configuração do aplicativo GitHub no Cloudflare.';
   el('loginBtn').classList.toggle('hidden',!!status.user||!f.authentication);
   el('servicesList').innerHTML=Object.entries({Login:f.authentication,'Banco D1':f.database,'Backup R2':f.backups,'Geração com IA':f.ai,'Publicação habilitada':f.publishing,'Agendador configurado':f.scheduler}).map(([label,ready])=>'<div class="entry">'+esc(label)+' <span class="tag">'+(ready?'Configurado':'Aguardando configuração')+'</span></div>').join('');
-  renderConnections();refreshActions();
+  renderConnections();renderConnectionsV3();refreshActions();
+ }
+ async function renderConnectionsV3(){
+  const target=el('connectionsV3');if(!target||!status?.user){if(target)target.textContent='Entre com sua conta para consultar a Central de Conexões V3.';return}
+  try{
+   const result=await api('channels/v3');
+   const stateLabels={connected:'Conta conectada',ready_to_authorize:'Pronto para autorizar',needs_configuration:'Configuração pendente',adapter_pending:'Integração em desenvolvimento'};
+   target.innerHTML='<p class="hint">Oito canais · somente conexões. Publicação e agendamento em massa não estão ativos.</p>'+result.channels.map(c=>{
+    const good=c.connected||c.connectEnabled;
+    return '<div class="entry row"><div><strong>'+esc(c.label)+'</strong><span class="hint">'+esc(c.connected?c.accountLabel+' · '+stateLabels.connected:stateLabels[c.state]||c.state)+'</span><p class="hint">'+esc(c.next)+'</p></div><div class="actions">'+(c.connectEnabled?'<button class="btn" data-connect="'+esc(c.id)+'">'+(c.connected?'Reconectar':'Conectar conta')+'</button>':(!c.adapterImplemented?'<span class="tag">Adaptador pendente</span>':'<span class="tag">Credenciais pendentes</span>'))+'</div></div>'
+   }).join('');
+  }catch(error){target.textContent='Não foi possível consultar a Central V3: '+error.message}
  }
  function renderConnections(){
   el('connectionsList').innerHTML=Object.entries(labels).map(([provider,label])=>{const conn=state?.connections.find(c=>c.provider===provider);return '<div class="entry row"><div><strong>'+label+'</strong><span class="hint">'+(conn?esc(conn.label)+' · validade: '+esc(new Date(conn.expires_at).toLocaleString('pt-BR')):status?.features.providers[provider]?'Aplicativo configurado; autorize sua conta.':'Aplicativo oficial ainda não configurado.')+'</span></div><div class="actions"><button class="btn" data-connect="'+provider+'" '+(!status?.user||!status.features.providers[provider]?'disabled':'')+'>'+(conn?'Reconectar':'Conectar conta')+'</button>'+(conn?'<button class="btn" data-disconnect="'+provider+'">Desconectar</button>':'')+'</div></div>'}).join('');
@@ -124,7 +135,7 @@
  });
  function postOptions(){return '<option value="">Sem atribuição</option>'+engine.snapshot().posts.slice().reverse().map(p=>'<option value="'+esc(p.id)+'">'+esc(p.platform+' · '+p.text.slice(0,70))+'</option>').join('')}
  function renderState(){
-  renderConnections();
+  renderConnections();renderConnectionsV3();
   const old=el('clientSource').value;el('clientSource').innerHTML=postOptions();el('clientSource').value=old;el('linkPost').innerHTML=postOptions();
   el('clientsList').innerHTML=state.clients.length?state.clients.map(c=>'<div class="entry"><strong>'+esc(c.name)+'</strong><span class="tag">'+esc(c.stage)+'</span><p class="hint">'+esc(c.project)+' · '+esc(c.email)+'</p><p class="small">'+esc(c.notes)+'</p><button class="btn" data-client="'+esc(c.id)+'">Editar contato</button> <button class="btn" data-history="'+esc(c.id)+'">Ver histórico</button></div>').join(''):'<p class="muted">Nenhum contato registrado. Comece por uma conversa real.</p>';
   const states={pending:'Na fila',preparing:'Preparando mídia',publishing:'Enviando',published:'Publicado',uncertain:'Entrega não confirmada · verificar na rede',failed:'Falhou',cancelled:'Cancelado'};
