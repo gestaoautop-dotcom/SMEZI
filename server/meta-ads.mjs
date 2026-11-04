@@ -13,6 +13,12 @@ export function metaReady(env) {
   );
 }
 
+function failureCategory(error) {
+  if (error?.name === 'TimeoutError' || error?.name === 'AbortError') return 'timeout';
+  if (error?.name === 'TypeError') return 'network_or_redirect';
+  return 'unexpected_fetch_error';
+}
+
 async function graphRead(env, endpoint, fields) {
   if (!metaReady(env)) fail(503, 'Configure META_ACCESS_TOKEN, META_AD_ACCOUNT_ID e META_API_VERSION no ambiente privado.');
   const url = new URL(API_HOST + '/' + env.META_API_VERSION + '/' + endpoint);
@@ -26,16 +32,23 @@ async function graphRead(env, endpoint, fields) {
       redirect: 'error',
       signal: AbortSignal.timeout(15000)
     });
-  } catch {
-    fail(502, 'Não foi possível consultar a Meta no momento.');
+  } catch (error) {
+    const category = failureCategory(error);
+    // Intentionally omit error.message, URLs, request headers, tokens and account identifiers.
+    console.warn('meta_ads_graph_fetch_failed', { category, operation: endpoint.endsWith('/campaigns') ? 'campaigns' : 'account' });
+    fail(502, 'Falha de comunicação com a Meta (' + category + ').');
   }
   if (!response.ok) {
+    console.warn('meta_ads_graph_http_error', { status: response.status, operation: endpoint.endsWith('/campaigns') ? 'campaigns' : 'account' });
     if (response.status === 400 || response.status === 401 || response.status === 403)
       fail(502, 'A Meta recusou a consulta. Verifique as permissões ads_read e a validade da credencial.');
     fail(502, 'A Meta não concluiu a consulta.');
   }
   let payload;
-  try { payload = await response.json(); } catch { fail(502, 'Resposta inválida da Meta.'); }
+  try { payload = await response.json(); } catch {
+    console.warn('meta_ads_graph_invalid_json', { operation: endpoint.endsWith('/campaigns') ? 'campaigns' : 'account' });
+    fail(502, 'Resposta inválida da Meta.');
+  }
   if (payload?.error) fail(502, 'A Meta recusou a consulta.');
   return payload;
 }
