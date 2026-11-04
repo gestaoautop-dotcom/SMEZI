@@ -43,6 +43,11 @@ export async function identifyUnifiedInstagram(env,token){
  const bearer={Authorization:'Bearer '+token.access_token};
  const assets=await externalJSON('https://graph.facebook.com/'+version+'/me/assigned_instagram_accounts?fields=id,username&limit=25',{headers:bearer});
  const candidates=(Array.isArray(assets.data)?assets.data:[]).filter(x=>/^\d+$/.test(String(x.id||'')));
+ if(candidates.length===0){
+  const pages=await externalJSON('https://graph.facebook.com/'+version+'/me/accounts?fields=id,name,instagram_business_account{id,username}&limit=25',{headers:bearer});
+  const linked=(Array.isArray(pages.data)?pages.data:[]).map(x=>x.instagram_business_account).filter(x=>x&&/^\d+$/.test(String(x.id||'')));
+  candidates.push(...linked);
+ }
  if(candidates.length===0)fail(409,'IG_ASSET_EMPTY: A Meta não retornou contas Instagram atribuídas ao usuário do sistema. Confirme a propriedade e atribuição da conta cws_work no portfólio Caroline.');
  if(candidates.length!==1||assets.paging?.next)fail(409,'IG_ASSET_MULTIPLE: A Meta retornou várias contas. Selecione uma única conta para o primeiro vínculo.');
  const account=candidates[0];
