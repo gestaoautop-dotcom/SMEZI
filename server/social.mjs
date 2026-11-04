@@ -1,5 +1,6 @@
 import {baseURL,sign,verify,cookie,cookies,random,hash,seal,unseal,external,externalJSON,fail} from './security.mjs';
 import {statement,now,audit} from './store.mjs';
+import {unifiedInstagramConfig,unifiedInstagramAuthorize,exchangeUnifiedInstagram,identifyUnifiedInstagram} from './instagram-unified.mjs';
 export const PROVIDERS=['x','linkedin','instagram','threads'];
 export const platformProvider={X:'x',LinkedIn:'linkedin',Instagram:'instagram',Threads:'threads'};
 const config={
