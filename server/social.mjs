@@ -27,9 +27,9 @@ const redirectURI=(env,provider)=>baseURL(env)+'/api/social/'+provider+'/callbac
 export async function connect(env,owner,provider){
  const c=providerConfig(env,provider),state=random(),verifier=random()+random();
  const signed=await sign(env,{sub:owner,provider,state,verifier},'social-oauth',600);
- const url=new URL(c.auth);url.search=new URLSearchParams({client_id:c.clientId,redirect_uri:redirectURI(env,provider),response_type:'code',state,scope:c.scope});
+ const url=provider==='instagram'?new URL(unifiedInstagramAuthorize(env,state)):new URL(c.auth);
+ if(provider!=='instagram')url.search=new URLSearchParams({client_id:c.clientId,redirect_uri:redirectURI(env,provider),response_type:'code',state,scope:c.scope});
  if(provider==='x'){url.searchParams.set('code_challenge',await hash(verifier));url.searchParams.set('code_challenge_method','S256')}
- if(provider==='instagram'){url.searchParams.set('enable_fb_login','0');url.searchParams.set('force_authentication','1')}
  return {url:url.href,cookie:cookie('__Host-smezi_oauth',signed,600)};
 }
 function tokenOptions(c,provider,values){const headers={'Content-Type':'application/x-www-form-urlencoded',Accept:'application/json'};const data={...values};if(provider==='x')headers.Authorization='Basic '+btoa(encodeURIComponent(c.clientId)+':'+encodeURIComponent(c.clientSecret));else Object.assign(data,{client_id:c.clientId,client_secret:c.clientSecret});if(provider==='instagram'){delete headers['Content-Type'];const form=new FormData();for(const [key,value] of Object.entries(data))form.append(key,value);return {method:'POST',headers,body:form}}return {method:'POST',headers,body:new URLSearchParams(data)}}
