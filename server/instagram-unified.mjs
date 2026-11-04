@@ -4,7 +4,7 @@ import {baseURL,externalJSON,fail} from './security.mjs';
 // This module never reads or modifies META_ACCESS_TOKEN (Meta Ads read-only integration).
 export function unifiedInstagramConfig(env){
  const clientId=env.META_APP_ID,clientSecret=env.META_APP_SECRET;
- const configId=env.INSTAGRAM_UNIFIED_CONFIG_ID,version=env.META_API_VERSION;
+ const configId=env.INSTAGRAM_PAGE_LOGIN_CONFIG_ID||env.INSTAGRAM_UNIFIED_CONFIG_ID,version=env.META_API_VERSION;
  if(!/^\d+$/.test(clientId||'')||!clientSecret||!/^\d+$/.test(configId||'')||!/^v\d+\.\d+$/.test(version||'')){
   fail(503,'Configure META_APP_ID, META_APP_SECRET, INSTAGRAM_UNIFIED_CONFIG_ID e META_API_VERSION em Production.');
  }
@@ -18,7 +18,10 @@ export function unifiedInstagramAuthorize(env,state){
   client_id:clientId,config_id:configId,redirect_uri:uri,
   response_type:'code',override_default_response_type:'true',state
  });
- // Permissions are chosen in the Meta configuration; never inject scope here.
+ // config_id defines OAuth scopes server-side at Meta. For Page discovery, provision
+ // INSTAGRAM_PAGE_LOGIN_CONFIG_ID with instagram_basic, instagram_content_publish,
+ // pages_show_list and pages_read_engagement. Never append URL scope alongside config_id.
+ // Keep INSTAGRAM_UNIFIED_CONFIG_ID as the legacy fallback until new config is verified.
  return url.href;
 }
 export async function exchangeUnifiedInstagram(env,code){
@@ -45,7 +48,7 @@ export async function identifyUnifiedInstagram(env,token){
  const candidates=(Array.isArray(assets.data)?assets.data:[]).filter(x=>/^\d+$/.test(String(x.id||'')));
  if(candidates.length===0){
   const missingPageScopes=['pages_show_list','pages_read_engagement'].filter(x=>!scopes.has(x));
-  if(missingPageScopes.length)fail(403,'IG_MISSING_PAGE_PERMISSIONS: A descoberta por Página precisa de: '+missingPageScopes.join(', ')+'. Atualize a configuração do login unificado na Meta.');
+  if(missingPageScopes.length)fail(403,'IG_MISSING_PAGE_PERMISSIONS: O token não recebeu '+missingPageScopes.join(', ')+'. Configure um Login for Business com estas permissões e informe o ID em INSTAGRAM_PAGE_LOGIN_CONFIG_ID.');
   let pages;
   try{
    pages=await externalJSON('https://graph.facebook.com/'+version+'/me/accounts?fields=id,name,instagram_business_account{id,username}&limit=25',{headers:bearer});
