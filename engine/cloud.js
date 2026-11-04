@@ -40,7 +40,17 @@
   button.disabled=true;message.textContent='Consultando a Meta Ads…';
   el('metaKpis').replaceChildren();el('metaCampaigns').replaceChildren();el('metaDisclosure').textContent='';
   try{
-   const response=await api('meta/analysis?days='+encodeURIComponent(el('metaPeriod').value));
+   let response,historyReady=true;
+   try {
+    response=await api('meta/analysis?days='+encodeURIComponent(el('metaPeriod').value));
+   } catch(error) {
+    if(!error.message.includes('0002_leonardo_ads.sql'))throw error;
+    historyReady=false;
+    const [account,campaigns,insights]=await Promise.all([
+     api('meta/account'),api('meta/campaigns'),api('meta/insights?days='+encodeURIComponent(el('metaPeriod').value))
+    ]);
+    response={account,campaigns,insights,warnings:['Ative a migração 0002 no D1 para registrar histórico e sugestões. A leitura atual continua em modo somente leitura.']};
+   }
    const {account,campaigns,insights}=response;
    const rows=Array.isArray(insights.rows)?insights.rows:[];
    const currency=account.currency||'BRL';
@@ -69,7 +79,11 @@
    message.textContent='Leitura concluída · '+new Date().toLocaleString('pt-BR')+'. Métricas ausentes permanecem sem valor.';
 
    el('metaDisclosure').textContent+=' '+(response.warnings||[]).join(' ');
-   await loadMetaMemory();
+   if(historyReady) await loadMetaMemory();
+   else {
+    el('metaHistory').textContent='Histórico aguardando a migração D1 0002.';
+    el('metaReviews').textContent='Sugestões com revisão humana aguardando a migração D1 0002.';
+   }
    metaLoaded=true;
   }catch(error){message.textContent='Não foi possível atualizar: '+error.message}
   finally{button.disabled=false}
