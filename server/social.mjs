@@ -41,10 +41,12 @@ async function longLived(provider,c,token){
 }
 export async function socialCallback(request,env,owner,provider){
  const c=providerConfig(env,provider),url=new URL(request.url);
+ if(provider==='instagram')await audit(env,owner,'instagram_oauth','callback_received');
  const state=await verify(env,cookies(request)['__Host-smezi_oauth']||'','social-oauth');
  if(state.sub!==owner||state.provider!==provider||state.state!==url.searchParams.get('state')||!url.searchParams.get('code'))fail(400,'Conexão expirada ou não autorizada.');
  let token=provider==='instagram'?await exchangeUnifiedInstagram(env,url.searchParams.get('code')):await externalJSON(c.token,tokenOptions(c,provider,{grant_type:'authorization_code',code:url.searchParams.get('code'),redirect_uri:redirectURI(env,provider),...(provider==='x'?{code_verifier:state.verifier}:{})}));
  if(!token.access_token)fail(502,'O provedor não forneceu credenciais.');
+ if(provider==='instagram')await audit(env,owner,'instagram_oauth','token_exchanged');
  if(provider!=='instagram')token=await longLived(provider,c,token);
  const headers={Authorization:'Bearer '+token.access_token};let account;
  if(provider==='x'){const result=await externalJSON('https://api.x.com/2/users/me',{headers});account={id:result.data?.id,label:result.data?.username}}
@@ -52,12 +54,14 @@ export async function socialCallback(request,env,owner,provider){
  if(provider==='threads'){const result=await externalJSON('https://graph.threads.net/v1.0/me?fields=id,username',{headers});account={id:result.id,label:result.username}}
  if(provider==='instagram'){
   const verified=await identifyUnifiedInstagram(env,token);
+  await audit(env,owner,'instagram_oauth','account_verified');
   account={id:verified.id,label:verified.label};token=verified.token;token.valid_until=verified.expiresAt;
  }
  if(!account?.id)fail(502,'Não foi possível identificar a conta autorizada.');
  const expires=provider==='instagram'?token.valid_until:Date.now()+Math.max(0,Number(token.expires_in)||3600)*1000;
  await statement(env,'INSERT INTO connections(owner,provider,account_id,label,encrypted_token,expires_at,updated_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(owner,provider) DO UPDATE SET account_id=excluded.account_id,label=excluded.label,encrypted_token=excluded.encrypted_token,expires_at=excluded.expires_at,updated_at=excluded.updated_at',owner,provider,String(account.id),String(account.label||account.id),await seal(env,token,owner+':'+provider),expires,now()).run();
  await audit(env,owner,'connect',provider);
+ if(provider==='instagram')await audit(env,owner,'instagram_oauth','connection_saved');
  return new Response(null,{status:302,headers:{Location:baseURL(env)+'/#connections','Set-Cookie':cookie('__Host-smezi_oauth','',0),'Cache-Control':'no-store','Referrer-Policy':'no-referrer'}});
 }
 export async function connection(env,owner,provider){
