@@ -29,7 +29,7 @@ async function graphRead(env, endpoint, fields) {
     response = await fetch(url.toString(), {
       method: 'GET',
       headers: { Authorization: 'Bearer ' + env.META_ACCESS_TOKEN, Accept: 'application/json' },
-      redirect: 'error',
+      redirect: 'manual',
       signal: AbortSignal.timeout(15000)
     });
   } catch (error) {
@@ -37,6 +37,10 @@ async function graphRead(env, endpoint, fields) {
     // Intentionally omit error.message, URLs, request headers, tokens and account identifiers.
     console.warn('meta_ads_graph_fetch_failed', { category, operation: endpoint.endsWith('/campaigns') ? 'campaigns' : 'account' });
     fail(502, 'Falha de comunicação com a Meta (' + category + ').');
+  }
+  if (response.status >= 300 && response.status < 400) {
+    console.warn('meta_ads_graph_redirect_blocked', { status: response.status, operation: endpoint.endsWith('/campaigns') ? 'campaigns' : 'account' });
+    fail(502, 'A Meta retornou um redirecionamento que foi bloqueado por segurança.');
   }
   if (!response.ok) {
     console.warn('meta_ads_graph_http_error', { status: response.status, operation: endpoint.endsWith('/campaigns') ? 'campaigns' : 'account' });
