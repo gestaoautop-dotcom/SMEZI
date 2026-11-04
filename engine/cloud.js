@@ -40,9 +40,8 @@
   button.disabled=true;message.textContent='Consultando a Meta Ads…';
   el('metaKpis').replaceChildren();el('metaCampaigns').replaceChildren();el('metaDisclosure').textContent='';
   try{
-   const [account,campaigns,insights]=await Promise.all([
-    api('meta/account'),api('meta/campaigns'),api('meta/insights?days='+encodeURIComponent(el('metaPeriod').value))
-   ]);
+   const response=await api('meta/analysis?days='+encodeURIComponent(el('metaPeriod').value));
+   const {account,campaigns,insights}=response;
    const rows=Array.isArray(insights.rows)?insights.rows:[];
    const currency=account.currency||'BRL';
    el('metaAccount').textContent=(account.name||'Conta Meta')+' · '+(account.id||'')+' · '+currency+' · '+(account.timezone_name||'Fuso não informado');
@@ -68,10 +67,43 @@
    el('metaDisclosure').textContent='Período '+insights.range.since+' a '+insights.range.until+'. '+(insights.note||'')+
      (insights.hasMore||campaigns.hasMore?' Há mais páginas de dados na API; este painel mostra apenas a primeira página.':'');
    message.textContent='Leitura concluída · '+new Date().toLocaleString('pt-BR')+'. Métricas ausentes permanecem sem valor.';
+
+   el('metaDisclosure').textContent+=' '+(response.warnings||[]).join(' ');
+   await loadMetaMemory();
    metaLoaded=true;
   }catch(error){message.textContent='Não foi possível atualizar: '+error.message}
   finally{button.disabled=false}
  }
+
+ async function loadMetaMemory(){
+  const days=encodeURIComponent(el('metaPeriod').value);
+  const [history,reviews]=await Promise.all([api('meta/history?days='+days),api('meta/reviews')]);
+  const list=Array.isArray(history)?history:[];
+  el('metaHistory').innerHTML=list.length?list.slice(0,10).map(h=>{
+   const records=Array.isArray(h.campaigns)?h.campaigns:[];
+   const spend=records.reduce((n,x)=>n+(Number(x.spend)||0),0);
+   return '<div class="entry"><strong>'+esc(new Date(h.collectedAt).toLocaleString('pt-BR'))+'</strong><div class="hint">'+esc(h.range.since)+' a '+esc(h.range.until)+' · '+esc(records.length)+' campanhas · investimento '+esc(metaFormat(spend,'currency',h.currency||'BRL'))+(h.hasMore?' · dados parciais':'')+'</div></div>';
+  }).join(''):'<p class="hint">Nenhuma leitura registrada.</p>';
+  const cards=Array.isArray(reviews)?reviews:[];
+  const labels={pending:'Aguardando sua revisão',approved:'Aprovada para planejamento',rejected:'Descartada'};
+  el('metaReviews').innerHTML=cards.length?cards.slice(0,30).map(item=>{
+   const ev=item.evidence||{};
+   const proof='Impressões: '+metaFormat(ev.impressions)+' · Cliques: '+metaFormat(ev.clicks)+' · Leads reportados: '+metaFormat(ev.leads);
+   return '<div class="entry"><strong>'+esc(item.title)+'</strong><span class="tag">'+esc(labels[item.status]||item.status)+'</span>'+
+    '<p class="hint">'+esc(item.explanation)+'</p><p class="small">Evidências: '+esc(proof)+'</p><p class="hint"><b>Proposta:</b> '+esc(item.proposed_action)+'</p>'+
+    (item.status==='pending'?'<div class="actions"><button type="button" class="btn" data-meta-decision="approved" data-meta-id="'+esc(item.id)+'">Aprovar sugestão</button><button type="button" class="btn" data-meta-decision="rejected" data-meta-id="'+esc(item.id)+'">Descartar</button></div>':'')+
+    '</div>';
+  }).join(''):'<p class="hint">Sem sugestões baseadas em evidências para as campanhas consultadas.</p>';
+ }
+ document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-meta-decision]');
+  if(!button)return;
+  action(button,async()=>{
+   await api('meta/reviews/decision',{id:button.dataset.metaId,decision:button.dataset.metaDecision});
+   await loadMetaMemory();
+   notify('Sua decisão foi registrada no D1. Nenhuma campanha ou orçamento foi alterado.');
+  });
+ });
  el('metaRefresh').onclick=refreshMeta;
  document.querySelector('[data-view="analytics"]').addEventListener('click',()=>{
   if(!metaLoaded&&status?.user)refreshMeta();
