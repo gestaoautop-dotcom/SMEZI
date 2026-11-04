@@ -58,7 +58,7 @@ export async function handle(request,env){
   database(env);
   if(path==='/api/diagnostics/instagram/oauth'&&method==='GET'){
    const rows=await statement(env,"SELECT record_id,at FROM audit WHERE owner=? AND action='instagram_oauth' ORDER BY at DESC LIMIT 12",owner).all();
-   const stages=new Set(['callback_received','token_exchanged','account_verified','connection_saved']);
+   const stages=new Set(['callback_received','token_exchanged','account_verified','connection_saved','verification_failed_permissions_or_token','verification_failed_account_asset','verification_failed_meta_graph_response','verification_failed_verification_unknown']);
    return json({stages:rows.results.filter(x=>stages.has(x.record_id)).map(x=>({stage:x.record_id,at:x.at})),credentialsExposed:false,publishingEnabled:false});
   }
   if(path==='/api/channels/v3'&&method==='GET'){
