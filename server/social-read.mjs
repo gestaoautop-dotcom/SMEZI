@@ -7,7 +7,7 @@ const finite=x=>x===null||x===undefined||!Number.isFinite(Number(x))?null:Number
 const clean=x=>String(x??'').slice(0,900);
 async function graph(env,id,edge,fields,accessToken,params={}){
  const version=env.META_API_VERSION;
- if(!/^v\\d+\\.\\d+$/.test(version||''))throw Error('Invalid Meta API version');
+ if(!/^v\d+\.\d+$/.test(version||''))throw Error('Invalid Meta API version');
  const u=new URL('https://graph.facebook.com/'+version+'/'+encodeURIComponent(String(id))+'/'+edge);
  u.searchParams.set('fields',fields);u.searchParams.set('limit','10');
  for(const [key,value] of Object.entries(params))u.searchParams.set(key,value);
