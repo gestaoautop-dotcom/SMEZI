@@ -31,6 +31,18 @@ export async function handle(request,env){
   const user=await identity(request,env),owner=user.sub;
   if(!['GET','HEAD'].includes(method))sameOrigin(request,env);
   if(path==='/api/auth/logout'&&method==='POST')return logout();
+  if(path==='/api/diagnostics/linkedin'&&method==='GET'){
+   const checks={
+    clientIdPresent:typeof env.LINKEDIN_CLIENT_ID==='string'&&env.LINKEDIN_CLIENT_ID.length>0,
+    clientSecretPresent:typeof env.LINKEDIN_CLIENT_SECRET==='string'&&env.LINKEDIN_CLIENT_SECRET.length>0,
+    versionValid:/^\\d{6}$/.test(env.LINKEDIN_VERSION||''),
+    encryptionKeyValid:/^[a-f0-9]{64}$/i.test(env.TOKEN_ENCRYPTION_KEY||'')
+   };
+   const response=json({ready:Object.values(checks).every(Boolean),checks,notes:'Boolean checks only; no credentials or raw values are returned.'});
+   response.headers.set('Cache-Control','no-store');
+   return response;
+  }
+
   database(env);
   if(path==='/api/meta/account'&&method==='GET')return json(await metaAccount(env));
   if(path==='/api/meta/campaigns'&&method==='GET')return json(await metaCampaigns(env));
