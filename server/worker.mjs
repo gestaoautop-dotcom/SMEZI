@@ -5,6 +5,7 @@ import {PROVIDERS,providerReady,connect,socialCallback,metrics} from './social.m
 import {schedule,cancel,tick} from './queue.mjs';
 import {generate} from './ai.mjs';
 import {metaReady,metaAccount,metaCampaigns,metaInsights} from './meta-ads.mjs';
+import {collectAds,historyAds,reviewsAds,decideAds} from './leonardo-ads.mjs';
 const features=env=>({authentication:authReady(env),database:!!env.DB,backups:!!env.BACKUPS,ai:!!((env.AI||env.ai)&&env.AI_MODEL),publishing:env.PUBLISHING_ENABLED==='true',scheduler:env.SCHEDULER_ENABLED==='true',providers:Object.fromEntries(PROVIDERS.map(p=>[p,providerReady(env,p)])),metaAds:{configured:metaReady(env),mode:'read-only'}});
 export async function handle(request,env){
  const url=new URL(request.url),path=url.pathname,method=request.method;
@@ -34,6 +35,12 @@ export async function handle(request,env){
   if(path==='/api/meta/account'&&method==='GET')return json(await metaAccount(env));
   if(path==='/api/meta/campaigns'&&method==='GET')return json(await metaCampaigns(env));
   if(path==='/api/meta/insights'&&method==='GET')return json(await metaInsights(env, url.searchParams.get('days') || '7'));
+  if(path==='/api/meta/analysis'&&method==='GET')return json(await collectAds(env,owner,url.searchParams.get('days')||'7'));
+  if(path==='/api/meta/history'&&method==='GET')return json(await historyAds(env,owner,url.searchParams.get('days')||'7'));
+  if(path==='/api/meta/reviews'&&method==='GET')return json(await reviewsAds(env,owner));
+  if(path==='/api/meta/reviews/decision'&&method==='POST'){
+   const input=await body(request);return json(await decideAds(env,owner,input.id,input.decision));
+  }
   if(path==='/api/state'&&method==='GET'){
    const data=await snapshot(env,owner);
    const [clients,jobs,approvals,connections,metricsData,clicks,heartbeat]=await Promise.all([
