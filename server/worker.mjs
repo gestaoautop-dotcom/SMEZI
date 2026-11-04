@@ -1,6 +1,7 @@
 import {AppError,fail,json,identity,sameOrigin,body,baseURL,secretEqual,random} from './security.mjs';
 import {channelRegistry} from './channels-v3.mjs';
 import {connectCwsPage} from './facebook-pages.mjs';
+import {socialRead} from './social-read.mjs';
 import {authReady,authConfiguration,login,callback,logout} from './auth.mjs';
 import {database,statement,snapshot,sync,approve,saveClient,createBackup,quota,now} from './store.mjs';
 import {PROVIDERS,providerReady,connect,socialCallback,metrics} from './social.mjs';
@@ -63,6 +64,7 @@ export async function handle(request,env){
    return json({stages:rows.results.filter(x=>stages.has(x.record_id)).map(x=>({stage:x.record_id,at:x.at})),credentialsExposed:false,publishingEnabled:false});
   }
   if(path==='/api/social/facebook/connect'&&method==='POST')return json(await connectCwsPage(env,owner));
+  if(path==='/api/social/read'&&method==='GET')return json(await socialRead(env,owner));
   if(path==='/api/channels/v3'&&method==='GET'){
    const rows=await statement(env,'SELECT provider,label,expires_at FROM connections WHERE owner=?',owner).all();
    const response=json({version:3,publishingEnabled:false,channels:channelRegistry(env,rows.results)});
