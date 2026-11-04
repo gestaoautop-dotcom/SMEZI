@@ -14,7 +14,11 @@ async function graph(env,id,edge,fields,accessToken,params={}){
  return externalJSON(u.href,{headers:{Authorization:'Bearer '+accessToken}});
 }
 async function attempt(fn){
- try{return available(await fn())}catch{return unavailable('A API Graph não confirmou esta leitura; verifique as permissões da conta.')}
+ try{return available(await fn())}catch(error){
+  const status=Number(error.externalStatus)||null;
+  const reason=status===400?'A Meta recusou os campos ou o acesso ao recurso (HTTP 400).':status===403?'A Meta negou acesso ao recurso (HTTP 403).':status===401?'O token não foi aceito (HTTP 401).':status===429?'Limite de consultas da Meta atingido (HTTP 429).':status?'A Meta retornou HTTP '+status+'.':'A resposta da Graph API não foi confirmada.';
+  return {...unavailable(reason),httpStatus:status};
+ }
 }
 export async function socialRead(env,owner){
  const rows=await statement(env,"SELECT provider,account_id,encrypted_token,expires_at FROM connections WHERE owner=? AND provider IN ('facebook','instagram','linkedin')",owner).all();
