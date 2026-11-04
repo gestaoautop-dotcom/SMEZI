@@ -56,6 +56,11 @@ export async function handle(request,env){
    return json({ready:Object.values(checks).every(Boolean),checks,notes:'Authenticated diagnostic; only boolean validations are returned. No credentials are exposed.'});
   }
   database(env);
+  if(path==='/api/diagnostics/instagram/oauth'&&method==='GET'){
+   const rows=await statement(env,"SELECT record_id,at FROM audit WHERE owner=? AND action='instagram_oauth' ORDER BY at DESC LIMIT 12",owner).all();
+   const stages=new Set(['callback_received','token_exchanged','account_verified','connection_saved']);
+   return json({stages:rows.results.filter(x=>stages.has(x.record_id)).map(x=>({stage:x.record_id,at:x.at})),credentialsExposed:false,publishingEnabled:false});
+  }
   if(path==='/api/channels/v3'&&method==='GET'){
    const rows=await statement(env,'SELECT provider,label,expires_at FROM connections WHERE owner=?',owner).all();
    const response=json({version:3,publishingEnabled:false,channels:channelRegistry(env,rows.results)});
