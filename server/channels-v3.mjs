@@ -1,7 +1,7 @@
 // Leonardo V3: read-only capability registry. Never treats env vars as consent.
 // Missing adapters remain explicitly blocked until an official OAuth callback is implemented.
 const channels=[
- {id:'facebook',label:'Facebook Pages',mode:'page',required:['META_APP_ID','META_APP_SECRET','META_API_VERSION'],implemented:false,next:'Preparar leitura segura da Página CWS usando autorização Meta já concedida; sem publicação.'},
+ {id:'facebook',label:'Facebook Pages',mode:'page',required:['META_APP_ID','META_APP_SECRET','META_API_VERSION'],implemented:true,next:'Conectar Página CWS usando o Instagram já autorizado; nenhuma publicação será enviada.'},
  {id:'instagram',label:'Instagram Professional',mode:'professional',required:['META_APP_ID','META_APP_SECRET','META_API_VERSION','INSTAGRAM_UNIFIED_CONFIG_ID'],implemented:true,next:'Login unificado Meta: autorizar conta profissional, verificar permissões e ativo. Publicação permanece desativada.'},
  {id:'linkedin',label:'LinkedIn pessoal',mode:'personal',required:['LINKEDIN_CLIENT_ID','LINKEDIN_CLIENT_SECRET','LINKEDIN_VERSION'],implemented:true,next:'Conta pessoal autorizada; a publicação de mídia será implementada separadamente.'},
  {id:'threads',label:'Threads',mode:'account',required:['THREADS_CLIENT_ID','THREADS_CLIENT_SECRET'],implemented:true,next:'Criar aplicativo Threads, adicionar callback e scopes oficiais.'},
