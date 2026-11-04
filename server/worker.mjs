@@ -62,6 +62,7 @@ export async function handle(request,env){
    const stages=new Set(['callback_received','token_exchanged','account_verified','connection_saved','verification_failed_permissions_or_token','verification_failed_account_asset','verification_failed_meta_graph_response','verification_failed_verification_unknown']);
    return json({stages:rows.results.filter(x=>stages.has(x.record_id)).map(x=>({stage:x.record_id,at:x.at})),credentialsExposed:false,publishingEnabled:false});
   }
+  if(path==='/api/social/facebook/connect'&&method==='POST')return json(await connectCwsPage(env,owner));
   if(path==='/api/channels/v3'&&method==='GET'){
    const rows=await statement(env,'SELECT provider,label,expires_at FROM connections WHERE owner=?',owner).all();
    const response=json({version:3,publishingEnabled:false,channels:channelRegistry(env,rows.results)});
