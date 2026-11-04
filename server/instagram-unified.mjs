@@ -53,7 +53,14 @@ export async function identifyUnifiedInstagram(env,token){
   const linked=(Array.isArray(pages.data)?pages.data:[]).map(x=>x.instagram_business_account).filter(x=>x&&/^\d+$/.test(String(x.id||'')));
   candidates.push(...linked);
  }
- if(candidates.length===0)fail(409,'IG_PAGE_ASSET_EMPTY: Nenhuma conta Instagram foi retornada pelas consultas de ativos atribuídos ou Páginas. Verifique quais ativos o token efetivamente pode consultar.');
+ if(candidates.length===0){
+  const expectedId=env.INSTAGRAM_EXPECTED_ACCOUNT_ID||'17841452697239527';
+  let direct;
+  try{direct=await externalJSON('https://graph.facebook.com/'+version+'/'+encodeURIComponent(expectedId)+'?fields=id,username',{headers:bearer});}
+  catch{fail(409,'IG_DIRECT_ACCESS_DENIED: A Meta negou a consulta direta do Instagram autorizado.');}
+  if(String(direct.id)!==String(expectedId)||String(direct.username||'').toLowerCase()!=='cws_work')fail(409,'IG_DIRECT_MISMATCH: A conta retornada não corresponde a cws_work.');
+  candidates.push({id:String(direct.id),username:direct.username});
+ }
  if(candidates.length!==1||assets.paging?.next)fail(409,'IG_ASSET_MULTIPLE: A Meta retornou várias contas. Selecione uma única conta para o primeiro vínculo.');
  const account=candidates[0];
  // Confirm the selected asset is accessible with this token, instead of trusting the list alone.
