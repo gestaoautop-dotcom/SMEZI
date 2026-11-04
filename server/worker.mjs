@@ -1,4 +1,5 @@
 import {AppError,fail,json,identity,sameOrigin,body,baseURL,secretEqual,random} from './security.mjs';
+import {channelRegistry} from './channels-v3.mjs';
 import {authReady,authConfiguration,login,callback,logout} from './auth.mjs';
 import {database,statement,snapshot,sync,approve,saveClient,createBackup,quota,now} from './store.mjs';
 import {PROVIDERS,providerReady,connect,socialCallback,metrics} from './social.mjs';
@@ -44,6 +45,11 @@ export async function handle(request,env){
   }
 
   database(env);
+  if(path==='/api/channels/v3'&&method==='GET'){
+   const rows=await statement(env,'SELECT provider,label,expires_at FROM connections WHERE owner=?',owner).all();
+   const response=json({version:3,publishingEnabled:false,channels:channelRegistry(env,rows.results)});
+   response.headers.set('Cache-Control','no-store');return response;
+  }
   if(path==='/api/meta/account'&&method==='GET')return json(await metaAccount(env));
   if(path==='/api/meta/campaigns'&&method==='GET')return json(await metaCampaigns(env));
   if(path==='/api/meta/insights'&&method==='GET')return json(await metaInsights(env, url.searchParams.get('days') || '7'));
