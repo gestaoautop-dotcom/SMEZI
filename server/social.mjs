@@ -66,6 +66,10 @@ export async function connection(env,owner,provider){
  if(row.expires_at<Date.now()+600000){
   const c=providerConfig(env,provider);let fresh;
   if(provider==='x'&&token.refresh_token)fresh=await externalJSON(c.token,tokenOptions(c,provider,{grant_type:'refresh_token',refresh_token:token.refresh_token}));
+  else if(provider==='instagram'&&token.auth_mode==='instagram_unified'){
+   if(row.expires_at<Date.now())fail(409,'Reconecte o Instagram: token expirado.');
+   // No old instagram.com token refresh for Meta system-user credentials.
+  }
   else if(['threads','instagram'].includes(provider)&&row.expires_at>Date.now()){
    const url=new URL(provider==='threads'?'https://graph.threads.net/refresh_access_token':'https://graph.instagram.com/refresh_access_token');url.search=new URLSearchParams({grant_type:provider==='threads'?'th_refresh_token':'ig_refresh_token',access_token:token.access_token});fresh=await externalJSON(url.href);
   }else if(row.expires_at<Date.now())fail(409,'A conexão expirou. Reconecte '+provider+'.');
@@ -74,6 +78,7 @@ export async function connection(env,owner,provider){
  return {accountId:row.account_id,token:token.access_token};
 }
 export async function prepareMedia(env,provider,account,text,mediaURL){
+ if(provider==='instagram')fail(503,'Envio de mídia Instagram Unified Login ainda não habilitado.');
  if(!['instagram','threads'].includes(provider))return null;
  const base=provider==='threads'?'https://graph.threads.net/v1.0':'https://graph.instagram.com/'+env.INSTAGRAM_API_VERSION;
  const values=provider==='threads'?{media_type:'TEXT',text,auto_publish_text:'false'}:{image_url:mediaURL,caption:text};
@@ -86,6 +91,7 @@ export async function mediaReady(env,provider,account,containerId){
  if(['ERROR','EXPIRED'].includes(result[field]))fail(422,'A rede recusou ou expirou a mídia.');return result[field]==='FINISHED';
 }
 export async function publish(env,provider,account,post,containerId){
+ if(provider==='instagram')fail(503,'Publicação Instagram Unified Login ainda não habilitada.');
  const headers={Authorization:'Bearer '+account.token};let response,data;
  if(provider==='x'){
   response=await external('https://api.x.com/2/tweets',{method:'POST',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({text:post.text})});data=await response.json();return data.data?.id;
@@ -97,6 +103,7 @@ export async function publish(env,provider,account,post,containerId){
  data=await externalJSON(base+'/'+encodeURIComponent(account.accountId)+(provider==='threads'?'/threads_publish':'/media_publish'),{method:'POST',headers:{...headers,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({creation_id:containerId})});return data.id;
 }
 export async function metrics(env,owner,job){
+ if(job.provider==='instagram')fail(503,'Métricas Instagram Unified Login ainda não habilitadas.');
  const account=await connection(env,owner,job.provider),headers={Authorization:'Bearer '+account.token};
  if(job.provider==='x'){const result=await externalJSON('https://api.x.com/2/tweets/'+encodeURIComponent(job.remote_id)+'?tweet.fields=public_metrics',{headers});return result.data?.public_metrics||{}}
  if(job.provider==='threads'){const result=await externalJSON('https://graph.threads.net/v1.0/'+encodeURIComponent(job.remote_id)+'/insights?metric=views,likes,replies,reposts,quotes',{headers});return result.data}
