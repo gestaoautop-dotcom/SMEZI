@@ -35,7 +35,7 @@ export async function handle(request,env){
    const checks={
     clientIdPresent:typeof env.LINKEDIN_CLIENT_ID==='string'&&env.LINKEDIN_CLIENT_ID.length>0,
     clientSecretPresent:typeof env.LINKEDIN_CLIENT_SECRET==='string'&&env.LINKEDIN_CLIENT_SECRET.length>0,
-    versionValid:/^\\d{6}$/.test(env.LINKEDIN_VERSION||''),
+    versionValid:/^\d{6}$/.test(env.LINKEDIN_VERSION||''),
     encryptionKeyValid:/^[a-f0-9]{64}$/i.test(env.TOKEN_ENCRYPTION_KEY||'')
    };
    const response=json({ready:Object.values(checks).every(Boolean),checks,notes:'Boolean checks only; no credentials or raw values are returned.'});
