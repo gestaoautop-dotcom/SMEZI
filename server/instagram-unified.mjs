@@ -43,12 +43,12 @@ export async function identifyUnifiedInstagram(env,token){
  const bearer={Authorization:'Bearer '+token.access_token};
  const assets=await externalJSON('https://graph.facebook.com/'+version+'/me/assigned_instagram_accounts?fields=id,username&limit=25',{headers:bearer});
  const candidates=(Array.isArray(assets.data)?assets.data:[]).filter(x=>/^\d+$/.test(String(x.id||'')));
- if(candidates.length===0)fail(409,'Nenhuma conta profissional Instagram foi disponibilizada pelo login unificado. Confira a seleção de ativos na Meta.');
- if(candidates.length!==1||assets.paging?.next)fail(409,'Foram encontrados vários ativos. Autorize uma única conta Instagram neste primeiro vínculo.');
+ if(candidates.length===0)fail(409,'IG_ASSET_EMPTY: A Meta não retornou contas Instagram atribuídas ao usuário do sistema. Confirme a propriedade e atribuição da conta cws_work no portfólio Caroline.');
+ if(candidates.length!==1||assets.paging?.next)fail(409,'IG_ASSET_MULTIPLE: A Meta retornou várias contas. Selecione uma única conta para o primeiro vínculo.');
  const account=candidates[0];
  // Confirm the selected asset is accessible with this token, instead of trusting the list alone.
  const selected=await externalJSON('https://graph.facebook.com/'+version+'/'+encodeURIComponent(String(account.id))+'?fields=id,username',{headers:bearer});
- if(String(selected.id)!==String(account.id))fail(409,'Não foi possível confirmar a conta Instagram autorizada.');
+ if(String(selected.id)!==String(account.id))fail(409,'IG_ASSET_MISMATCH: A Meta não confirmou o identificador da conta selecionada.');
  const maxMs=253402300799000;
  const absolute=Number(d.expires_at)||0;
  const seconds=Number(token.expires_in)||0;
