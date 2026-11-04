@@ -23,7 +23,7 @@ export function channelRegistry(env,connections=[]){
    connected:!!connected,accountLabel:connected?.label||null,expiresAt:connected?.expires_at||null,
    state:connected?'connected':available?'ready_to_authorize':c.implemented?'needs_configuration':'adapter_pending',
    next:c.next,
-   callback:c.implemented?'/api/social/'+c.id+'/callback':null,
+   callback:c.implemented&&c.id!=='facebook'?'/api/social/'+c.id+'/callback':null,
    requiredVariableNames:c.required,
    // Do not infer API scope grants or publishing rights from the presence of keys.
    publishingVerified:false
