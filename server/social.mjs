@@ -53,7 +53,12 @@ export async function socialCallback(request,env,owner,provider){
  if(provider==='linkedin'){const result=await externalJSON('https://api.linkedin.com/v2/userinfo',{headers});account={id:result.sub,label:result.name}}
  if(provider==='threads'){const result=await externalJSON('https://graph.threads.net/v1.0/me?fields=id,username',{headers});account={id:result.id,label:result.username}}
  if(provider==='instagram'){
-  const verified=await identifyUnifiedInstagram(env,token);
+  let verified;
+  try{verified=await identifyUnifiedInstagram(env,token)}catch(err){
+   const reason=err.status===403?'permissions_or_token':err.status===409?'account_asset':err.status===502?'meta_graph_response':'verification_unknown';
+   await audit(env,owner,'instagram_oauth','verification_failed_'+reason);
+   throw err;
+  }
   await audit(env,owner,'instagram_oauth','account_verified');
   account={id:verified.id,label:verified.label};token=verified.token;token.valid_until=verified.expiresAt;
  }
