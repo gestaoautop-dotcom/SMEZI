@@ -2,7 +2,7 @@
 // Missing adapters remain explicitly blocked until an official OAuth callback is implemented.
 const channels=[
  {id:'facebook',label:'Facebook Pages',mode:'page',required:['META_APP_ID','META_APP_SECRET','META_API_VERSION'],implemented:false,next:'Configurar Facebook Login e permissões de Página: pages_show_list, pages_read_engagement, pages_manage_posts.'},
- {id:'instagram',label:'Instagram Professional',mode:'professional',required:['INSTAGRAM_CLIENT_ID','INSTAGRAM_CLIENT_SECRET','INSTAGRAM_API_VERSION'],implemented:true,next:'Configurar Instagram Login, revisar permissões e autorizar conta profissional.'},
+ {id:'instagram',label:'Instagram Professional',mode:'professional',required:['META_APP_ID','META_APP_SECRET','META_API_VERSION','INSTAGRAM_UNIFIED_CONFIG_ID'],implemented:true,next:'Login unificado Meta: autorizar conta profissional, verificar permissões e ativo. Publicação permanece desativada.'},
  {id:'linkedin',label:'LinkedIn pessoal',mode:'personal',required:['LINKEDIN_CLIENT_ID','LINKEDIN_CLIENT_SECRET','LINKEDIN_VERSION'],implemented:true,next:'Conta pessoal autorizada; a publicação de mídia será implementada separadamente.'},
  {id:'threads',label:'Threads',mode:'account',required:['THREADS_CLIENT_ID','THREADS_CLIENT_SECRET'],implemented:true,next:'Criar aplicativo Threads, adicionar callback e scopes oficiais.'},
  {id:'tiktok',label:'TikTok',mode:'creator',required:['TIKTOK_CLIENT_KEY','TIKTOK_CLIENT_SECRET'],implemented:false,next:'Cadastrar TikTok Login Kit e Content Posting API; autorização e auditoria podem ser necessárias.'},
