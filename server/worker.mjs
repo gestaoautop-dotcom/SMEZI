@@ -44,6 +44,17 @@ export async function handle(request,env){
    return response;
   }
 
+  if(path==='/api/diagnostics/instagram'&&method==='GET'){
+   const checks={
+    appIdPresent:typeof env.META_APP_ID==='string'&&env.META_APP_ID.length>0,
+    appIdNumeric:/^\d+$/.test(env.META_APP_ID||''),
+    appSecretPresent:typeof env.META_APP_SECRET==='string'&&env.META_APP_SECRET.length>0,
+    unifiedConfigIdValid:/^\d+$/.test(env.INSTAGRAM_UNIFIED_CONFIG_ID||''),
+    apiVersionValid:/^v\d+\.\d+$/.test(env.META_API_VERSION||''),
+    encryptionKeyValid:/^[a-f0-9]{64}$/i.test(env.TOKEN_ENCRYPTION_KEY||'')
+   };
+   return json({ready:Object.values(checks).every(Boolean),checks,notes:'Authenticated diagnostic; only boolean validations are returned. No credentials are exposed.'});
+  }
   database(env);
   if(path==='/api/channels/v3'&&method==='GET'){
    const rows=await statement(env,'SELECT provider,label,expires_at FROM connections WHERE owner=?',owner).all();
