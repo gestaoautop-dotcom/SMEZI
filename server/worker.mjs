@@ -1,4 +1,5 @@
 import {AppError,fail,json,identity,sameOrigin,body,baseURL,secretEqual,random} from './security.mjs';
+import {handleConversationWebhook} from './conversations-webhook.mjs';
 import {channelRegistry} from './channels-v3.mjs';
 import {connectCwsPage} from './facebook-pages.mjs';
 import {socialRead} from './social-read.mjs';
@@ -13,6 +14,7 @@ const features=env=>({authentication:authReady(env),database:!!env.DB,backups:!!
 export async function handle(request,env){
  const url=new URL(request.url),path=url.pathname,method=request.method;
  try{
+  if(path==='/api/webhooks/meta')return await handleConversationWebhook(request,env);
   if(path.startsWith('/r/'))return await trackedRedirect(request,env,path.slice(3));
   if(!path.startsWith('/api/'))return env.ASSETS.fetch(request);
   if(path==='/api/status'&&method==='GET'){
