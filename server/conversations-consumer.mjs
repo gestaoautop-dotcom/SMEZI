@@ -16,7 +16,10 @@ async function processOne(env,event){
  const row=await statement(env,"SELECT account_id,encrypted_token,expires_at FROM connections WHERE owner=? AND provider='instagram'",owner).first();
  if(!row||String(row.account_id)!==event.accountId)return;
  const inserted=await statement(env,"INSERT INTO conversation_webhook_events(id,owner,channel_account_id,sender_id,received_at,status) VALUES(?,?,?,?,?,'received') ON CONFLICT(id) DO NOTHING RETURNING id",event.id,owner,event.accountId,event.senderId,now()).first();
- if(!inserted)return; // Durable idempotency, including concurrent queue deliveries.
+ if(!inserted){
+  const prior=await statement(env,'SELECT status FROM conversation_webhook_events WHERE id=? AND owner=?',event.id,owner).first();
+  if(!prior||prior.status!=='received')return;
+ } // A previously persisted event may have been interrupted before processing.
  if(env.CONVERSATIONS_AUTO_REPLY_ENABLED!=='true'){
   await statement(env,"UPDATE conversation_webhook_events SET status='disabled' WHERE id=?",event.id).run();return;
  }
@@ -26,7 +29,7 @@ async function processOne(env,event){
  // Default deny. The existing publishing grants do not authorize private messages.
  const token=await unseal(env,row.encrypted_token,owner+':instagram');
  const grants=new Set(token.granted_scopes||[]);
- if(!grants.has('instagram_manage_messages')&&!grants.has('instagram_manage_messaging')){
+ if(!grants.has('instagram_manage_messages')){
   await statement(env,"UPDATE conversation_webhook_events SET status='missing_permission' WHERE id=?",event.id).run();return;
  }
  if(Number(row.expires_at)<=Date.now()){
