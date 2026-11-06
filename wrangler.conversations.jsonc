@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "leonardo-conversations-consumer",
+  "main": "workers/conversations-consumer.mjs",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "vars": {
+    "CONVERSATIONS_AUTO_REPLY_ENABLED": "false"
+  }
+}
