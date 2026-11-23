@@ -7,6 +7,7 @@ import {database,statement,snapshot,sync,approve,saveClient,createBackup,quota,n
 import {PROVIDERS,providerReady,connect,socialCallback,metrics} from './social.mjs';
 import {schedule,cancel,tick} from './queue.mjs';
 import {generate} from './ai.mjs';
+import {askOfficialAI,providerStatus} from './official-ai.mjs';
 import {metaReady,metaAccount,metaCampaigns,metaInsights} from './meta-ads.mjs';
 import {collectAds,historyAds,reviewsAds,decideAds} from './leonardo-ads.mjs';
 const features=env=>({authentication:authReady(env),database:!!env.DB,backups:!!env.BACKUPS,ai:!!((env.AI||env.ai)&&env.AI_MODEL),publishing:env.PUBLISHING_ENABLED==='true',scheduler:env.SCHEDULER_ENABLED==='true',providers:Object.fromEntries(PROVIDERS.map(p=>[p,providerReady(env,p)])),metaAds:{configured:metaReady(env),mode:'read-only'}});
@@ -58,6 +59,8 @@ export async function handle(request,env){
    return json({ready:Object.values(checks).every(Boolean),checks,notes:'Authenticated diagnostic; only boolean validations are returned. No credentials are exposed.'});
   }
   database(env);
+  if(path==='/api/ai/providers'&&method==='GET')return json({providers:providerStatus(env),mode:'manual'});
+  if(path==='/api/ai/ask'&&method==='POST')return json(await askOfficialAI(env,owner,await body(request,12000)));
   if(path==='/api/diagnostics/instagram/oauth'&&method==='GET'){
    const rows=await statement(env,"SELECT record_id,at FROM audit WHERE owner=? AND action='instagram_oauth' ORDER BY at DESC LIMIT 12",owner).all();
    const stages=new Set(['callback_received','token_exchanged','account_verified','connection_saved','verification_failed_permissions_or_token','verification_failed_account_asset','verification_failed_meta_graph_response','verification_failed_verification_unknown']);
