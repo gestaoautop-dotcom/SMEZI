@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leonardo | Automações</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#0b0e13;color:#ecf1f8}
+*{box-sizing:border-box}body{margin:0;background:#0b0e13}main{max-width:1180px;margin:0 auto;padding:30px 20px 60px}
+a{color:#a8caff}.eyebrow{font-size:12px;letter-spacing:.17em;color:#93a9c1;text-transform:uppercase}
+h1{font-size:clamp(26px,4vw,40px);letter-spacing:-.04em;margin:10px 0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15px;margin:0 0 4px}
+.muted{color:#9dacbe;font-size:13px;line-height:1.6}.notice{color:#f4ca8e}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.layout{grid-template-columns:1fr}}
+.card{background:#131b26;border:1px solid #304155;border-radius:17px;padding:20px;margin-top:16px}
+label{display:block;margin:13px 0 6px;font-size:13px;color:#c4d2e3}
+input,select,textarea{width:100%;font:inherit;background:#0d131c;color:#edf4fc;border:1px solid #40546c;border-radius:10px;padding:10px}
+textarea{min-height:80px;resize:vertical}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;background:#d8eaff;color:#091829;padding:10px 14px;font-weight:700}
+button.ghost{background:transparent;color:#d8eaff;border:1px solid #40546c;font-weight:600}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #82bfff;outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:140px}
+.check{display:flex;gap:8px;align-items:center;margin-top:14px}.check input{width:auto}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.entry{border-top:1px solid #263445;padding:14px 0}
+.chip{display:inline-block;border:1px solid #3c4d61;border-radius:100px;padding:2px 9px;font-size:11px;color:#a4b7d1;margin:2px 4px 2px 0}
+.chip.on{border-color:#5fbf8f;color:#9fe3bf}.chip.off{border-color:#8a5a5a;color:#e3a3a3}.chip.warn{border-color:#c9a25a;color:#f4ca8e}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tabs button[aria-pressed=true]{background:#d8eaff;color:#091829}
+.quote{background:#0d131c;border:1px solid #33465c;border-radius:10px;padding:10px;white-space:pre-wrap;overflow-wrap:anywhere}
+</style></head><body><main>
+<a href="/">← Voltar ao Leonardo</a>
+<p class="eyebrow">LEONARDO / AUTOMAÇÕES</p>
+<h1>Respostas por palavra-gatilho</h1>
+<p class="muted">Quando alguém comenta ou envia DM com uma palavra-gatilho, o Leonardo prepara a resposta pública e/ou privada. Por padrão, toda regra nasce desativada e no modo aprovação: nada é enviado sem você.</p>
+<div id="status" class="muted notice" role="status" aria-live="polite">Carregando…</div>
+
+<div class="layout">
+<section class="card" aria-labelledby="formTitle">
+ <h2 id="formTitle">Nova regra</h2>
+ <input type="hidden" id="ruleId">
+ <label for="name">Nome</label><input id="name" maxlength="120" placeholder="Ex.: Comentou QUERO → enviar link do catálogo">
+ <div class="row">
+  <div><label for="channel">Canal</label><select id="channel"><option value="instagram">Instagram</option><option value="facebook">Facebook</option></select></div>
+  <div><label for="source">Quando</label><select id="source"><option value="comentario">Comentário</option><option value="dm">Mensagem direta (DM)</option></select></div>
+ </div>
+ <label for="keywords">Palavras-gatilho (separadas por vírgula)</label><input id="keywords" maxlength="900" placeholder="quero, preço, valor, link">
+ <div class="row">
+  <div><label for="matchMode">Correspondência</label><select id="matchMode"><option value="contem">Contém a palavra</option><option value="exata">Mensagem é exatamente a palavra</option></select></div>
+  <div><label for="mode">Modo</label><select id="mode"><option value="aprovacao">Aprovação (recomendado)</option><option value="rascunho">Só rascunho</option><option value="automatico">Automático</option></select></div>
+  <div><label for="priority">Prioridade</label><input type="number" id="priority" min="1" max="1000" value="100"></div>
+ </div>
+ <div id="publicWrap"><label for="publicReply">Resposta pública no comentário</label><textarea id="publicReply" maxlength="1000" placeholder="Oi {nome}! Te enviei os detalhes por mensagem 💬"></textarea></div>
+ <label for="privateReply">Resposta privada (DM)</label><textarea id="privateReply" maxlength="1000" placeholder="Oi! Aqui está o link do catálogo: …"></textarea>
+ <p class="muted">Use {nome} para citar quem escreveu. A Meta permite uma resposta privada por comentário, em até 7 dias; DMs podem ser respondidas em até 24 horas.</p>
+ <label class="check"><input type="checkbox" id="active"> Regra ativa</label>
+ <label for="sample">Testar com um texto (nada é enviado)</label>
+ <div class="row"><input id="sample" maxlength="1000" placeholder="Quero saber o preço!"><button class="ghost" id="test" type="button">Testar</button></div>
+ <p id="testResult" class="muted" role="status" aria-live="polite"></p>
+ <div class="actions"><button id="saveRule" type="button">Salvar regra</button><button class="ghost" id="newRule" type="button">Limpar</button></div>
+ <label for="ask">Ou descreva para o Leonardo sugerir a regra</label>
+ <div class="row"><input id="ask" maxlength="2000" placeholder="Quem comentar 'cardápio' recebe o link por DM"><button class="ghost" id="suggest" type="button">Sugerir</button></div>
+ <p id="formMsg" class="muted" role="status" aria-live="polite"></p>
+</section>
+
+<section class="card" aria-labelledby="rulesTitle">
+ <h2 id="rulesTitle">Regras</h2>
+ <div id="rules"><p class="muted">Nenhuma regra ainda.</p></div>
+</section>
+</div>
+
+<section class="card" aria-labelledby="inboxTitle">
+ <h2 id="inboxTitle">Caixa de respostas</h2>
+ <p class="muted">Comentários e DMs recebidos pelo webhook. Revise o texto e envie, ou descarte.</p>
+ <div class="tabs" id="tabs"></div>
+ <div id="events"></div>
+</section>
+</main><script src="/automations.js"></script></body></html>

@@ -12,6 +12,7 @@ fs.copyFileSync(path.join(root, 'ai-lab.html'), path.join(dist, 'ai-lab.html'));
 fs.copyFileSync(path.join(root, 'ai-lab.js'), path.join(dist, 'ai-lab.js'));
 fs.copyFileSync(path.join(root, 'agents.html'), path.join(dist, 'agents.html'));
 fs.copyFileSync(path.join(root, 'agents.js'), path.join(dist, 'agents.js'));
+for (const name of ['calendar.html','calendar.js','automations.html','automations.js']) fs.copyFileSync(path.join(root, name), path.join(dist, name));
 fs.mkdirSync(path.join(dist, 'privacy'), { recursive: true });
 fs.copyFileSync(path.join(root, 'privacy.html'), path.join(dist, 'privacy', 'index.html'));
 fs.copyFileSync(path.join(root, 'privacy.html'), path.join(dist, 'privacy.html'));
@@ -34,4 +35,4 @@ fs.writeFileSync(path.join(dist, '_headers'), `/*
 console.log('Content Engine built in dist/; Brand Studio preserved in dist/studio/.');
 
 require('esbuild').buildSync({entryPoints:[path.join(root,'server/worker.mjs')],outfile:path.join(dist,'_worker.js'),bundle:true,format:'esm',platform:'browser',target:'es2022'});
-fs.writeFileSync(path.join(dist,'_routes.json'),JSON.stringify({version:1,include:['/api/*','/r/*'],exclude:[]}));
+fs.writeFileSync(path.join(dist,'_routes.json'),JSON.stringify({version:1,include:['/api/*','/r/*','/m/*'],exclude:[]}));

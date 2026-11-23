@@ -174,14 +174,31 @@ export function parseAgentJSON(text){
  try{const value=JSON.parse(cleaned.slice(start,end+1));return value&&typeof value==='object'&&!Array.isArray(value)?value:null}catch{return null}
 }
 const memoryView=m=>({id:m.id,agente:m.agentId,tipo:m.kind,status:m.status,titulo:m.title,texto:m.text,fonte:m.source});
-async function think(env,agent,task,data,step){
+// Saída estruturada nativa (JSON Mode do Workers AI) para cada etapa. O parser tolerante continua
+// como rede de segurança: modelos sem JSON Mode seguem funcionando como antes.
+const S=(properties)=>({type:'object',properties});
+const txt={type:'string'},txts={type:'array',items:{type:'string'}};
+export const STEP_SCHEMAS={
+ research:S({briefing:txt,angulos:txts,fatos:{type:'array',items:S({texto:txt,memoria:txt})},hipoteses:txts,perguntas_para_autora:txts,notas_pesquisa:{type:'array',items:S({titulo:txt,texto:txt,tipo:{type:'string',enum:['pesquisa','ideia','hipotese']}})}}),
+ draft:S({texto:txt,justificativa:txt,memorias_usadas:txts}),
+ review:S({avaliacao:txt,problemas:txts,sugestoes:txts,aprendizados:{type:'array',items:S({titulo:txt,texto:txt})}}),
+ final:S({texto:txt,mudancas:txts,memorias_usadas:txts})
+};
+async function think(env,agent,task,data,step,schema){
  const ai=env.AI||env.ai;
  const messages=[{role:'system',content:agent.instructions+'\n\n'+RULES+'\n\n'+task},{role:'user',content:JSON.stringify(data)}];
- let result;
- try{result=await ai.run(env.AI_MODEL,{messages,max_tokens:env.AI_MODEL.includes('/gpt-oss-')?4096:1600})}
- catch{throw new AppError(502,`${agent.name} não respondeu (etapa: ${step}).`)}
- const text=finalText(result).trim();
- if(!text)throw new AppError(502,`${agent.name} não retornou texto (etapa: ${step}).`);
+ const max_tokens=env.AI_MODEL.includes('/gpt-oss-')?4096:1600;
+ let result,fellBack=false;
+ try{result=await ai.run(env.AI_MODEL,{messages,max_tokens,...(schema&&env.AGENTS_JSON_MODE!=='false'?{response_format:{type:'json_schema',json_schema:schema}}:{})})}
+ catch{
+  // Modelo sem JSON Mode: repete uma vez sem response_format.
+  if(!schema||env.AGENTS_JSON_MODE==='false')throw new AppError(502,`${agent.name} não respondeu (etapa: ${step}).`);
+  try{result=await ai.run(env.AI_MODEL,{messages,max_tokens})}catch{throw new AppError(502,`${agent.name} não respondeu (etapa: ${step}).`)}
+  fellBack=true;
+ }
+ const text=(result?.response&&typeof result.response==='object'?JSON.stringify(result.response):finalText(result)).trim();
+ // Se a primeira tentativa falhou e a segunda veio vazia, o problema original foi falta de resposta.
+ if(!text)throw new AppError(502,fellBack?`${agent.name} não respondeu (etapa: ${step}).`:`${agent.name} não retornou texto (etapa: ${step}).`);
  return text;
 }
 async function recentPosts(env,owner){
@@ -235,7 +252,7 @@ export async function collaborate(env,owner,input){
  try{
   // 1. Jade pesquisa com a própria memória + memórias compartilhadas + memória autoral.
   const jade1=await contextFor('jade');
-  const raw1=await think(env,agents.jade,TASKS.research,{...base,memorias_autora:author,memorias_agentes:jade1.ranked.map(memoryView),publicacoes_recentes:recent},'pesquisa');
+  const raw1=await think(env,agents.jade,TASKS.research,{...base,memorias_autora:author,memorias_agentes:jade1.ranked.map(memoryView),publicacoes_recentes:recent},'pesquisa',STEP_SCHEMAS.research);
   const r1=parseAgentJSON(raw1)||{briefing:raw1};
   const facts=(Array.isArray(r1.fatos)?r1.fatos:[]).slice(0,8).map(f=>({texto:str(f?.texto,600),memoria:str(f?.memoria,200)})).filter(f=>f.texto).map(f=>({...f,confirmado:jade1.verified.has(f.memoria)}));
   const brief={briefing:str(r1.briefing,6000)||raw1.slice(0,6000),angulos:list(r1.angulos,5),fatos:facts,hipoteses:[...list(r1.hipoteses,8),...facts.filter(f=>!f.confirmado).map(f=>f.texto)],perguntas_para_autora:list(r1.perguntas_para_autora,6)};
@@ -245,7 +262,7 @@ export async function collaborate(env,owner,input){
 
   // 2. Leonardo redige; já enxerga as notas novas da Jade (como rascunho/hipótese).
   const leo1=await contextFor('leonardo');
-  const raw2=await think(env,agents.leonardo,TASKS.draft,{...base,briefing_jade:brief,memorias_autora:author,memorias_agentes:leo1.ranked.map(memoryView),publicacoes_recentes:recent},'rascunho');
+  const raw2=await think(env,agents.leonardo,TASKS.draft,{...base,briefing_jade:brief,memorias_autora:author,memorias_agentes:leo1.ranked.map(memoryView),publicacoes_recentes:recent},'rascunho',STEP_SCHEMAS.draft);
   const r2=parseAgentJSON(raw2)||{texto:raw2};
   const draft=str(r2.texto,20000);if(!draft)throw new AppError(502,'Leonardo não produziu um rascunho.');
   const used2=list(r2.memorias_usadas,20,200).filter(id=>leo1.valid.has(id));
@@ -254,7 +271,7 @@ export async function collaborate(env,owner,input){
 
   if(withReview){
    // 3. Jade revisa e registra aprendizados.
-   const raw3=await think(env,agents.jade,TASKS.review,{...base,rascunho_leonardo:draft,briefing_jade:brief,memorias_autora:author,publicacoes_recentes:recent},'revisao');
+   const raw3=await think(env,agents.jade,TASKS.review,{...base,rascunho_leonardo:draft,briefing_jade:brief,memorias_autora:author,publicacoes_recentes:recent},'revisao',STEP_SCHEMAS.review);
    const r3=parseAgentJSON(raw3)||{avaliacao:raw3};
    const review={avaliacao:str(r3.avaliacao,4000)||raw3.slice(0,4000),problemas:list(r3.problemas,8),sugestoes:list(r3.sugestoes,8)};
    for(const note of (Array.isArray(r3.aprendizados)?r3.aprendizados:[]).slice(0,3))await saveNote('jade',{...note,tipo:'aprendizado'},'aprendizado');
@@ -262,7 +279,7 @@ export async function collaborate(env,owner,input){
 
    // 4. Leonardo finaliza; a versão 1 continua preservada.
    const leo2=await contextFor('leonardo');
-   const raw4=await think(env,agents.leonardo,TASKS.final,{...base,rascunho_anterior:draft,revisao_jade:review,briefing_jade:brief,memorias_autora:author,memorias_agentes:leo2.ranked.map(memoryView)},'final');
+   const raw4=await think(env,agents.leonardo,TASKS.final,{...base,rascunho_anterior:draft,revisao_jade:review,briefing_jade:brief,memorias_autora:author,memorias_agentes:leo2.ranked.map(memoryView)},'final',STEP_SCHEMAS.final);
    const r4=parseAgentJSON(raw4)||{texto:raw4};
    const finalText2=str(r4.texto,20000);if(!finalText2)throw new AppError(502,'Leonardo não produziu a versão final.');
    const used4=list(r4.memorias_usadas,20,200).filter(id=>leo2.valid.has(id));

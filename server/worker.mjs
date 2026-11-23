@@ -10,14 +10,19 @@ import {schedule,cancel,tick} from './queue.mjs';
 import {generate} from './ai.mjs';
 import {askOfficialAI,providerStatus} from './official-ai.mjs';
 import {agentsRoute} from './agents.mjs';
+import {uploadMedia,listMedia,previewMedia,publicMedia} from './media.mjs';
+import {calendarRoute} from './calendar.mjs';
+import {automationsRoute} from './automations.mjs';
+import {assistantRoute} from './assistant.mjs';
 import {metaReady,metaAccount,metaCampaigns,metaInsights} from './meta-ads.mjs';
 import {collectAds,historyAds,reviewsAds,decideAds} from './leonardo-ads.mjs';
-const features=env=>({authentication:authReady(env),database:!!env.DB,backups:!!env.BACKUPS,ai:!!((env.AI||env.ai)&&env.AI_MODEL),publishing:env.PUBLISHING_ENABLED==='true',scheduler:env.SCHEDULER_ENABLED==='true',providers:Object.fromEntries(PROVIDERS.map(p=>[p,providerReady(env,p)])),metaAds:{configured:metaReady(env),mode:'read-only'}});
+const features=env=>({authentication:authReady(env),database:!!env.DB,backups:!!env.BACKUPS,ai:!!((env.AI||env.ai)&&env.AI_MODEL),publishing:env.PUBLISHING_ENABLED==='true',scheduler:env.SCHEDULER_ENABLED==='true',providers:Object.fromEntries(PROVIDERS.map(p=>[p,providerReady(env,p)])),metaAds:{configured:metaReady(env),mode:'read-only'},media:!!env.MEDIA,automations:{autoReplyEnabled:env.CONVERSATIONS_AUTO_REPLY_ENABLED==='true'}});
 export async function handle(request,env){
  const url=new URL(request.url),path=url.pathname,method=request.method;
  try{
   if(path==='/api/webhooks/meta')return await handleConversationWebhook(request,env);
   if(path.startsWith('/r/'))return await trackedRedirect(request,env,path.slice(3));
+  if(path.startsWith('/m/'))return await publicMedia(request,env,path.slice(3));
   if(!path.startsWith('/api/'))return env.ASSETS.fetch(request);
   if(path==='/api/status'&&method==='GET'){
    let user=null;try{user=await identity(request,env)}catch{}
@@ -36,6 +41,8 @@ export async function handle(request,env){
   if(path==='/api/auth/login'&&method==='GET')return await login(request,env);
   if(path==='/api/auth/callback'&&method==='GET')return await callback(request,env);
   const user=await identity(request,env),owner=user.sub;
+  // Upload de foto: corpo binário JPEG, com verificação de origem própria (não é JSON).
+  if(path==='/api/media'&&method==='POST'){database(env);return json(await uploadMedia(request,env,owner),201)}
   if(!['GET','HEAD'].includes(method))sameOrigin(request,env);
   if(path==='/api/auth/logout'&&method==='POST')return logout();
   if(path==='/api/diagnostics/linkedin'&&method==='GET'){
@@ -63,6 +70,13 @@ export async function handle(request,env){
   }
   database(env);
   if(path==='/api/agents'||path.startsWith('/api/agents/'))return await agentsRoute(env,owner,request,url,path,method);
+  if(path==='/api/media'&&method==='GET')return json({media:await listMedia(env,owner)});
+  const mediaPreview=path.match(/^\/api\/media\/([A-Za-z0-9-]{1,80})$/);
+  if(mediaPreview&&method==='GET')return await previewMedia(env,owner,mediaPreview[1]);
+  for(const route of [calendarRoute,automationsRoute,assistantRoute]){
+   const result=await route(env,owner,request,url,path,method,body);
+   if(result!==null&&result!==undefined)return json(result,method==='POST'&&path==='/api/batches'?201:200);
+  }
   if(path==='/api/ai/providers'&&method==='GET')return json({providers:providerStatus(env),mode:'manual'});
   if(path==='/api/ai/ask'&&method==='POST')return json(await askOfficialAI(env,owner,await body(request,12000)));
   if(path==='/api/diagnostics/instagram/oauth'&&method==='GET'){
