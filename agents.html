@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leonardo + Jade</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#0b0e13;color:#ecf1f8}
+*{box-sizing:border-box}body{margin:0;background:#0b0e13}main{max-width:1080px;margin:0 auto;padding:36px 20px 60px}
+a{color:#a8caff}.eyebrow{font-size:12px;letter-spacing:.17em;color:#93a9c1;text-transform:uppercase}
+h1{font-size:clamp(28px,5vw,44px);letter-spacing:-.04em;margin:12px 0}h2{font-size:20px;letter-spacing:-.02em;margin:0 0 6px}
+.card{background:#131b26;border:1px solid #304155;border-radius:17px;padding:24px;margin-top:20px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.two{grid-template-columns:1fr}.card{padding:18px}}
+label{display:block;margin:16px 0 7px;font-size:13px;color:#c4d2e3}
+input,select,textarea{width:100%;font:inherit;background:#0d131c;color:#edf4fc;border:1px solid #40546c;border-radius:11px;padding:12px}
+textarea{min-height:120px;resize:vertical}
+button{font:inherit;cursor:pointer;border:0;border-radius:11px;background:#d8eaff;color:#091829;padding:11px 16px;font-weight:700;margin-top:16px}
+button.ghost{background:transparent;color:#d8eaff;border:1px solid #40546c;font-weight:600;padding:7px 11px;margin:6px 6px 0 0;font-size:13px}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #82bfff;outline-offset:3px}
+.muted{color:#9dacbe;font-size:13px;line-height:1.6}.notice{color:#f4ca8e}
+.check{display:flex;gap:10px;align-items:center;margin-top:16px;font-size:14px;color:#c4d2e3}.check input{width:auto}
+.msg{border-left:3px solid #40546c;padding:4px 0 4px 14px;margin:18px 0}.msg[data-agent=jade]{border-color:#e3a8d8}.msg[data-agent=leonardo]{border-color:#82bfff}
+.who{font-weight:700;font-size:14px}.step{color:#93a9c1;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-left:8px}
+.output{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65;margin-top:6px}
+.final{background:#0d131c;border:1px solid #40546c;border-radius:13px;padding:16px;margin-top:12px}
+.memory{border-top:1px solid #263445;padding:14px 0}.memory h3{font-size:15px;margin:0 0 4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.tag{border:1px solid #3c4d61;border-radius:100px;padding:2px 9px;font-size:11px;color:#a4b7d1}
+.tag.verificada{border-color:#5fbf8f;color:#9fe3bf}.tag.rascunho{border-color:#c9a25a;color:#f4ca8e}.tag.contestada,.tag.substituida{border-color:#8a5a5a;color:#e3a3a3}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:160px}
+.conv{display:block;width:100%;text-align:left;background:transparent;color:#ecf1f8;border:1px solid #304155;margin-top:8px;font-weight:500}
+</style></head><body><main>
+<a href="/">← Voltar ao Leonardo</a>
+<p class="eyebrow">LEONARDO / AGENTES DE CONTEÚDO</p>
+<h1>Leonardo + Jade</h1>
+<p class="muted">Jade pesquisa e propõe ângulos; Leonardo escreve; Jade revisa; Leonardo finaliza. Cada etapa fica registrada. Os textos entram como rascunhos versionados no Leonardo. Nada é aprovado nem publicado automaticamente.</p>
+<div id="status" class="muted notice" role="status" aria-live="polite">Verificando agentes…</div>
+
+<section class="card" aria-labelledby="createHeading">
+<h2 id="createHeading">Nova criação</h2>
+<p class="muted">Dê o tema, a ideia ou a transcrição. Quanto mais real e específico, melhor o resultado.</p>
+<label for="topic">Tema, ideia ou o que você criou</label>
+<textarea id="topic" maxlength="20000" placeholder="Hoje entreguei um sistema que…"></textarea>
+<label for="angle">Por que isso importa? (opcional)</label>
+<textarea id="angle" maxlength="3000" style="min-height:70px"></textarea>
+<div class="row"><div><label for="platform">Rede</label><select id="platform"><option>Instagram</option><option>LinkedIn</option><option>Threads</option><option>X</option></select></div>
+<div><label for="lang">Idioma</label><select id="lang"><option value="pt">Português</option><option value="en">English</option></select></div></div>
+<label class="check"><input type="checkbox" id="review" checked> Incluir revisão da Jade e versão final (4 etapas)</label>
+<button id="run" disabled>Iniciar colaboração</button>
+<p id="limit" class="muted"></p>
+<div id="timeline" aria-live="polite"></div>
+</section>
+
+<section class="card" aria-labelledby="memHeading">
+<h2 id="memHeading">Memória de pesquisa</h2>
+<p class="muted">As notas dos agentes chegam como <strong>rascunho</strong>. Só você marca uma informação como <strong>verificada</strong>, e só as verificadas (e sua memória autoral) são tratadas como fato. Cada mudança cria uma versão nova; nada é apagado.</p>
+<div class="row"><div><label for="memAgent">Agente</label><select id="memAgent"><option value="">Todos</option></select></div>
+<div><label for="memQuery">Buscar</label><input id="memQuery" maxlength="200" placeholder="palavra-chave"></div></div>
+<button id="memSearch">Buscar</button>
+<div id="memories"></div>
+<details style="margin-top:20px"><summary>Adicionar nota de pesquisa</summary>
+<div class="row"><div><label for="newAgent">Agente</label><select id="newAgent"></select></div>
+<div><label for="newKind">Tipo</label><select id="newKind"><option value="pesquisa">Pesquisa</option><option value="fato">Fato</option><option value="referencia">Referência</option><option value="ideia">Ideia</option><option value="aprendizado">Aprendizado</option><option value="hipotese">Hipótese</option></select></div>
+<div><label for="newStatus">Status</label><select id="newStatus"><option value="rascunho">Rascunho</option><option value="verificada">Verificada</option></select></div>
+<div><label for="newScope">Escopo</label><select id="newScope"><option value="compartilhada">Compartilhada entre agentes</option><option value="privada">Privada do agente</option></select></div></div>
+<label for="newTitle">Título</label><input id="newTitle" maxlength="200">
+<label for="newText">Conteúdo</label><textarea id="newText" maxlength="20000"></textarea>
+<label for="newSource">Fonte (link, documento, conversa, evidência)</label><input id="newSource" maxlength="1000">
+<button id="newSave">Adicionar à memória</button>
+</details>
+</section>
+
+<section class="card" aria-labelledby="convHeading">
+<h2 id="convHeading">Conversas anteriores</h2>
+<p class="muted">Histórico completo das trocas entre os agentes.</p>
+<div id="conversations"></div>
+<div id="conversationDetail"></div>
+</section>
+
+<section class="card" aria-labelledby="instHeading">
+<h2 id="instHeading">Instruções dos agentes</h2>
+<p class="muted">As instruções da Jade são um padrão provisório: cole aqui as instruções originais dela (do Grok) para manter a mesma personalidade. As regras de segurança do Leonardo são sempre aplicadas depois e não podem ser removidas. Versões anteriores ficam guardadas.</p>
+<div id="instructions"></div>
+</section>
+</main><script src="/agents.js" defer></script></body></html>
