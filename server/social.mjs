@@ -2,8 +2,9 @@ import {baseURL,sign,verify,cookie,cookies,random,hash,seal,unseal,external,exte
 import {statement,now,audit} from './store.mjs';
 import {unifiedInstagramConfig,unifiedInstagramAuthorize,exchangeUnifiedInstagram,identifyUnifiedInstagram} from './instagram-unified.mjs';
 import {findCwsFacebookPage} from './facebook-pages.mjs';
+import {PLATFORM_PROVIDER} from './platforms.mjs';
 export const PROVIDERS=['x','linkedin','instagram','threads'];
-export const platformProvider={X:'x',LinkedIn:'linkedin',Instagram:'instagram',Threads:'threads'};
+export const platformProvider=PLATFORM_PROVIDER;
 const config={
  x:{auth:'https://x.com/i/oauth2/authorize',token:'https://api.x.com/2/oauth2/token',scope:'tweet.read tweet.write users.read offline.access',prefix:'X'},
  linkedin:{auth:'https://www.linkedin.com/oauth/v2/authorization',token:'https://www.linkedin.com/oauth/v2/accessToken',scope:'openid profile w_member_social',prefix:'LINKEDIN'},
@@ -11,6 +12,11 @@ const config={
  threads:{auth:'https://threads.net/oauth/authorize',token:'https://graph.threads.net/oauth/access_token',scope:'threads_basic,threads_content_publish,threads_manage_insights',prefix:'THREADS'}
 };
 export function providerConfig(env,provider){
+ if(provider==='facebook'){
+  // Página conectada a partir do login Meta do Instagram (POST /api/social/facebook/connect).
+  if(!/^v\d+\.\d+$/.test(env.META_API_VERSION||'')||!/^[a-f0-9]{64}$/i.test(env.TOKEN_ENCRYPTION_KEY||''))fail(503,'Configure META_API_VERSION e TOKEN_ENCRYPTION_KEY.');
+  return {authMode:'facebook_page'};
+ }
  const c=config[provider];if(!c)fail(400,'Rede inválida.');
  if(provider==='instagram'){
   const meta=unifiedInstagramConfig(env);
@@ -73,6 +79,12 @@ export async function socialCallback(request,env,owner,provider){
 export async function connection(env,owner,provider){
  const row=await statement(env,'SELECT * FROM connections WHERE owner=? AND provider=?',owner,provider).first();if(!row)fail(409,'Conecte sua conta '+provider+' primeiro.');
  const token=await unseal(env,row.encrypted_token,owner+':'+provider);
+ const meta=provider==='facebook'||token.auth_mode==='instagram_unified';
+ if(meta){
+  // Tokens do login Meta (Facebook Login for Business) não são renovados aqui: reconectar quando expirar.
+  if(Number(row.expires_at)<=Date.now())fail(409,'A autorização Meta expirou. Reconecte '+provider+'.');
+  return {accountId:row.account_id,token:token.access_token,mode:token.auth_mode,scopes:token.granted_scopes||[]};
+ }
  if(row.expires_at<Date.now()+600000){
   const c=providerConfig(env,provider);let fresh;
   if(provider==='x'&&token.refresh_token)fresh=await externalJSON(c.token,tokenOptions(c,provider,{grant_type:'refresh_token',refresh_token:token.refresh_token}));
@@ -85,23 +97,59 @@ export async function connection(env,owner,provider){
   }else if(row.expires_at<Date.now())fail(409,'A conexão expirou. Reconecte '+provider+'.');
   if(fresh?.access_token){Object.assign(token,fresh);await statement(env,'UPDATE connections SET encrypted_token=?,expires_at=?,updated_at=? WHERE owner=? AND provider=?',await seal(env,token,owner+':'+provider),Date.now()+Number(fresh.expires_in||3600)*1000,now(),owner,provider).run()}
  }
- return {accountId:row.account_id,token:token.access_token};
+ return {accountId:row.account_id,token:token.access_token,mode:token.auth_mode||provider,scopes:token.granted_scopes||[]};
+}
+const graph=env=>{if(!/^v\d+\.\d+$/.test(env.META_API_VERSION||''))fail(503,'Configure META_API_VERSION.');return 'https://graph.facebook.com/'+env.META_API_VERSION};
+export function requireScopes(account,scopes,label){
+ const granted=new Set(account.scopes||[]);const missing=scopes.filter(s=>!granted.has(s));
+ if(missing.length)fail(409,`A autorização da Meta não inclui ${missing.join(', ')}, necessário para ${label}. Reconecte com essas permissões.`);
+}
+// Confere permissões ANTES de iniciar uma entrega: falta de permissão é falha clara, nunca "incerto".
+export function preflight(provider,account){
+ if(provider==='facebook')requireScopes(account,['pages_manage_posts','pages_read_engagement'],'publicar na Página do Facebook');
+ if(provider==='instagram'&&account.mode==='instagram_unified')requireScopes(account,['instagram_basic','instagram_content_publish'],'publicar no Instagram');
+}
+// Token da Página (necessário para publicar e responder como Página). Obtido na hora, nunca salvo.
+export async function pageToken(env,account){
+ const result=await externalJSON(graph(env)+'/'+encodeURIComponent(account.accountId)+'?fields=access_token',{headers:{Authorization:'Bearer '+account.token}});
+ if(!result.access_token)fail(409,'A Meta não liberou o token da Página. Verifique as permissões da Página.');
+ return result.access_token;
 }
 export async function prepareMedia(env,provider,account,text,mediaURL){
- if(provider==='instagram')fail(503,'Envio de mídia Instagram Unified Login ainda não habilitado.');
+ if(provider==='instagram'&&account.mode==='instagram_unified'){
+  // Instagram via Facebook Login for Business: contêiner em graph.facebook.com (permissão instagram_content_publish).
+  requireScopes(account,['instagram_basic','instagram_content_publish'],'publicar no Instagram');
+  const result=await externalJSON(graph(env)+'/'+encodeURIComponent(account.accountId)+'/media',{method:'POST',headers:{Authorization:'Bearer '+account.token,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({image_url:mediaURL,caption:text})});
+  if(!result.id)fail(502,'A Meta não confirmou o contêiner da imagem.');return String(result.id);
+ }
  if(!['instagram','threads'].includes(provider))return null;
  const base=provider==='threads'?'https://graph.threads.net/v1.0':'https://graph.instagram.com/'+env.INSTAGRAM_API_VERSION;
- const values=provider==='threads'?{media_type:'TEXT',text,auto_publish_text:'false'}:{image_url:mediaURL,caption:text};
+ const values=provider==='threads'?(mediaURL?{media_type:'IMAGE',image_url:mediaURL,text}:{media_type:'TEXT',text,auto_publish_text:'false'}):{image_url:mediaURL,caption:text};
  const result=await externalJSON(base+'/'+encodeURIComponent(account.accountId)+(provider==='threads'?'/threads':'/media'),{method:'POST',headers:{Authorization:'Bearer '+account.token,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(values)});
  if(!result.id)fail(502,'O provedor não confirmou o contêiner.');return String(result.id);
 }
 export async function mediaReady(env,provider,account,containerId){
+ if(provider==='instagram'&&account.mode==='instagram_unified'){
+  const result=await externalJSON(graph(env)+'/'+encodeURIComponent(containerId)+'?fields=status_code',{headers:{Authorization:'Bearer '+account.token}});
+  if(['ERROR','EXPIRED'].includes(result.status_code))fail(422,'A Meta recusou ou expirou a imagem.');return result.status_code==='FINISHED';
+ }
  const base=provider==='threads'?'https://graph.threads.net/v1.0':'https://graph.instagram.com/'+env.INSTAGRAM_API_VERSION;
  const field=provider==='threads'?'status':'status_code';const result=await externalJSON(base+'/'+encodeURIComponent(containerId)+'?fields='+field,{headers:{Authorization:'Bearer '+account.token}});
  if(['ERROR','EXPIRED'].includes(result[field]))fail(422,'A rede recusou ou expirou a mídia.');return result[field]==='FINISHED';
 }
 export async function publish(env,provider,account,post,containerId){
- if(provider==='instagram')fail(503,'Publicação Instagram Unified Login ainda não habilitada.');
+ if(provider==='instagram'&&account.mode==='instagram_unified'){
+  const data=await externalJSON(graph(env)+'/'+encodeURIComponent(account.accountId)+'/media_publish',{method:'POST',headers:{Authorization:'Bearer '+account.token,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({creation_id:containerId})});
+  return data.id;
+ }
+ if(provider==='facebook'){
+  requireScopes(account,['pages_manage_posts','pages_read_engagement'],'publicar na Página do Facebook');
+  const token=await pageToken(env,account);
+  const path=post.mediaURL?'/photos':'/feed';
+  const values=post.mediaURL?{url:post.mediaURL,caption:post.text,published:'true'}:{message:post.text};
+  const data=await externalJSON(graph(env)+'/'+encodeURIComponent(account.accountId)+path,{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(values)});
+  return data.post_id||data.id;
+ }
  const headers={Authorization:'Bearer '+account.token};let response,data;
  if(provider==='x'){
   response=await external('https://api.x.com/2/tweets',{method:'POST',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({text:post.text})});data=await response.json();return data.data?.id;

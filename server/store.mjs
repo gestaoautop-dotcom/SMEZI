@@ -1,4 +1,5 @@
 import {fail,hash,random} from './security.mjs';
+import {PLATFORMS} from './platforms.mjs';
 export const now=()=>new Date().toISOString();
 export function database(env){if(!env.DB)fail(503,'Conecte o banco D1 DB e aplique a migração.');return env.DB;}
 export const statement=(env,sql,...args)=>database(env).prepare(sql).bind(...args);
@@ -15,7 +16,7 @@ export function validateData(data){
    if(canonical(item).length>70000)fail(413,'Registro muito extenso.');
    if(item.rootId!==undefined&&!validId(item.rootId))fail(400,'Raiz inválida.');
    if(kind==='memories'&&typeof item.title!=='string')fail(400,'Memória sem título.');
-   if(kind==='posts'&&(!['X','LinkedIn','Instagram','Threads'].includes(item.platform)||!['pt','en'].includes(item.lang)))fail(400,'Rede ou idioma inválido.');
+   if(kind==='posts'&&(!PLATFORMS.includes(item.platform)||!['pt','en'].includes(item.lang)))fail(400,'Rede ou idioma inválido.');
   }
  }
  if(count>1000)fail(413,'Sincronize no máximo 1.000 registros por envio.');return data;

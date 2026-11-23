@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leonardo | Calendário de posts</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#0b0e13;color:#ecf1f8}
+*{box-sizing:border-box}body{margin:0;background:#0b0e13}main{max-width:1280px;margin:0 auto;padding:30px 20px 60px}
+a{color:#a8caff}.eyebrow{font-size:12px;letter-spacing:.17em;color:#93a9c1;text-transform:uppercase}
+h1{font-size:clamp(26px,4vw,40px);letter-spacing:-.04em;margin:10px 0}h2{font-size:19px;margin:0 0 6px}h3{font-size:15px;margin:0}
+.muted{color:#9dacbe;font-size:13px;line-height:1.6}.notice{color:#f4ca8e}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;align-items:start}
+@media (max-width:1000px){.layout{grid-template-columns:1fr}}
+.card{background:#131b26;border:1px solid #304155;border-radius:17px;padding:20px;margin-top:16px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.toolbar h2{flex:1;margin:0}
+.month{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:14px}
+.dow{font-size:11px;color:#8aa3bf;text-transform:uppercase;letter-spacing:.1em;padding:4px}
+.day{min-height:112px;background:#0f151e;border:1px solid #233142;border-radius:11px;padding:6px;display:flex;flex-direction:column;gap:5px}
+.day.out{opacity:.38}.day.today{border-color:#82bfff}.day .n{font-size:12px;color:#9dacbe}
+.day button.add{margin:auto 0 0;background:transparent;border:1px dashed #33465c;color:#8aa3bf;padding:2px;font-size:12px;border-radius:7px;font-weight:500}
+.item{display:flex;gap:6px;align-items:center;text-align:left;background:#1a2433;border:1px solid #2d3d52;border-radius:9px;padding:4px;color:#ecf1f8;font-size:11px;width:100%;margin:0;font-weight:500}
+.item img,.thumb{width:34px;height:42px;object-fit:cover;border-radius:5px;background:#0b0e13;flex:none}
+.item .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.dot{width:8px;height:8px;border-radius:50%;flex:none;background:#c9a25a}.dot.ok{background:#5fbf8f}.dot.sched{background:#82bfff}.dot.err{background:#e37a7a}
+label{display:block;margin:13px 0 6px;font-size:13px;color:#c4d2e3}
+input,select,textarea{width:100%;font:inherit;background:#0d131c;color:#edf4fc;border:1px solid #40546c;border-radius:10px;padding:10px}
+textarea{min-height:110px;resize:vertical}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;background:#d8eaff;color:#091829;padding:10px 14px;font-weight:700}
+button.ghost{background:transparent;color:#d8eaff;border:1px solid #40546c;font-weight:600}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #82bfff;outline-offset:2px}
+.nets{display:flex;flex-wrap:wrap;gap:8px}.nets label{display:flex;gap:6px;align-items:center;margin:0;border:1px solid #33465c;border-radius:100px;padding:6px 11px;cursor:pointer}
+.nets input{width:auto}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.preview{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:12px;background:#0d131c;border:1px solid #33465c;margin-top:8px}
+.chip{display:inline-block;border:1px solid #3c4d61;border-radius:100px;padding:2px 9px;font-size:11px;color:#a4b7d1;margin:2px 4px 2px 0}
+.chip.ok{border-color:#5fbf8f;color:#9fe3bf}.chip.sched{border-color:#82bfff;color:#bcdcff}.chip.err{border-color:#e37a7a;color:#f1b0b0}.chip.wait{border-color:#c9a25a;color:#f4ca8e}
+.net{border-top:1px solid #263445;padding:12px 0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.idea{border-top:1px solid #263445;padding:10px 0}.hidden{display:none!important}
+</style></head><body><main>
+<a href="/">← Voltar ao Leonardo</a>
+<p class="eyebrow">LEONARDO / CALENDÁRIO</p>
+<h1>Calendário de posts</h1>
+<p class="muted">Foto + legenda, para várias redes no mesmo horário. Cada rede tem sua versão e sua aprovação. Nada é publicado sem aprovar e agendar, e a publicação só acontece quando estiver ativada no servidor.</p>
+<div id="status" class="muted notice" role="status" aria-live="polite">Carregando…</div>
+
+<div class="layout">
+<section class="card" aria-labelledby="monthTitle">
+ <div class="toolbar"><button class="ghost" id="prev" aria-label="Mês anterior">◀</button><h2 id="monthTitle">—</h2><button class="ghost" id="today">Hoje</button><button class="ghost" id="next" aria-label="Próximo mês">▶</button></div>
+ <div class="month" id="month" role="grid"></div>
+ <p class="muted"><span class="chip wait">rascunho</span><span class="chip ok">aprovado</span><span class="chip sched">agendado</span><span class="chip ok">publicado</span><span class="chip err">atenção</span></p>
+</section>
+
+<aside>
+<section class="card" id="detail" aria-labelledby="detailTitle" hidden>
+ <div class="toolbar"><h2 id="detailTitle">Post</h2><button class="ghost" id="closeDetail">Fechar</button></div>
+ <img id="detailImg" class="preview hidden" alt="Foto do post">
+ <p id="detailWhen" class="muted"></p>
+ <div id="detailNets"></div>
+ <label for="moveAt">Mudar data e horário</label>
+ <div class="row"><input type="datetime-local" id="moveAt"><button class="ghost" id="move">Mover</button></div>
+ <div class="actions"><button id="approveAll">Aprovar todas</button><button class="ghost" id="scheduleAll">Agendar aprovadas</button></div>
+ <p id="detailMsg" class="muted" role="status" aria-live="polite"></p>
+</section>
+
+<section class="card" aria-labelledby="newTitle">
+ <h2 id="newTitle">Novo post</h2>
+ <label for="photo">Foto (convertida para JPEG; ideal 1080 × 1350)</label>
+ <input type="file" id="photo" accept="image/*">
+ <img id="photoPreview" class="preview hidden" alt="Pré-visualização da foto">
+ <label for="caption">Legenda</label>
+ <textarea id="caption" maxlength="5000" placeholder="Escreva a legenda ou gere com o Leonardo."></textarea>
+ <label>Redes</label>
+ <div class="nets" id="nets"></div>
+ <p class="muted">A foto vai para Instagram, Facebook e Threads. X e LinkedIn recebem só o texto nesta versão. Instagram exige foto.</p>
+ <div id="overrides"></div>
+ <div class="row"><div><label for="date">Data</label><input type="date" id="date"></div><div><label for="time">Horário</label><input type="time" id="time" value="09:00"></div></div>
+ <label for="theme">Tema para o Leonardo (opcional)</label>
+ <input id="theme" maxlength="4000" placeholder="Ex.: bastidores da entrega do site da padaria">
+ <div class="actions"><button class="ghost" id="suggest">Gerar legendas por rede</button><button id="save">Salvar no calendário</button></div>
+ <p id="newMsg" class="muted" role="status" aria-live="polite"></p>
+</section>
+
+<section class="card" aria-labelledby="planTitle">
+ <h2 id="planTitle">Planejar com o Leonardo</h2>
+ <p class="muted">O Leonardo consulta suas memórias, as publicações recentes e o calendário antes de sugerir. As ideias não são salvas até você usar uma.</p>
+ <div class="row"><div><label for="planCount">Quantidade</label><input type="number" id="planCount" min="1" max="31" value="8"></div><div><label for="planProvider">IA</label><select id="planProvider"></select></div></div>
+ <label for="planGoal">Objetivo do mês</label>
+ <input id="planGoal" maxlength="300" placeholder="Ex.: mostrar bastidores e gerar pedidos de orçamento">
+ <div class="actions"><button class="ghost" id="plan">Sugerir plano para este mês</button></div>
+ <p id="planMsg" class="muted" role="status" aria-live="polite"></p>
+ <div id="ideas"></div>
+</section>
+</aside>
+</div>
+</main><script src="/calendar.js"></script></body></html>

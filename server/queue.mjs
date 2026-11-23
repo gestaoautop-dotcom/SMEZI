@@ -1,11 +1,12 @@
 import {fail,random} from './security.mjs';
 import {statement,now,audit} from './store.mjs';
-import {platformProvider,connection,prepareMedia,mediaReady,publish,providerConfig} from './social.mjs';
+import {platformProvider,connection,prepareMedia,mediaReady,publish,providerConfig,preflight} from './social.mjs';
+import {TEXT_LIMITS,MEDIA_PLATFORMS,MEDIA_REQUIRED} from './platforms.mjs';
 export function validatePost(post){
- const limits={X:280,LinkedIn:3000,Instagram:2200,Threads:500};
- if(!limits[post.platform]||typeof post.text!=='string'||!post.text.trim()||Array.from(post.text).length>limits[post.platform])fail(400,'Texto vazio ou acima do limite conservador da rede.');
- if(post.mediaURL){let u;try{u=new URL(post.mediaURL)}catch{fail(400,'URL de mídia inválida.')}if(u.protocol!=='https:'||u.username||u.password)fail(400,'A mídia precisa de URL HTTPS pública.');if(post.platform!=='Instagram')fail(400,'Anexos desta etapa são suportados apenas no Instagram.');}
- if(post.platform==='Instagram'&&!post.mediaURL)fail(400,'Instagram precisa de uma imagem JPEG em URL HTTPS pública nesta versão.');
+ const limit=TEXT_LIMITS[post.platform];
+ if(!limit||typeof post.text!=='string'||!post.text.trim()||Array.from(post.text).length>limit)fail(400,'Texto vazio ou acima do limite conservador da rede.');
+ if(post.mediaURL){let u;try{u=new URL(post.mediaURL)}catch{fail(400,'URL de mídia inválida.')}if(u.protocol!=='https:'||u.username||u.password)fail(400,'A mídia precisa de URL HTTPS pública.');if(!MEDIA_PLATFORMS.includes(post.platform))fail(400,'Nesta versão a foto é enviada apenas para Instagram, Facebook e Threads.');}
+ if(MEDIA_REQUIRED.includes(post.platform)&&!post.mediaURL)fail(400,'Instagram precisa de uma imagem JPEG em URL HTTPS pública nesta versão.');
 }
 export async function schedule(env,owner,input){
  if(env.PUBLISHING_ENABLED!=='true'||!env.CRON_SECRET?.length||env.SCHEDULER_ENABLED!=='true')fail(503,'Ative a publicação e configure o Worker de agendamento primeiro.');
@@ -37,7 +38,7 @@ export async function tick(env){
    const latest=await statement(env,"SELECT id FROM records WHERE owner=? AND collection='posts' AND root_id=? ORDER BY seq DESC LIMIT 1",job.owner,job.root_id).first();
    if(!approved||latest?.id!==job.record_id)fail(409,'A publicação foi revisada ou não está aprovada.');
    const account=await connection(env,job.owner,job.provider);if(account.accountId!==job.account_id)fail(409,'A conta conectada mudou. Revise o agendamento.');
-   const post=JSON.parse(job.snapshot);validatePost(post);
+   const post=JSON.parse(job.snapshot);validatePost(post);preflight(job.provider,account);
    if(['threads','instagram'].includes(job.provider)){
     if(!job.container_id){job.container_id=await prepareMedia(env,job.provider,account,post.text,post.mediaURL);await statement(env,'UPDATE jobs SET container_id=?,updated_at=? WHERE id=?',job.container_id,now(),job.id).run()}
     if(!await mediaReady(env,job.provider,account,job.container_id)){
