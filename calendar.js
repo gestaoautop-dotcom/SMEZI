@@ -37,7 +37,7 @@ function batchState(b){
 async function loadMonth(){
  const first=new Date(cursor),start=new Date(first);start.setDate(1-first.getDay());
  const end=new Date(start);end.setDate(start.getDate()+42);
- $('monthTitle').textContent=first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+ const label=first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});$('monthTitle').textContent=label.charAt(0).toUpperCase()+label.slice(1);
  try{
   const r=await api(`/api/calendar?from=${encodeURIComponent(start.toISOString())}&to=${encodeURIComponent(end.toISOString())}`);
   batches=r.batches;$('status').textContent=`${batches.length} post(s) neste período.`;

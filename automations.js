@@ -17,7 +17,7 @@ async function api(path,data){
 const form=()=>({name:$('name').value,channel:$('channel').value,source:$('source').value,keywords:$('keywords').value,matchMode:$('matchMode').value,mode:$('mode').value,priority:Number($('priority').value),publicReply:$('source').value==='dm'?'':$('publicReply').value,privateReply:$('privateReply').value,active:$('active').checked,...($('ruleId').value?{id:$('ruleId').value}:{})});
 function fill(r){
  $('ruleId').value=r.id||'';$('name').value=r.name||'';$('channel').value=r.channel||'instagram';$('source').value=r.source||'comentario';
- $('keywords').value=(r.keywords||[]).join?r.keywords.join(', '):r.keywords||'';$('matchMode').value=r.matchMode||'contem';$('mode').value=r.mode||'aprovacao';
+ $('keywords').value=Array.isArray(r.keywords)?r.keywords.join(', '):(r.keywords||'');$('matchMode').value=r.matchMode||'contem';$('mode').value=r.mode||'aprovacao';
  $('priority').value=r.priority||100;$('publicReply').value=r.publicReply||'';$('privateReply').value=r.privateReply||'';$('active').checked=!!r.active;
  $('formTitle').textContent=r.id?'Editar regra':'Nova regra';togglePublic();
 }
