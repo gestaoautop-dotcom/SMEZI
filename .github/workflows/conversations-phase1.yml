@@ -3,6 +3,10 @@ on:
   pull_request:
     paths:
       - 'server/conversations-*.mjs'
+      - 'server/official-ai.mjs'
+      - 'test/official-ai.test.mjs'
+      - 'ai-lab.html'
+      - 'ai-lab.js'
       - 'server/worker.mjs'
       - 'test/conversations-*.mjs'
       - 'workers/conversations-*.mjs'
@@ -21,5 +25,5 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-audit --no-fund
-      - run: node --test test/conversations-webhook.test.mjs
+      - run: node --test test/conversations-webhook.test.mjs test/official-ai.test.mjs
       - run: npm run build
