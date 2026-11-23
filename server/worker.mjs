@@ -9,6 +9,7 @@ import {PROVIDERS,providerReady,connect,socialCallback,metrics} from './social.m
 import {schedule,cancel,tick} from './queue.mjs';
 import {generate} from './ai.mjs';
 import {askOfficialAI,providerStatus} from './official-ai.mjs';
+import {agentsRoute} from './agents.mjs';
 import {metaReady,metaAccount,metaCampaigns,metaInsights} from './meta-ads.mjs';
 import {collectAds,historyAds,reviewsAds,decideAds} from './leonardo-ads.mjs';
 const features=env=>({authentication:authReady(env),database:!!env.DB,backups:!!env.BACKUPS,ai:!!((env.AI||env.ai)&&env.AI_MODEL),publishing:env.PUBLISHING_ENABLED==='true',scheduler:env.SCHEDULER_ENABLED==='true',providers:Object.fromEntries(PROVIDERS.map(p=>[p,providerReady(env,p)])),metaAds:{configured:metaReady(env),mode:'read-only'}});
@@ -61,6 +62,7 @@ export async function handle(request,env){
    return json({ready:Object.values(checks).every(Boolean),checks,notes:'Authenticated diagnostic; only boolean validations are returned. No credentials are exposed.'});
   }
   database(env);
+  if(path==='/api/agents'||path.startsWith('/api/agents/'))return await agentsRoute(env,owner,request,url,path,method);
   if(path==='/api/ai/providers'&&method==='GET')return json({providers:providerStatus(env),mode:'manual'});
   if(path==='/api/ai/ask'&&method==='POST')return json(await askOfficialAI(env,owner,await body(request,12000)));
   if(path==='/api/diagnostics/instagram/oauth'&&method==='GET'){

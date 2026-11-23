@@ -10,6 +10,8 @@ fs.copyFileSync(path.join(root, 'content-engine.html'), path.join(dist, 'content
 fs.copyFileSync(path.join(root, 'leonardo-ads.html'), path.join(dist, 'leonardo-ads.html'));
 fs.copyFileSync(path.join(root, 'ai-lab.html'), path.join(dist, 'ai-lab.html'));
 fs.copyFileSync(path.join(root, 'ai-lab.js'), path.join(dist, 'ai-lab.js'));
+fs.copyFileSync(path.join(root, 'agents.html'), path.join(dist, 'agents.html'));
+fs.copyFileSync(path.join(root, 'agents.js'), path.join(dist, 'agents.js'));
 fs.mkdirSync(path.join(dist, 'privacy'), { recursive: true });
 fs.copyFileSync(path.join(root, 'privacy.html'), path.join(dist, 'privacy', 'index.html'));
 fs.copyFileSync(path.join(root, 'privacy.html'), path.join(dist, 'privacy.html'));
