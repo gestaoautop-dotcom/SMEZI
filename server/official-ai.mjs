@@ -51,7 +51,8 @@ export async function askOfficialAI(env,owner,input){
   payload={contents:[{role:'user',parts:[{text:prompt}]}],systemInstruction:{parts:[{text:instructions}]},generationConfig:{maxOutputTokens:512}};
  }else{
   headers.Authorization='Bearer '+key;
-  payload={model,input:[{role:'system',content:instructions},{role:'user',content:prompt}],max_output_tokens:512,store:false};
+  payload={model,input:[{role:'system',content:instructions},{role:'user',content:prompt}],max_output_tokens:512};
+  if(provider==='openai')payload.store=false;
  }
  let response;
  try{
