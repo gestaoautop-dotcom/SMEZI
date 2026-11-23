@@ -8,6 +8,8 @@ fs.mkdirSync(path.join(dist, 'studio'), { recursive: true });
 fs.copyFileSync(path.join(root, 'content-engine.html'), path.join(dist, 'index.html'));
 fs.copyFileSync(path.join(root, 'content-engine.html'), path.join(dist, 'content-engine.html'));
 fs.copyFileSync(path.join(root, 'leonardo-ads.html'), path.join(dist, 'leonardo-ads.html'));
+fs.copyFileSync(path.join(root, 'ai-lab.html'), path.join(dist, 'ai-lab.html'));
+fs.copyFileSync(path.join(root, 'ai-lab.js'), path.join(dist, 'ai-lab.js'));
 fs.mkdirSync(path.join(dist, 'privacy'), { recursive: true });
 fs.copyFileSync(path.join(root, 'privacy.html'), path.join(dist, 'privacy', 'index.html'));
 fs.copyFileSync(path.join(root, 'privacy.html'), path.join(dist, 'privacy.html'));
