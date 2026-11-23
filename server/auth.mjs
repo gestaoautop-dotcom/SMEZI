@@ -1,0 +1,89 @@
+import {baseURL,sign,verify,cookie,cookies,random,hash,externalJSON,fail,json} from './security.mjs';
+export function authConfiguration(env){
+ return {
+  origin: Boolean(env.APP_ORIGIN),
+  clientId: Boolean(env.GITHUB_CLIENT_ID),
+  clientSecret: Boolean(env.GITHUB_CLIENT_SECRET),
+  allowedId: Boolean(env.GITHUB_ALLOWED_ID),
+  sessionSecretValid: typeof env.SESSION_SECRET === 'string' && env.SESSION_SECRET.length >= 32
+ };
+}
+export function authReady(env){return Object.values(authConfiguration(env)).every(Boolean)}
+export async function login(request,env){
+ if(!authReady(env))fail(503,'O login ainda precisa ser configurado no Cloudflare.');
+ const state=random(),verifier=random()+random();
+ const token=await sign(env,{state,verifier},'github-login',600);
+ const url=new URL('https://github.com/login/oauth/authorize');
+ url.search=new URLSearchParams({client_id:env.GITHUB_CLIENT_ID,redirect_uri:baseURL(env)+'/api/auth/callback',scope:'read:user',state,code_challenge:await hash(verifier),code_challenge_method:'S256',allow_signup:'false'});
+ return new Response(null,{status:302,headers:{Location:url.href,'Set-Cookie':cookie('__Host-smezi_login',token,600),'Cache-Control':'no-store','Referrer-Policy':'no-referrer'}});
+}
+export async function callback(request, env) {
+  const url = new URL(request.url);
+  const state = await verify(env, cookies(request)['__Host-smezi_login'] || '', 'github-login');
+  const code = url.searchParams.get('code');
+  if (!url.searchParams.get('state') || url.searchParams.get('state') !== state.state || !code) {
+    fail(400, 'Autorização inválida ou expirada.');
+  }
+
+  const payload = new URLSearchParams({
+    client_id: env.GITHUB_CLIENT_ID,
+    client_secret: env.GITHUB_CLIENT_SECRET,
+    code,
+    redirect_uri: baseURL(env) + '/api/auth/callback',
+    code_verifier: state.verifier
+  });
+  let response;
+  try {
+    response = await fetch('https://github.com/login/oauth/access_token', {
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: payload,
+      redirect: 'manual',
+      signal: AbortSignal.timeout(15000)
+    });
+  } catch {
+    fail(502, 'Falha de conexão com o endpoint OAuth do GitHub.');
+  }
+  if (!response.ok) {
+    fail(502, 'GitHub respondeu HTTP ' + response.status + ' durante o login.');
+  }
+  let token;
+  try {
+    token = await response.json();
+  } catch {
+    fail(502, 'GitHub retornou resposta OAuth em formato inesperado.');
+  }
+  if (token?.error) {
+    const safeCodes = ['bad_verification_code', 'incorrect_client_credentials', 'redirect_uri_mismatch', 'application_suspended', 'expired_user_code', 'authorization_pending', 'slow_down'];
+    const reason = safeCodes.includes(token.error) ? token.error : 'oauth_rejected';
+    fail(401, 'GitHub recusou a troca OAuth: ' + reason + '.');
+  }
+  if (!token?.access_token) fail(401, 'GitHub não autorizou o login.');
+
+  let user;
+  try {
+    user = await externalJSON('https://api.github.com/user', {
+      headers: {
+        Authorization: 'Bearer ' + token.access_token,
+        Accept: 'application/vnd.github+json',
+        'User-Agent': 'SMEZI-Content-Engine'
+      }
+    });
+  } catch {
+    fail(502, 'Falha ao consultar o perfil GitHub. Consulte os logs privados do Worker.');
+  }
+  if (!user?.id || String(user.id) !== String(env.GITHUB_ALLOWED_ID)) {
+    fail(403, 'Esta conta não está autorizada.');
+  }
+
+  const session = await sign(env, { sub: String(user.id), login: user.login }, 'session');
+  const headers = new Headers({
+    Location: baseURL(env) + '/#connected',
+    'Cache-Control': 'no-store',
+    'Referrer-Policy': 'no-referrer'
+  });
+  headers.append('Set-Cookie', cookie('__Host-smezi_session', session));
+  headers.append('Set-Cookie', cookie('__Host-smezi_login', '', 0));
+  return new Response(null, { status: 302, headers });
+}
+export function logout(){const r=json({ok:true});r.headers.set('Set-Cookie',cookie('__Host-smezi_session','',0));return r}
