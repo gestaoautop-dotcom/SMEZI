@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-content-engine.js",
-    "test": "node test/brain-core.test.js && node test/templates.test.js && node test/knowledge.test.js && node --test test/content-engine.test.js test/facebook-pages.test.mjs test/social-read.test.mjs test/instagram-unified.test.mjs test/server.test.mjs test/runtime.test.mjs test/leonardo-ads.test.mjs test/conversations-webhook.test.mjs test/official-ai.test.mjs test/agents.test.mjs test/agents-runtime.test.mjs test/automations.test.mjs test/calendar.test.mjs test/ai-runtime.test.mjs",
+    "test": "node test/brain-core.test.js && node test/templates.test.js && node test/knowledge.test.js && node --test --test-concurrency=1 test/content-engine.test.js test/facebook-pages.test.mjs test/social-read.test.mjs test/instagram-unified.test.mjs test/server.test.mjs test/runtime.test.mjs test/leonardo-ads.test.mjs test/conversations-webhook.test.mjs test/official-ai.test.mjs test/agents.test.mjs test/agents-runtime.test.mjs test/automations.test.mjs test/calendar.test.mjs test/ai-runtime.test.mjs",
     "dev:cloud": "wrangler pages dev dist --d1 DB=local-content --r2 BACKUPS"
   },
   "engines": {
